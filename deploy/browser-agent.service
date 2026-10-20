@@ -1,0 +1,31 @@
+[Unit]
+Description=Browser Agent (AI web automation + scheduler)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=__RUN_USER__
+Group=__RUN_USER__
+WorkingDirectory=__APP_DIR__
+EnvironmentFile=__APP_DIR__/.env
+# Chromium path — deploy.sh /opt/ms-playwright me install karta hai (shared, non-root readable)
+Environment=PLAYWRIGHT_BROWSERS_PATH=/opt/ms-playwright
+Environment=HOME=/home/__RUN_USER__
+ExecStart=/usr/bin/node server.js
+Restart=always
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=browser-agent
+
+# Memory guard: Chromium bhookha hota hai, OOM se poora VPS na mare
+MemoryMax=3G
+TasksMax=4096
+
+# Sandbox (halka — Chromium ko kaafi permissions chahiye)
+NoNewPrivileges=yes
+PrivateTmp=no
+
+[Install]
+WantedBy=multi-user.target
