@@ -50,6 +50,8 @@ if (!process.env.GEMINI_API_KEY) {
 const canComment = Boolean(GH_TOKEN && ISSUE && REPO);
 let commentId = null;
 let lastPush = 0;
+let finalized = false;      // final result likh diya → progress update band
+let inflight = Promise.resolve();
 const timeline = [];
 const startedAt = Date.now();
 
@@ -90,24 +92,37 @@ async function ghApi(method, url, body) {
   return res.ok ? res.json().catch(() => null) : null;
 }
 
-async function pushProgress(force = false) {
-  if (!canComment) return;
-  const now = Date.now();
-  if (!force && now - lastPush < 2500) return; // throttle
-  lastPush = now;
-  const body = renderProgress();
+function pushProgress(force = false) {
+  if (!canComment || finalized) return inflight;
+  // queue me daalo taaki final result ke baad koi purana update na aaye
+  inflight = inflight
+    .then(async () => {
+      if (finalized) return;
+      const now = Date.now();
+      if (!force && now - lastPush < 2500) return; // throttle
+      lastPush = now;
+      const body = renderProgress();
 
-  if (!commentId) {
-    const created = await ghApi("POST", `/repos/${REPO}/issues/${ISSUE}/comments`, { body });
-    if (created?.id) commentId = created.id;
-  } else {
-    await ghApi("PATCH", `/repos/${REPO}/issues/comments/${commentId}`, { body });
-  }
+      if (!commentId) {
+        const created = await ghApi("POST", `/repos/${REPO}/issues/${ISSUE}/comments`, { body });
+        if (created?.id) commentId = created.id;
+      } else {
+        await ghApi("PATCH", `/repos/${REPO}/issues/comments/${commentId}`, { body });
+      }
+    })
+    .catch(() => {});
+  return inflight;
 }
 
 async function finalComment(body) {
-  if (!canComment || !commentId) return;
-  await ghApi("PATCH", `/repos/${REPO}/issues/comments/${commentId}`, { body });
+  if (!canComment) return;
+  finalized = true;            // iske baad koi progress update nahi
+  await inflight.catch(() => {}); // jo pending tha wo khatam ho jaye
+  if (!commentId) {
+    await ghApi("POST", `/repos/${REPO}/issues/${ISSUE}/comments`, { body });
+  } else {
+    await ghApi("PATCH", `/repos/${REPO}/issues/comments/${commentId}`, { body });
+  }
 }
 
 console.log(`▶ Task: ${goal.slice(0, 200)}`);
