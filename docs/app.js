@@ -1016,7 +1016,7 @@ on("varsForm", "submit", async (e) => {
 /* ══════════════════════ 1-SECOND LIVE ══════════════════════ */
 function tickSecond() {
   if (!liveActive) return;
-  if (++shotTick % 3 === 0) refreshLiveShot();
+  if (++shotTick % 2 === 0) refreshLiveShot();
   if (!liveStartedAt) return;
   const t = fmtElapsed(liveStartedAt);
   const a = $("lsTime");
@@ -1049,6 +1049,10 @@ async function fastPoll() {
 }
 
 on("liveShot", "error", () => $("shotWrap")?.classList.add("hide"));
+on("liveShot", "click", () => {
+  const u = $("liveShot")?.src;
+  if (u) window.open(u, "_blank", "noopener");
+});
 
 /* ══════════════════════ BOOT ══════════════════════ */
 autoDetect();
