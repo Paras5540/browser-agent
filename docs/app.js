@@ -179,7 +179,10 @@ function addAgentMsg(n) {
   const el = document.createElement("div");
   el.className = "msg agent";
   el.innerHTML = `<div class="who">${whoHtml(n, "running", "running")}</div>
-    <div class="bubble running" data-bubble><span class="muted">Shuru ho raha hai…</span></div>`;
+    <div class="bubble running" data-bubble>
+      <div class="skel"><i></i><i></i><i></i></div>
+      <div class="startmsg"><span class="si">◐</span>Agent starting…</div>
+    </div>`;
   chat.appendChild(el);
   scrollChat();
   const ui = { root: el, bubble: el.querySelector("[data-bubble]"), badge: el.querySelector("[data-badge]") };
@@ -196,6 +199,20 @@ const THINK_WORDS = [
   "kaam kar raha hoon",
 ];
 let streamTick = null;
+
+function setRunning(on) {
+  $("runbar")?.classList.toggle("hide", !on);
+}
+
+let shotTick = 0;
+function refreshLiveShot() {
+  const wrap = $("shotWrap");
+  const img = $("liveShot");
+  if (!wrap || !img || !cfg.owner) return;
+  const url = `https://raw.githubusercontent.com/${cfg.owner}/${cfg.repo}/live/outputs/live/latest.jpg?t=${Date.now()}`;
+  if (img.getAttribute("src") !== url) img.src = url;
+  $("shotOpen").href = `https://raw.githubusercontent.com/${cfg.owner}/${cfg.repo}/live/outputs/live/latest.jpg`;
+}
 
 function stopThinkTick() {
   if (streamTick) clearInterval(streamTick);
@@ -259,12 +276,17 @@ async function streamThread(n, ui) {
         ui.badge.textContent = failed ? "failed" : "done";
         ui.bubble.classList.remove("running");
         stopThinkTick();
+        setRunning(false);
+        setTimeout(() => $("shotWrap")?.classList.add("hide"), 1500);
         scrollChat();
         loadThreads();
         return;
       }
       renderStream(ui.bubble, body);
       startThinkTick(ui.bubble, t0);
+      setRunning(true);
+      $("shotWrap")?.classList.remove("hide");
+      refreshLiveShot();
       scrollChat();
     }
     await sleep(1200);
@@ -418,6 +440,7 @@ form?.addEventListener("submit", async (e) => {
   showThreadView(null, goal.slice(0, 40) + (goal.length > 40 ? "…" : ""));
   addUserMsg(goal);
   const ui = addAgentMsg(null);
+  setRunning(true);
 
   try {
     let issue;
@@ -443,6 +466,7 @@ form?.addEventListener("submit", async (e) => {
     ui.badge.className = "badge error";
     ui.badge.textContent = "error";
     stopThinkTick();
+    setRunning(false);
   }
 });
 
@@ -991,7 +1015,9 @@ on("varsForm", "submit", async (e) => {
 
 /* ══════════════════════ 1-SECOND LIVE ══════════════════════ */
 function tickSecond() {
-  if (!liveActive || !liveStartedAt) return;
+  if (!liveActive) return;
+  if (++shotTick % 3 === 0) refreshLiveShot();
+  if (!liveStartedAt) return;
   const t = fmtElapsed(liveStartedAt);
   const a = $("lsTime");
   if (a) a.textContent = t;
@@ -1021,6 +1047,8 @@ async function fastPoll() {
   } catch {}
   fastPolling = false;
 }
+
+on("liveShot", "error", () => $("shotWrap")?.classList.add("hide"));
 
 /* ══════════════════════ BOOT ══════════════════════ */
 autoDetect();
