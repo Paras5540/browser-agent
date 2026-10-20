@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Browser Agent</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <span class="dot"></span>
+    <h1>Browser Agent</h1>
+    <span class="pill" id="modelPill">—</span>
+    <span class="pill ghost" id="modePill">—</span>
+  </div>
+  <div class="topright">
+    <span class="pill warn hide" id="keyWarn">API key missing</span>
+    <button class="btn ghost" id="settingsBtn">Settings</button>
+  </div>
+</header>
+
+<main class="layout">
+  <!-- ── CHAT ─────────────────────────────────────────────────────── -->
+  <section class="panel chat-panel">
+    <div class="panel-head">
+      <h2>Chat</h2>
+      <button class="btn tiny ghost" id="clearChat">Clear</button>
+    </div>
+
+    <div class="setup-banner hide" id="setupBanner">
+      <div class="sb-text">
+        <b>Gemini API key add karein</b>
+        <span>Key ke bina agent kaam nahi karega. Free key 1 minute me milti hai.</span>
+      </div>
+      <button class="btn primary tiny" id="goSettings">Add key</button>
+    </div>
+
+    <div class="chat-scroll" id="chat">
+      <div class="empty" id="chatEmpty">
+        <h3>Kya karna hai batayein</h3>
+        <p>Agent khud browser khol kar search, click, form fill aur data collection karega.</p>
+        <div class="suggestions">
+          <button class="sug">Amazon pe top 5 noise cancelling headphones ke naam, price aur rating nikaalo aur CSV banao</button>
+          <button class="sug">Hacker News pe aaj ke top 10 posts ka title aur link collect karo</button>
+          <button class="sug">Google pe "best CRM for small business 2025" search karke top 5 results ka summary do</button>
+        </div>
+      </div>
+    </div>
+
+    <form class="composer" id="composer">
+      <textarea id="input" rows="2" placeholder="Task likhein… (Ctrl+Enter to send)"></textarea>
+      <button class="btn primary" id="sendBtn" type="submit">Run</button>
+    </form>
+  </section>
+
+  <!-- ── SIDE PANEL ───────────────────────────────────────────────── -->
+  <section class="panel side-panel">
+    <div class="tabs">
+      <button class="tab active" data-tab="runs">Tasks</button>
+      <button class="tab" data-tab="sched">Scheduler</button>
+      <button class="tab" data-tab="files">Files</button>
+      <button class="tab" data-tab="settings">Settings</button>
+    </div>
+
+    <div class="tab-body" id="tab-runs">
+      <p class="hint">Recent runs (auto-refresh every 5s)</p>
+      <div id="runsList" class="list"></div>
+    </div>
+
+    <div class="tab-body hide" id="tab-sched">
+      <form id="schedForm" class="sched-form">
+        <label>Naam</label>
+        <input id="sName" placeholder="Daily price check" />
+        <label>Task (goal)</label>
+        <textarea id="sGoal" rows="3" placeholder="Roz 9 baje Amazon pe mere 5 competitors ke price check karo aur CSV save karo"></textarea>
+        <label>Schedule</label>
+        <div class="row">
+          <input id="sCron" placeholder="0 9 * * *" />
+          <select id="sPreset">
+            <option value="">preset…</option>
+            <option value="0 9 * * *">Roz 9:00 AM</option>
+            <option value="0 9,18 * * *">Roz 9 AM + 6 PM</option>
+            <option value="0 */6 * * *">Har 6 ghante</option>
+            <option value="0 9 * * 1">Har Somvaar 9 AM</option>
+            <option value="0 9 1 * *">Mahine ki 1 tareekh 9 AM</option>
+          </select>
+        </div>
+        <p class="hint">Format: minute hour day month weekday &nbsp;·&nbsp; timezone: server ka</p>
+        <button class="btn primary wide" type="submit">Schedule add karein</button>
+      </form>
+      <div id="schedList" class="list"></div>
+    </div>
+
+    <div class="tab-body hide" id="tab-files">
+      <p class="hint">Agent jo files banata hai woh yahan aayengi</p>
+      <div id="filesList" class="list"></div>
+    </div>
+
+    <!-- ── SETTINGS ─────────────────────────────────────────────── -->
+    <div class="tab-body hide" id="tab-settings">
+      <div class="card" id="statusCard">
+        <div class="title">Status <span class="badge" id="keyBadge">—</span></div>
+        <div class="meta" id="statusMeta">—</div>
+      </div>
+
+      <form id="settingsForm" class="sched-form">
+        <label>Gemini API key</label>
+        <input id="fApiKey" type="password" placeholder="AIza… yahan paste karein" autocomplete="off" spellcheck="false" />
+        <p class="hint" id="keyHint">Free key: <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a></p>
+
+        <label>Model</label>
+        <select id="fModel"></select>
+
+        <label>Max steps per task</label>
+        <input id="fMaxSteps" type="number" min="5" max="200" step="1" />
+
+        <label>Browser mode</label>
+        <select id="fHeadless">
+          <option value="true">Headless — invisible (server ke liye)</option>
+          <option value="false">Visible — site login karne ke liye</option>
+        </select>
+
+        <label>Dashboard password</label>
+        <input id="fPassword" type="password" placeholder="khaali = password nahi" autocomplete="new-password" />
+        <p class="hint">Set karein to dashboard kholne pe password maangega. VPS pe rakhein to zaroor set karein.</p>
+
+        <div class="row" style="margin-top:10px">
+          <button class="btn wide" type="button" id="testKeyBtn">Test key</button>
+          <button class="btn primary wide" type="submit" id="saveBtn">Save</button>
+        </div>
+        <div id="settingsMsg" class="settings-msg hide"></div>
+      </form>
+    </div>
+  </section>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
