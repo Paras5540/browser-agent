@@ -1,0 +1,21 @@
+{
+  "name": "browser-agent",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "AI browser agent with chat UI, multi-search, browser control and cron task scheduler",
+  "scripts": {
+    "start": "node server.js",
+    "setup": "playwright install chromium",
+    "task": "node run-task.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "node-cron": "^3.0.3",
+    "playwright": "^1.48.2"
+  }
+}
