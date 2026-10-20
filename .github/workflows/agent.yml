@@ -14,7 +14,7 @@ on:
         type: string
 
   issues:
-    types: [opened, labeled]
+    types: [opened, reopened]
 
   schedule:
     # Roz 03:00 UTC = 08:30 IST. Public repo me hi chalega.
