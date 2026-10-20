@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="theme-color" content="#f5f4ee" />
 <title>Browser Agent</title>
-<link rel="stylesheet" href="style.css?v=18" />
+<link rel="stylesheet" href="style.css?v=19" />
 <script src="https://cdn.jsdelivr.net/npm/libsodium-wrappers@0.7.15/dist/bundles/libsodium-wrappers.min.js"></script>
 </head>
 <body>
@@ -19,8 +19,23 @@
     <span class="pill warn hide" id="cfgWarn">setup needed</span>
     <button class="btn icon only-mobile" id="panelBtn" title="Live panel">▤</button>
     <button class="btn icon" id="themeBtn" title="Dark / Light mode" aria-label="Toggle theme">◐</button>
+    <button class="btn icon" id="menuBtn" aria-haspopup="menu" aria-expanded="false" title="Menu">⋮</button>
   </div>
 </header>
+
+<div class="menu hide" id="panelMenu" role="menu">
+  <div class="menu-label">Panel</div>
+  <button class="menu-item" data-nav="live" role="menuitem"><span class="mi-ico">◉</span> Live</button>
+  <button class="menu-item" data-nav="tasks" role="menuitem"><span class="mi-ico">☰</span> Tasks</button>
+  <button class="menu-item" data-nav="files" role="menuitem"><span class="mi-ico">▣</span> Files</button>
+  <button class="menu-item" data-nav="keys" role="menuitem"><span class="mi-ico">⌘</span> Keys</button>
+  <button class="menu-item" data-nav="setup" role="menuitem"><span class="mi-ico">⚙</span> Setup</button>
+  <div class="menu-sep"></div>
+  <div class="menu-label">Actions</div>
+  <button class="menu-item hide" id="backBtn" role="menuitem"><span class="mi-ico">←</span> Back to tasks</button>
+  <button class="menu-item" id="runNow" role="menuitem"><span class="mi-ico">▶</span> Run scheduled task</button>
+  <button class="menu-item danger" id="clearChat" role="menuitem"><span class="mi-ico">✕</span> Clear</button>
+</div>
 
 <main class="layout">
   <section class="panel chat-panel">
@@ -28,15 +43,6 @@
       <div class="head-title">
         <h2 id="threadTitle">Tasks</h2>
       </div>
-      <button class="btn icon" id="menuBtn" aria-haspopup="menu" aria-expanded="false" title="Menu">⋮</button>
-    </div>
-
-    <div class="menu hide" id="panelMenu" role="menu">
-      <button class="menu-item hide" id="backBtn" role="menuitem"><span class="mi-ico">←</span> Back to tasks</button>
-      <button class="menu-item" id="runNow" role="menuitem"><span class="mi-ico">▶</span> Run scheduled task</button>
-      <button class="menu-item" id="menuSetup" role="menuitem"><span class="mi-ico">⚙</span> Setup</button>
-      <div class="menu-sep"></div>
-      <button class="menu-item danger" id="clearChat" role="menuitem"><span class="mi-ico">✕</span> Clear</button>
     </div>
 
     <div class="runbar hide" id="runbar"><i></i></div>
@@ -82,12 +88,8 @@
   </section>
 
   <section class="panel side-panel">
-    <div class="tabs">
-      <button class="tab active" data-tab="live">Live</button>
-      <button class="tab" data-tab="tasks">Tasks</button>
-      <button class="tab" data-tab="files">Files</button>
-      <button class="tab" data-tab="keys">Keys</button>
-      <button class="tab" data-tab="setup">Setup</button>
+    <div class="panel-head">
+      <h2 id="sideTitle">Live</h2>
     </div>
 
     <div class="tab-body" id="tab-live">
@@ -221,6 +223,6 @@
   </section>
 </main>
 
-<script src="app.js?v=18"></script>
+<script src="app.js?v=19"></script>
 </body>
 </html>
