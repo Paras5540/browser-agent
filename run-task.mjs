@@ -163,9 +163,14 @@ async function finalComment(body) {
   }
 }
 
+const maxSteps = Number(process.env.MAX_STEPS) || 15;
+const maxPhases = Number(process.env.MAX_PHASES) || 6;
+const runtimeMin = Number(process.env.MAX_RUNTIME_MIN) || 300;
+const deadline = Date.now() + runtimeMin * 60 * 1000;
+
 console.log(`▶ Task: ${goal.slice(0, 200)}`);
 const MODEL_LABEL = PROVIDER === "openai" ? (process.env.LLM_MODEL || "groq-default") : (process.env.GEMINI_MODEL || "gemini-2.5-flash");
-console.log(`  provider: ${PROVIDER} · model: ${MODEL_LABEL} · steps: ${process.env.MAX_STEPS || 15} · keys: ${API_KEYS.length}`);
+console.log(`  provider: ${PROVIDER} · model: ${MODEL_LABEL} · steps/phase: ${maxSteps} · phases: ${maxPhases} · keys: ${API_KEYS.length}`);
 
 await pushProgress(true);
 
@@ -271,7 +276,9 @@ try {
     browser,
     apiKey: API_KEYS[0],
     apiKeys: API_KEYS,
-    maxSteps: Number(process.env.MAX_STEPS) || 45,
+    maxSteps,
+    maxPhases,
+    deadline,
     onEvent: (e) => {
       if (e.type === "tool") {
         const a = e.args || {};
@@ -284,6 +291,12 @@ try {
         console.log(`  ✗ ${e.name}: ${String(e.message).slice(0, 120)}`);
       } else if (e.type === "say") {
         timeline.push({ type: "say", detail: e.text.slice(0, 160) });
+      } else if (e.type === "phase") {
+        timeline.push({ type: "tool", name: "phase", human: e.text, detail: "" });
+        console.log(`  ⟳ ${e.text}`);
+      } else if (e.type === "verify") {
+        timeline.push({ type: "tool", name: "verify", human: e.text, detail: "" });
+        console.log(`  ✓ ${e.text}`);
       }
       pushProgress();
     },
@@ -291,29 +304,6 @@ try {
   body = out.result;
   if (out.hitLimit) ok = false;
 
-  // bina tool use kiye ruk gaya? ek baar dobara, sakht instruction ke saath
-  const usedTools = timeline.filter((t) => t.type === "tool").length;
-  const looksRefused = /\b(cannot|can't|can not|unable|not able|i'm sorry|sorry,? i)/i.test(body);
-  if (usedTools === 0 || looksRefused) {
-    console.log("  ↻ koi kaam nahi hua — dobara try");
-    const retry = await runAgentTask({
-      goal:
-        goal +
-        "\n\nIMPORTANT: Pehle attempt me koi tool use nahi hua. Ab turant tool call karo — " +
-        "search() ya navigate() se shuru karo. Koi explanation nahi, seedha kaam.",
-      browser,
-      apiKey: API_KEY_MAIN,
-      apiKeys: API_KEYS,
-      maxSteps: Math.max(6, Math.floor(maxSteps / 2)),
-      onEvent: (e) => {
-        if (e.type === "tool") timeline.push({ type: "tool", name: e.name, human: e.human || e.name });
-        pushProgress();
-      },
-    });
-    if ((timeline.filter((t) => t.type === "tool").length > usedTools) || retry.result.length > body.length) {
-      body = retry.result;
-    }
-  }
 } catch (err) {
   ok = false;
   const msg = String(err.message || err);
@@ -346,7 +336,6 @@ try {
   }
 } finally {
   clearInterval(liveTimer);
-  onEvent({ type: "frames", text: `${frameCount} live frames bheje` });
   // aakhri frame hamesha
   try {
     const pg = await browser.page();
