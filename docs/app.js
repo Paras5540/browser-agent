@@ -559,7 +559,7 @@ async function loadFiles() {
 }
 
 /* ══════════════════════ TABS / SETUP ══════════════════════ */
-const TABS = ["live", "tasks", "files", "setup"];
+const TABS = ["live", "tasks", "files", "keys", "setup"];
 function switchTab(name, manual = false) {
   if (manual) lastManualTabAt = Date.now();
   document.querySelectorAll(".tab").forEach((x) => x.classList.toggle("active", x.dataset.tab === name));
@@ -572,6 +572,7 @@ document.querySelectorAll(".tab").forEach((t) =>
     if (t.dataset.tab === "live") loadLive();
     if (t.dataset.tab === "tasks") loadTasks();
     if (t.dataset.tab === "files") loadFiles();
+    if (t.dataset.tab === "keys") loadKeys();
   })
 );
 
@@ -632,11 +633,184 @@ on("setupForm", "submit", async (e) => {
     showSetupMsg("ok", `✓ Connected: ${r.full_name} · ${r.private ? "PRIVATE (cron nahi chalega — public karein)" : "public ✓"}`);
     setConfigUI();
     loadLive();
+    loadKeys();
     loadTasks();
     loadFiles();
     loadChatHistory();
   } catch (err) {
     showSetupMsg("err", `✗ ${err.message} — token ki permissions check karein.`);
+  }
+});
+
+/* ══════════════════════ KEYS / PIPELINE ══════════════════════ */
+const KEY_NAMES = ["GEMINI_API_KEY", "GEMINI_KEY_2", "GEMINI_KEY_3", "GEMINI_KEY_4"];
+
+function msg(elId, kind, text) {
+  const el = $(elId);
+  if (!el) return;
+  el.className = `settings-msg ${kind}`;
+  el.textContent = text;
+  el.classList.remove("hide");
+}
+
+async function sodiumLib() {
+  const s = window.sodium;
+  if (!s) throw new Error("Encryption library load nahi hui — page reload karein / internet check karein");
+  await s.ready;
+  return s;
+}
+
+/** GitHub Actions secret set karta hai (libsodium sealed box). */
+async function setSecret(name, value) {
+  const s = await sodiumLib();
+  const pk = await gh(`${repoPath()}/actions/secrets/public-key`);
+  const binKey = s.from_base64(pk.key, s.base64_variants.ORIGINAL);
+  const sealed = s.crypto_box_seal(s.from_string(value), binKey);
+  return gh(`${repoPath()}/actions/secrets/${name}`, {
+    method: "PUT",
+    body: JSON.stringify({
+      encrypted_value: s.to_base64(sealed, s.base64_variants.ORIGINAL),
+      key_id: pk.key_id,
+    }),
+  });
+}
+
+async function setVariable(name, value) {
+  try {
+    return await gh(`${repoPath()}/actions/variables/${name}`, {
+      method: "PATCH",
+      body: JSON.stringify({ name, value }),
+    });
+  } catch {
+    return gh(`${repoPath()}/actions/variables`, { method: "POST", body: JSON.stringify({ name, value }) });
+  }
+}
+
+async function loadKeys() {
+  if (!configured()) return;
+  const list = $("pipeList");
+  const rows = [];
+  let secretNames = [];
+  let vars = {};
+
+  // 1. repo
+  try {
+    const r = await gh(repoPath());
+    rows.push({ ok: true, html: `Repo <b>${esc(r.full_name)}</b> — ${r.private ? "⚠ private (cron nahi chalega)" : "public ✓"}` });
+  } catch (e) {
+    rows.push({ ok: false, html: `Repo access ✗ — ${esc(e.message)}` });
+  }
+
+  // 2. workflow file
+  try {
+    await gh(`${repoPath()}/contents/.github/workflows/agent.yml`);
+    rows.push({ ok: true, html: "Workflow <b>agent.yml</b> present ✓" });
+  } catch {
+    rows.push({ ok: false, html: "Workflow file nahi mili" });
+  }
+
+  // 3. Pages
+  try {
+    const p = await gh(`${repoPath()}/pages`);
+    rows.push({ ok: p.status === "built", html: `Dashboard Pages — ${esc(p.status)} · <a href="${p.html_url}" target="_blank" rel="noopener">kholo</a>` });
+  } catch {
+    rows.push({ ok: false, html: "Pages enabled nahi hai" });
+  }
+
+  // 4. secrets
+  try {
+    const s = await gh(`${repoPath()}/actions/secrets`);
+    secretNames = (s.secrets || []).map((x) => x.name);
+    const gem = KEY_NAMES.filter((n) => secretNames.includes(n));
+    rows.push({ ok: gem.length > 0, html: `Keys set: <b>${gem.length}</b>/${KEY_NAMES.length} ${gem.map((g) => g.replace("GEMINI_", "")).join(", ")}` });
+  } catch (e) {
+    rows.push({ ok: false, html: `Secrets padhne ki permission nahi — token me <b>Secrets: Read and write</b> add karein` });
+  }
+
+  // 5. variables
+  try {
+    const v = await gh(`${repoPath()}/actions/variables`);
+    for (const x of v.variables || []) vars[x.name] = x.value;
+    rows.push({ ok: Object.keys(vars).length > 0, html: `Variables — model <b>${esc(vars.GEMINI_MODEL || "—")}</b>, steps <b>${esc(vars.MAX_STEPS || "—")}</b>` });
+  } catch {
+    rows.push({ ok: false, html: "Variables padhne ki permission nahi (Variables: Read)" });
+  }
+
+  list.innerHTML = rows
+    .map((r) => `<div class="pipe-item ${r.ok ? "ok" : "bad"}"><span class="pi-ico">${r.ok ? "✓" : "✗"}</span><span>${r.html}</span></div>`)
+    .join("");
+
+  for (let i = 0; i < 4; i++) {
+    const st = $("st" + (i + 1));
+    if (!st) continue;
+    const has = secretNames.includes(KEY_NAMES[i]);
+    st.textContent = has ? "saved" : "—";
+    st.className = `key-state ${has ? "ok" : ""}`;
+  }
+
+  if ($("vModel") && vars.GEMINI_MODEL) $("vModel").value = vars.GEMINI_MODEL;
+  if ($("vSteps") && vars.MAX_STEPS) $("vSteps").value = vars.MAX_STEPS;
+  if ($("vFallback") && vars.FALLBACK_MODELS) $("vFallback").value = vars.FALLBACK_MODELS;
+}
+
+on("pipeRefresh", "click", loadKeys);
+
+on("testKeys", "click", async () => {
+  const vals = [1, 2, 3, 4].map((i) => $(`k${i}`)?.value.trim() || "").filter(Boolean);
+  if (!vals.length) return msg("keysMsg", "err", "Pehle key paste karein (jo box me hai wahi test hoga).");
+  msg("keysMsg", "ok", "Test ho raha hai…");
+
+  const out = [];
+  for (let i = 0; i < vals.length; i++) {
+    try {
+      const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${encodeURIComponent(vals[i])}`);
+      out.push(`key ${i + 1}: ${r.ok ? "✓ valid" : "✗ " + r.status}`);
+    } catch (e) {
+      out.push(`key ${i + 1}: ✗ network`);
+    }
+  }
+  msg("keysMsg", out.every((x) => x.includes("✓")) ? "ok" : "err", out.join(" · "));
+});
+
+on("keysForm", "submit", async (e) => {
+  e.preventDefault();
+  const vals = [1, 2, 3, 4].map((i) => $(`k${i}`)?.value.trim() || "");
+  const todo = KEY_NAMES.map((n, i) => [n, vals[i]]).filter(([, v]) => v);
+
+  if (!todo.length) return msg("keysMsg", "err", "Koi key nahi daali.");
+  msg("keysMsg", "ok", "GitHub Secrets me save ho raha hai…");
+
+  const done = [];
+  for (const [name, value] of todo) {
+    try {
+      await setSecret(name, value);
+      done.push(name);
+      $(`k${KEY_NAMES.indexOf(name) + 1}`).value = "";
+    } catch (err) {
+      return msg("keysMsg", "err", `✗ ${name}: ${err.message} — token me Secrets: Read and write permission chahiye`);
+    }
+  }
+  msg("keysMsg", "ok", `✓ Saved: ${done.join(", ")}. Agla task in keys ko use karega.`);
+  loadKeys();
+});
+
+on("varsForm", "submit", async (e) => {
+  e.preventDefault();
+  const payload = [];
+  const m = $("vModel")?.value;
+  const st = $("vSteps")?.value;
+  const fb = $("vFallback")?.value.trim();
+  if (m) payload.push(["GEMINI_MODEL", m]);
+  if (st) payload.push(["MAX_STEPS", String(st)]);
+  if (fb) payload.push(["FALLBACK_MODELS", fb]);
+
+  msg("varsMsg", "ok", "Save ho raha hai…");
+  try {
+    for (const [k, v] of payload) await setVariable(k, v);
+    msg("varsMsg", "ok", `✓ Saved: ${payload.map((p) => p[0]).join(", ")}`);
+    loadKeys();
+  } catch (err) {
+    msg("varsMsg", "err", `✗ ${err.message} — token me Variables: Read and write chahiye`);
   }
 });
 
@@ -678,6 +852,7 @@ setConfigUI();
 if (configured()) {
   loadChatHistory();
   loadLive();
+  loadKeys();
   loadTasks();
   loadFiles();
   setInterval(tickSecond, 1000);      // har second timer update (0 API calls)
