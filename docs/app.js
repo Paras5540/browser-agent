@@ -1,10 +1,5 @@
 /* Browser Agent — cloud dashboard (GitHub Pages, no server) */
-const LS = {
-  owner: "ba_owner",
-  repo: "ba_repo",
-  branch: "ba_branch",
-  token: "ba_token",
-};
+const LS = { owner: "ba_owner", repo: "ba_repo", branch: "ba_branch", token: "ba_token" };
 
 const cfg = {
   owner: localStorage.getItem(LS.owner) || "",
@@ -16,21 +11,39 @@ const cfg = {
 const $ = (id) => document.getElementById(id);
 const esc = (s) =>
   String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const configured = () => cfg.owner && cfg.repo && cfg.token;
 
-// ── auto-detect repo from github.io URL ──────────────────────────────────────
+/* ── markdown-lite → HTML (result bodies ke liye) ───────────────────────── */
+function mdToHtml(mdx) {
+  let s = esc(mdx || "");
+  s = s.replace(/```([\s\S]*?)```/g, (_, c) => `<pre>${c.trim()}</pre>`);
+  s = s.replace(/^#### (.*)$/gm, '<div class="md-h">$1</div>');
+  s = s.replace(/^### (.*)$/gm, '<div class="md-h">$1</div>');
+  s = s.replace(/^## (.*)$/gm, '<div class="md-h">$1</div>');
+  s = s.replace(/^# (.*)$/gm, '<div class="md-h1">$1</div>');
+  s = s.replace(/\*\*(.+?)\*\*/g, "<b>$1</b>");
+  s = s.replace(/`([^`]+)`/g, "<code>$1</code>");
+  s = s.replace(/^- (.*)$/gm, '<span class="md-li">• $1</span>');
+  s = s.replace(/&lt;sub&gt;(.*?)&lt;\/sub&gt;/g, '<span class="md-sub">$1</span>');
+  s = s.replace(/^---$/gm, '<hr class="md-hr" />');
+  s = s.replace(/\n{3,}/g, "\n\n");
+  return s;
+}
+
+/* ── auto-detect repo from github.io URL ────────────────────────────────── */
 function autoDetect() {
   const host = location.hostname;
   if (!host.endsWith("github.io")) return;
   const user = host.split(".")[0];
   const path = location.pathname.split("/").filter(Boolean);
-  const repo = path.length ? path[0] : `${user}.github.io`;
   if (!cfg.owner) cfg.owner = user;
-  if (!cfg.repo) cfg.repo = repo;
+  if (!cfg.repo) cfg.repo = path.length ? path[0] : `${user}.github.io`;
 }
 
-// ── GitHub API ───────────────────────────────────────────────────────────────
+/* ── GitHub API ─────────────────────────────────────────────────────────── */
+let rateRemaining = 5000;
+
 async function gh(path, opts = {}) {
   const res = await fetch(`https://api.github.com${path}`, {
     ...opts,
@@ -41,6 +54,8 @@ async function gh(path, opts = {}) {
       ...(opts.headers || {}),
     },
   });
+  const rl = Number(res.headers.get("x-ratelimit-remaining"));
+  if (Number.isFinite(rl) && rl > 0) rateRemaining = rl;
   if (res.status === 204) return null;
   const json = await res.json().catch(() => ({}));
   if (!res.ok) {
@@ -52,26 +67,21 @@ async function gh(path, opts = {}) {
 
 const repoPath = () => `/repos/${cfg.owner}/${cfg.repo}`;
 
-async function ensureLabel(name, color = "1d76db") {
+async function ensureLabel(name, color = "6b6b6b") {
   try {
     await gh(`${repoPath()}/labels/${encodeURIComponent(name)}`);
   } catch {
     try {
-      await gh(`${repoPath()}/labels`, {
-        method: "POST",
-        body: JSON.stringify({ name, color }),
-      });
+      await gh(`${repoPath()}/labels`, { method: "POST", body: JSON.stringify({ name, color }) });
     } catch {}
   }
 }
 
-// ── task creation ────────────────────────────────────────────────────────────
 async function createTask(goal) {
   await ensureLabel("agent-task");
-  await ensureLabel("agent-running", "fbca04");
-  await ensureLabel("agent-done", "0e8a16");
-  await ensureLabel("agent-failed", "d73a4a");
-
+  await ensureLabel("agent-running", "b0b0b0");
+  await ensureLabel("agent-done", "1f1e1d");
+  await ensureLabel("agent-failed", "a33a2c");
   const title = goal.split("\n")[0].slice(0, 72) || "agent task";
   return gh(`${repoPath()}/issues`, {
     method: "POST",
@@ -86,62 +96,334 @@ async function dispatchWorkflow(goal = "") {
   });
 }
 
-// ── rendering ────────────────────────────────────────────────────────────────
-function setConfigUI() {
-  $("repoPill").textContent = cfg.owner ? `${cfg.owner}/${cfg.repo}` : "not configured";
-  $("cfgWarn").classList.toggle("hide", configured());
-  $("setupBanner").classList.toggle("hide", configured());
-  $("fOwner").value = cfg.owner;
-  $("fRepo").value = cfg.repo;
-  $("fBranch").value = cfg.branch;
+/* ══════════════════════ CHAT ══════════════════════ */
+const chat = $("chat");
+const issueUIs = new Map();   // issue# → chat bubble
+let trackedIssue = null;      // jis issue ko har second poll karna hai
+
+/* live timing (1-second ticker ke liye) */
+let liveActive = false;
+let liveStartedAt = null;
+
+function scrollChat() {
+  chat.scrollTop = chat.scrollHeight;
 }
 
-function statusOf(issue) {
-  const labels = (issue.labels || []).map((l) => l.name);
-  if (labels.includes("agent-running")) return { cls: "running", text: "running" };
-  if (labels.includes("agent-done")) return { cls: "done", text: "done" };
-  if (labels.includes("agent-failed")) return { cls: "error", text: "failed" };
-  if (issue.state === "closed") return { cls: "done", text: "closed" };
-  return { cls: "running", text: "queued" };
+function addUserMsg(text) {
+  $("chatEmpty")?.remove();
+  const el = document.createElement("div");
+  el.className = "msg user";
+  el.innerHTML = `<div class="bubble">${esc(text)}</div>`;
+  chat.appendChild(el);
+  scrollChat();
+  return el;
 }
+
+function addAgentMsg(issueNumber) {
+  $("chatEmpty")?.remove();
+  const el = document.createElement("div");
+  el.className = "msg agent";
+  el.innerHTML = `
+    <div class="who"><span class="dot-sm"></span>Agent${
+      issueNumber ? ` <a class="issue-link" href="https://github.com/${cfg.owner}/${cfg.repo}/issues/${issueNumber}" target="_blank" rel="noopener">#${issueNumber}</a>` : ""
+    }<span class="badge running" data-badge>running</span></div>
+    <div class="bubble running" data-bubble><span class="muted">Queue me daal raha hoon…</span></div>`;
+  chat.appendChild(el);
+  scrollChat();
+  return { root: el, bubble: el.querySelector("[data-bubble]"), badge: el.querySelector("[data-badge]") };
+}
+
+/** Issue ko poll karta hai aur result seedha chat bubble me likhta hai. */
+async function watchIssue(n, ui) {
+  const started = Date.now();
+  while (Date.now() - started < 50 * 60 * 1000) {
+    let iss, cs;
+    try {
+      iss = await gh(`${repoPath()}/issues/${n}`);
+      cs = await gh(`${repoPath()}/issues/${n}/comments?per_page=100`);
+    } catch {
+      await sleep(6000);
+      continue;
+    }
+    const labels = (iss.labels || []).map((l) => l.name);
+    const body = cs?.length ? cs.at(-1).body || "" : "";
+    const finished = labels.includes("agent-done") || labels.includes("agent-failed") || iss.state === "closed";
+
+    ui.bubble.innerHTML = body
+      ? mdToHtml(body)
+      : `<span class="muted">${iss.state === "open" ? "Queue me hai…" : "Koi output nahi"}</span>`;
+
+    if (finished) {
+      ui.badge.className = `badge ${labels.includes("agent-failed") ? "error" : "done"}`;
+      ui.badge.textContent = labels.includes("agent-failed") ? "failed" : "done";
+      ui.bubble.classList.remove("running");
+      scrollChat();
+      return;
+    }
+    ui.bubble.classList.add("running");
+    scrollChat();
+    await sleep(5000);
+  }
+}
+
+/** Purane tasks ko chat ki tarah render karo (page reload ke baad bhi dikhein). */
+async function loadChatHistory() {
+  if (!configured()) return;
+  try {
+    const issues = await gh(`${repoPath()}/issues?labels=agent-task&state=all&per_page=12&sort=created&direction=desc`);
+    if (!issues.length) return;
+    $("chatEmpty")?.remove();
+
+    for (const iss of [...issues].reverse()) {
+      addUserMsg(iss.body || iss.title);
+      const ui = addAgentMsg(iss.number);
+      const cs = await gh(`${repoPath()}/issues/${iss.number}/comments?per_page=100`);
+      const body = cs?.length ? cs.at(-1).body || "" : "";
+      const labels = (iss.labels || []).map((l) => l.name);
+      issueUIs.set(iss.number, ui);
+      ui.bubble.innerHTML = body ? mdToHtml(body) : `<span class="muted">Koi output nahi</span>`;
+      const done = labels.includes("agent-done");
+      const failed = labels.includes("agent-failed");
+      if (done || failed || iss.state === "closed") {
+        ui.badge.className = `badge ${failed ? "error" : "done"}`;
+        ui.badge.textContent = failed ? "failed" : "done";
+        ui.bubble.classList.remove("running");
+      } else {
+        watchIssue(iss.number, ui); // abhi bhi chal raha hai to poll karte raho
+      }
+    }
+    scrollChat();
+  } catch (err) {
+    console.warn("history:", err.message);
+  }
+}
+
+/* ── composer ── */
+const form = $("composer");
+const input = $("input");
+
+function autoGrow() {
+  input.style.height = "auto";
+  input.style.height = Math.min(input.scrollHeight, 260) + "px";
+}
+input.addEventListener("input", autoGrow);
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const goal = input.value.trim();
+  if (!goal) return;
+  if (!configured()) {
+    switchTab("setup");
+    showSetupMsg("err", "Pehle Setup tab me repo + token daalein.");
+    return;
+  }
+
+  input.value = "";
+  autoGrow();
+  addUserMsg(goal);
+  const ui = addAgentMsg(null);
+
+  try {
+    const issue = await createTask(goal);
+    ui.root.querySelector(".who").innerHTML =
+      `<span class="dot-sm"></span>Agent <a class="issue-link" href="${issue.html_url}" target="_blank" rel="noopener">#${issue.number}</a><span class="badge running" data-badge>queued</span>`;
+    ui.badge = ui.root.querySelector("[data-badge]");
+    issueUIs.set(issue.number, ui);
+    trackedIssue = issue.number;
+    watchIssue(issue.number, ui);
+    loadTasks();
+    loadLive();
+  } catch (err) {
+    ui.bubble.innerHTML = `<span style="color:var(--danger)">✗ ${esc(err.message)}</span>`;
+    ui.badge.className = "badge error";
+    ui.badge.textContent = "error";
+  }
+});
+
+input.addEventListener("keydown", (e) => {
+  if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) form.requestSubmit();
+});
+
+document.querySelectorAll(".sug").forEach((b) =>
+  b.addEventListener("click", () => {
+    input.value = b.textContent.trim();
+    autoGrow();
+    input.focus();
+  })
+);
+
+$("clearChat").addEventListener("click", () => {
+  chat.innerHTML = `<div class="empty" id="chatEmpty"><h3>Chat clear</h3><p>Naya task likhein.</p></div>`;
+});
+
+/* ══════════════════════ LIVE ══════════════════════ */
+let lastManualTabAt = 0;
+let lastActiveRunId = null;
+
+function fmtElapsed(from, to) {
+  const a = new Date(from).getTime();
+  const b = to ? new Date(to).getTime() : Date.now();
+  const s = Math.max(0, Math.round((b - a) / 1000));
+  return s < 60 ? `${s}s` : `${Math.floor(s / 60)}m ${s % 60}s`;
+}
+
+function stepIcon(s) {
+  if (s.status === "in_progress") return "◐";
+  if (s.conclusion === "success") return "✓";
+  if (s.conclusion === "failure") return "✗";
+  if (s.conclusion === "skipped") return "·";
+  return "○";
+}
+
+function stepCls(s) {
+  if (s.status === "in_progress") return "active";
+  if (s.conclusion === "failure") return "fail";
+  if (s.conclusion === "success") return "done";
+  return "";
+}
+
+function renderLiveLog(el, logBody) {
+  const lines = (logBody || "")
+    .split("\n")
+    .filter((l) => /^- /.test(l) || l.startsWith("**Elapsed") || l.startsWith("### "))
+    .slice(-120);
+  el.innerHTML = lines.length
+    ? `<div class="live-log-title">Agent log</div>` +
+      lines
+        .map((l) => {
+          if (l.startsWith("### ")) return `<div class="li head">${esc(l.replace(/^### /, ""))}</div>`;
+          if (l.startsWith("**Elapsed")) return `<div class="li meta">${esc(l.replace(/\*\*/g, ""))}</div>`;
+          const fail = l.includes("✗");
+          return `<div class="li${fail ? " fail" : ""}">${esc(l.replace(/^- /, "").replace(/`/g, ""))}</div>`;
+        })
+        .join("")
+    : "";
+}
+
+async function loadLive() {
+  if (!configured()) return;
+  const header = $("liveHeader");
+  const stepsEl = $("liveSteps");
+  const logEl = $("liveLog");
+
+  try {
+    const runs = await gh(`${repoPath()}/actions/runs?per_page=12`);
+    const agentRuns = (runs.workflow_runs || []).filter((r) => r.path?.includes("agent.yml"));
+
+    if (!agentRuns.length) {
+      header.style.display = "none";
+      stepsEl.innerHTML = `<p class="hint">Abhi koi run nahi hua.</p>`;
+      logEl.innerHTML = "";
+      $("liveStrip").classList.add("hide");
+      return;
+    }
+
+    const active = agentRuns.find((r) => r.status === "in_progress" || r.status === "queued") || agentRuns[0];
+    const isLive = active.status !== "completed";
+
+    if (isLive) {
+      const isNewRun = lastActiveRunId !== active.id;
+      lastActiveRunId = active.id;
+      if (isNewRun || Date.now() - lastManualTabAt > 45000) switchTab("live");
+    }
+
+    const m = /issue #(\d+)/.exec(active.name || "");
+    const issueNum = m ? Number(m[1]) : null;
+
+    const jobsRes = await gh(`${repoPath()}/actions/runs/${active.id}/jobs`);
+    const steps = (jobsRes.jobs || [])[0]?.steps || [];
+
+    header.style.display = "";
+    $("liveTitle").innerHTML = `${esc(active.name || "run")}<span class="badge ${
+      isLive ? "running" : active.conclusion === "success" ? "done" : "error"
+    }">${isLive ? "running" : active.conclusion}</span>`;
+    liveActive = isLive;
+    liveStartedAt = active.created_at;
+    $("liveMeta").innerHTML =
+      `<span>${steps.filter((s) => s.conclusion === "success").length}/${steps.length} steps</span>` +
+      `<span>· <span id="liveElapsed">${fmtElapsed(
+        active.created_at,
+        active.status === "completed" ? active.updated_at : null
+      )}</span></span>`;
+    $("liveLink").href = active.html_url;
+
+    const strip = $("liveStrip");
+    strip.classList.toggle("hide", !isLive);
+    if (isLive) {
+      const cur = steps.find((x) => x.status === "in_progress");
+      $("lsText").textContent = cur ? cur.name : active.status === "queued" ? "Queue me hai…" : "Shuru ho raha hai…";
+      $("lsTime").textContent = fmtElapsed(active.created_at);
+    }
+
+    let goalHtml = "";
+    let logBody = "";
+    if (issueNum) {
+      trackedIssue = issueNum;
+      try {
+        const iss = await gh(`${repoPath()}/issues/${issueNum}`);
+        if (iss?.body) goalHtml = `<div class="live-goal">${esc(iss.body.slice(0, 500))}</div>`;
+      } catch {}
+      try {
+        const cs = await gh(`${repoPath()}/issues/${issueNum}/comments?per_page=100`);
+        logBody = cs?.length ? cs.at(-1).body || "" : "";
+      } catch {}
+    }
+
+    stepsEl.innerHTML =
+      goalHtml +
+      (steps.length
+        ? steps
+            .map((s) => {
+              const dur = s.started_at && s.completed_at ? fmtElapsed(s.started_at, s.completed_at) : s.status === "in_progress" ? "…" : "";
+              return `<div class="step-row ${stepCls(s)}"><span class="ico">${stepIcon(s)}</span><span class="step-name">${esc(
+                s.name
+              )}</span><span class="step-dur">${dur}</span></div>`;
+            })
+            .join("")
+        : `<p class="hint">Steps load ho rahe hain…</p>`);
+
+    renderLiveLog(logEl, logBody);
+
+    if (isLive) {
+      requestAnimationFrame(() => {
+        stepsEl.querySelector(".step-row.active")?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+        logEl.scrollTop = logEl.scrollHeight;
+      });
+    }
+  } catch (err) {
+    stepsEl.innerHTML = `<p class="hint" style="color:var(--danger)">${esc(err.message)}</p>`;
+  }
+}
+
+/* ══════════════════════ TASKS / FILES ══════════════════════ */
+const statusOf = (issue) => {
+  const l = (issue.labels || []).map((x) => x.name);
+  if (l.includes("agent-failed")) return { cls: "error", text: "failed" };
+  if (l.includes("agent-done")) return { cls: "done", text: "done" };
+  if (l.includes("agent-running")) return { cls: "running", text: "running" };
+  return { cls: "running", text: issue.state === "closed" ? "closed" : "queued" };
+};
 
 async function loadTasks() {
   if (!configured()) return;
   const el = $("taskList");
   try {
-    const issues = await gh(
-      `${repoPath()}/issues?labels=agent-task&state=all&per_page=15&sort=created&direction=desc`
-    );
+    const issues = await gh(`${repoPath()}/issues?labels=agent-task&state=all&per_page=15&sort=created&direction=desc`);
     if (!issues.length) {
-      el.innerHTML = `<p class="hint">Koi task nahi. Upar se pehla task likhein.</p>`;
+      el.innerHTML = `<p class="hint">Abhi koi task nahi.</p>`;
       return;
     }
-
-    const cards = await Promise.all(
-      issues.map(async (i) => {
+    el.innerHTML = issues
+      .map((i) => {
         const st = statusOf(i);
-        let result = "";
-        if (st.cls !== "queued") {
-          try {
-            const cs = await gh(`${repoPath()}/issues/${i.number}/comments?per_page=100`);
-            if (cs?.length) result = cs[cs.length - 1].body || "";
-          } catch {}
-        }
-        return `
-        <div class="card">
+        return `<div class="card">
           <div class="title">${esc(i.title)}<span class="badge ${st.cls}">${st.text}</span></div>
-          <div class="meta">
-            <span>#${i.number}</span>
-            <span>· ${new Date(i.created_at).toLocaleString()}</span>
-          </div>
-          ${result ? `<pre>${esc(result.replace(/^#+\s*/gm, "").slice(0, 1200))}</pre>` : ""}
-          <div class="actions">
-            <a class="btn tiny" href="${i.html_url}" target="_blank" rel="noopener">Issue</a>
-          </div>
+          <div class="meta"><a class="issue-link" href="${i.html_url}" target="_blank" rel="noopener">#${i.number}</a><span>· ${new Date(
+          i.created_at
+        ).toLocaleString()}</span></div>
         </div>`;
       })
-    );
-    el.innerHTML = cards.join("");
+      .join("");
   } catch (err) {
     el.innerHTML = `<p class="hint" style="color:var(--danger)">${esc(err.message)}</p>`;
   }
@@ -161,12 +443,9 @@ async function loadFiles() {
       .sort((a, b) => (a.name < b.name ? 1 : -1))
       .slice(0, 40)
       .map(
-        (f) => `
-        <div class="card">
-          <div class="title">${esc(f.name)}</div>
-          <div class="meta"><span>${(f.size / 1024).toFixed(1)} KB</span></div>
-          <div class="actions"><a class="btn tiny" href="${f.download_url}" target="_blank" rel="noopener" download>Download</a></div>
-        </div>`
+        (f) => `<div class="card"><div class="title">${esc(f.name)}</div>
+        <div class="meta"><span>${(f.size / 1024).toFixed(1)} KB</span></div>
+        <div class="actions"><a class="btn tiny" href="${f.download_url}" target="_blank" rel="noopener" download>Download</a></div></div>`
       )
       .join("");
   } catch (err) {
@@ -174,223 +453,14 @@ async function loadFiles() {
   }
 }
 
-// ── live progress ────────────────────────────────────────────────────────────
-let lastManualTabAt = 0;
-let lastActiveRunId = null;
-
-function fmtElapsed(from, to) {
-  const a = new Date(from).getTime();
-  const b = to ? new Date(to).getTime() : Date.now();
-  const s = Math.max(0, Math.round((b - a) / 1000));
-  return s < 60 ? `${s}s` : `${Math.floor(s / 60)}m ${s % 60}s`;
-}
-
-function stepIcon(s) {
-  if (s.status === "in_progress") return "⟳";
-  if (s.conclusion === "success") return "✓";
-  if (s.conclusion === "failure") return "✗";
-  if (s.conclusion === "skipped") return "·";
-  if (s.conclusion === "cancelled") return "⊘";
-  return "○";
-}
-
-function stepCls(s) {
-  if (s.status === "in_progress") return "active";
-  if (s.conclusion === "failure") return "fail";
-  if (s.conclusion === "success") return "done";
-  return "";
-}
-
-async function loadLive() {
-  if (!configured()) return;
-  const header = $("liveHeader");
-  const stepsEl = $("liveSteps");
-  const logEl = $("liveLog");
-
-  try {
-    const runs = await gh(`${repoPath()}/actions/runs?per_page=12`);
-    const agentRuns = (runs.workflow_runs || []).filter((r) => r.path?.includes("agent.yml"));
-
-    if (!agentRuns.length) {
-      header.style.display = "none";
-      stepsEl.innerHTML = `<p class="hint">Abhi koi run nahi hua. Chat me task likhein.</p>`;
-      logEl.innerHTML = "";
-      $("liveStrip").classList.add("hide");
-      return;
-    }
-
-    const active = agentRuns.find((r) => r.status === "in_progress" || r.status === "queued") || agentRuns[0];
-    const isLive = active.status !== "completed";
-
-    // ── running task ka tab khud khul jaye ──
-    if (isLive) {
-      const isNewRun = lastActiveRunId !== active.id;
-      lastActiveRunId = active.id;
-      const userJustClicked = Date.now() - lastManualTabAt < 45000;
-      if (isNewRun || !userJustClicked) switchTab("live");
-    }
-
-    const m = /issue #(\d+)/.exec(active.name || "");
-    const issueNum = m && m[1] !== "manual" ? Number(m[1]) : null;
-
-    const jobsRes = await gh(`${repoPath()}/actions/runs/${active.id}/jobs`);
-    const job = (jobsRes.jobs || [])[0];
-    const steps = job?.steps || [];
-
-    header.style.display = "";
-    $("liveTitle").innerHTML =
-      `${esc(active.name || "run")}` +
-      `<span class="badge ${isLive ? "running" : active.conclusion === "success" ? "done" : "error"}">${isLive ? "running" : active.conclusion}</span>`;
-
-    const total = steps.length;
-    const doneCount = steps.filter((s) => s.conclusion === "success").length;
-    $("liveMeta").innerHTML =
-      `<span>${doneCount}/${total} steps</span>` +
-      `<span>· ${fmtElapsed(active.created_at, active.status === "completed" ? active.updated_at : null)}</span>` +
-      (issueNum ? `<span>· <a href="${active.html_url}" target="_blank" rel="noopener" style="color:var(--accent)">issue #${issueNum}</a></span>` : "");
-    $("liveLink").href = active.html_url;
-
-    // hamesha dikhne wali strip
-    const strip = $("liveStrip");
-    strip.classList.toggle("hide", !isLive);
-    if (isLive) {
-      const cur = steps.find((x) => x.status === "in_progress");
-      $("lsText").textContent = cur
-        ? cur.name
-        : active.status === "queued"
-          ? "Queue me hai… (1-2 min lag sakte hain)"
-          : "Shuru ho raha hai…";
-      $("lsTime").textContent = fmtElapsed(active.created_at);
-    }
-
-    // ── task ka goal + poore steps ──
-    let goalHtml = "";
-    let logBody = "";
-    if (issueNum) {
-      try {
-        const iss = await gh(`${repoPath()}/issues/${issueNum}`);
-        if (iss?.body) goalHtml = `<div class="live-goal">${esc(iss.body.slice(0, 600))}</div>`;
-      } catch {}
-      try {
-        const cs = await gh(`${repoPath()}/issues/${issueNum}/comments?per_page=100`);
-        logBody = cs?.length ? cs[cs.length - 1].body || "" : "";
-      } catch {}
-    }
-
-    stepsEl.innerHTML =
-      goalHtml +
-      (steps.length
-        ? steps
-            .map((s) => {
-              const dur = s.started_at && s.completed_at ? fmtElapsed(s.started_at, s.completed_at) : s.status === "in_progress" ? "…" : "";
-              return `<div class="step-row ${stepCls(s)}">
-                <span class="ico">${stepIcon(s)}</span>
-                <span class="step-name">${esc(s.name)}</span>
-                <span class="step-dur">${dur}</span>
-              </div>`;
-            })
-            .join("")
-        : `<p class="hint">Steps load ho rahe hain…</p>`);
-
-    // ── agent ka poora tool log ──
-    const lines = logBody
-      .split("\n")
-      .filter((l) => /^- /.test(l) || l.startsWith("**Elapsed") || l.startsWith("### "))
-      .slice(-120);
-    logEl.innerHTML = lines.length
-      ? `<div class="live-log-title">Agent log</div>` +
-        lines
-          .map((l) => {
-            if (l.startsWith("### ")) return `<div class="li head">${esc(l.replace(/^### /, ""))}</div>`;
-            if (l.startsWith("**Elapsed")) return `<div class="li meta">${esc(l.replace(/\*\*/g, ""))}</div>`;
-            const clean = esc(l.replace(/^- /, "").replace(/`/g, ""));
-            const fail = l.includes("✗");
-            return `<div class="li${fail ? " fail" : ""}">${clean}</div>`;
-          })
-          .join("")
-      : "";
-
-    // active step tak auto-scroll
-    if (isLive) {
-      requestAnimationFrame(() => {
-        const act = stepsEl.querySelector(".step-row.active");
-        if (act) act.scrollIntoView({ block: "nearest", behavior: "smooth" });
-        logEl.scrollTop = logEl.scrollHeight;
-      });
-    }
-  } catch (err) {
-    stepsEl.innerHTML = `<p class="hint" style="color:var(--danger)">${esc(err.message)}</p>`;
-  }
-}
-
-// ── chat ─────────────────────────────────────────────────────────────────────
-const chat = $("chat");
-
-function addMsg(role, text, cls = "") {
-  $("chatEmpty")?.remove();
-  const el = document.createElement("div");
-  el.className = `msg ${role}`;
-  el.innerHTML = `<div class="who">${role === "user" ? "You" : "Agent"}</div>
-    <div class="bubble ${cls}">${esc(text)}</div>`;
-  chat.appendChild(el);
-  chat.scrollTop = chat.scrollHeight;
-  return el;
-}
-
-$("composer").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const goal = $("input").value.trim();
-  if (!goal) return;
-
-  if (!configured()) {
-    switchTab("setup");
-    showSetupMsg("err", "Pehle Setup tab me repo + token daalein.");
-    return;
-  }
-
-  $("input").value = "";
-  addMsg("user", goal);
-  const pending = addMsg("agent", "Task queue me daala ja raha hai…");
-
-  try {
-    const issue = await createTask(goal);
-    pending.querySelector(".bubble").innerHTML =
-      `✓ Task queue me hai — <a href="${issue.html_url}" target="_blank" rel="noopener" style="color:var(--accent)">issue #${issue.number}</a><br>` +
-      `<span style="color:var(--muted);font-size:12px">Agent 1-2 minute me shuru hoga (Actions queue). Result yahan aur Tasks tab me aayega.</span>`;
-    loadTasks();
-  } catch (err) {
-    pending.querySelector(".bubble").innerHTML = `<span style="color:var(--danger)">✗ ${esc(err.message)}</span>`;
-  }
-});
-
-$("input").addEventListener("keydown", (e) => {
-  if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) $("composer").requestSubmit();
-});
-
-document.querySelectorAll(".sug").forEach((b) =>
-  b.addEventListener("click", () => {
-    $("input").value = b.textContent.trim();
-    $("input").focus();
-  })
-);
-
-$("runNow").addEventListener("click", async () => {
-  if (!configured()) return switchTab("setup");
-  try {
-    await dispatchWorkflow("");
-    addMsg("agent", "✓ Scheduled task trigger ho gaya. Actions tab me progress dekhein.");
-  } catch (err) {
-    addMsg("agent", `✗ ${err.message}`, "err");
-  }
-});
-
-// ── tabs ─────────────────────────────────────────────────────────────────────
+/* ══════════════════════ TABS / SETUP ══════════════════════ */
 const TABS = ["live", "tasks", "files", "setup"];
 function switchTab(name, manual = false) {
   if (manual) lastManualTabAt = Date.now();
   document.querySelectorAll(".tab").forEach((x) => x.classList.toggle("active", x.dataset.tab === name));
   TABS.forEach((k) => $("tab-" + k).classList.toggle("hide", k !== name));
 }
+
 document.querySelectorAll(".tab").forEach((t) =>
   t.addEventListener("click", () => {
     switchTab(t.dataset.tab, true);
@@ -399,11 +469,33 @@ document.querySelectorAll(".tab").forEach((t) =>
     if (t.dataset.tab === "files") loadFiles();
   })
 );
-$("goSetup").addEventListener("click", () => switchTab("setup"));
-$("lsOpen")?.addEventListener("click", () => { switchTab("live"); loadLive(); });
-$("cfgBtn").addEventListener("click", () => switchTab("setup"));
 
-// ── setup form ───────────────────────────────────────────────────────────────
+$("runNow").addEventListener("click", async () => {
+  if (!configured()) return switchTab("setup");
+  try {
+    await dispatchWorkflow("");
+    addAgentMsg(null).bubble.innerHTML = `<span class="muted">Scheduled task trigger ho gaya — Actions tab me progress dekhein.</span>`;
+  } catch (err) {
+    addAgentMsg(null).bubble.innerHTML = `<span style="color:var(--danger)">✗ ${esc(err.message)}</span>`;
+  }
+});
+
+$("goSetup").addEventListener("click", () => switchTab("setup"));
+$("cfgBtn").addEventListener("click", () => switchTab("setup"));
+$("lsOpen")?.addEventListener("click", () => {
+  switchTab("live", true);
+  loadLive();
+});
+
+function setConfigUI() {
+  $("repoPill").textContent = cfg.owner ? `${cfg.owner}/${cfg.repo}` : "not configured";
+  $("cfgWarn").classList.toggle("hide", configured());
+  $("setupBanner").classList.toggle("hide", configured());
+  $("fOwner").value = cfg.owner;
+  $("fRepo").value = cfg.repo;
+  $("fBranch").value = cfg.branch;
+}
+
 function showSetupMsg(kind, text) {
   const el = $("setupMsg");
   el.className = `settings-msg ${kind}`;
@@ -423,38 +515,67 @@ $("setupForm").addEventListener("submit", async (e) => {
   localStorage.setItem(LS.repo, cfg.repo);
   localStorage.setItem(LS.branch, cfg.branch);
   localStorage.setItem(LS.token, cfg.token);
-
   if (!configured()) return showSetupMsg("err", "Owner, repo aur token teeno chahiye.");
 
   try {
     const r = await gh(repoPath());
-    showSetupMsg(
-      "ok",
-      `✓ Connected: ${r.full_name} · ${r.private ? "PRIVATE (cron nahi chalega — public karein)" : "public ✓"}`
-    );
+    showSetupMsg("ok", `✓ Connected: ${r.full_name} · ${r.private ? "PRIVATE (cron nahi chalega — public karein)" : "public ✓"}`);
     setConfigUI();
     loadLive();
     loadTasks();
     loadFiles();
+    loadChatHistory();
   } catch (err) {
-    showSetupMsg("err", `✗ ${err.message} — token ke permissions check karein.`);
+    showSetupMsg("err", `✗ ${err.message} — token ki permissions check karein.`);
   }
 });
 
-// ── boot ─────────────────────────────────────────────────────────────────────
+/* ══════════════════════ 1-SECOND LIVE ══════════════════════ */
+function tickSecond() {
+  if (!liveActive || !liveStartedAt) return;
+  const t = fmtElapsed(liveStartedAt);
+  const a = $("lsTime");
+  if (a) a.textContent = t;
+  const b = $("liveElapsed");
+  if (b) b.textContent = t;
+}
+
+/** Sirf 1 halka request — progress comment. Isliye har second chal sakta hai. */
+let fastPolling = false;
+async function fastPoll() {
+  if (!configured() || document.hidden || !trackedIssue || fastPolling) return;
+  if (rateRemaining < 300) return; // API limit bachao
+  fastPolling = true;
+  try {
+    const cs = await gh(`${repoPath()}/issues/${trackedIssue}/comments?per_page=1&sort=created&direction=desc`);
+    const body = cs?.[0]?.body || "";
+    if (body) {
+      const ui = issueUIs.get(trackedIssue);
+      if (ui && !ui.badge?.classList.contains("done") && !ui.badge?.classList.contains("error")) {
+        ui.bubble.innerHTML = mdToHtml(body);
+        scrollChat();
+      }
+      const logEl = $("liveLog");
+      if (logEl) renderLiveLog(logEl, body);
+    }
+  } catch {}
+  fastPolling = false;
+}
+
+/* ══════════════════════ BOOT ══════════════════════ */
 autoDetect();
 setConfigUI();
 if (configured()) {
+  loadChatHistory();
   loadLive();
   loadTasks();
   loadFiles();
+  setInterval(tickSecond, 1000);      // har second timer update (0 API calls)
+  setInterval(fastPoll, 1200);        // har ~1.2s progress comment
   setInterval(() => {
     if (!document.hidden) {
       loadLive();
       loadTasks();
     }
-  }, 5000);
-  setInterval(() => {
-    if (!document.hidden) loadFiles();
-  }, 20000);
+  }, 5000);                            // steps / runs har 5s
 }
