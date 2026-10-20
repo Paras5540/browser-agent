@@ -19,6 +19,7 @@ const OUTPUTS = path.resolve("./outputs");
 fs.mkdirSync(OUTPUTS, { recursive: true });
 
 const GH_TOKEN = process.env.GITHUB_TOKEN || "";
+const GH_REPO = process.env.GITHUB_REPOSITORY || "";
 const ISSUE = process.env.ISSUE_NUMBER || "";
 const REPO = process.env.GITHUB_REPOSITORY || "";
 
@@ -167,6 +168,76 @@ console.log(`  provider: ${PROVIDER} · model: ${MODEL_LABEL} · steps: ${proces
 
 await pushProgress(true);
 
+// ── live screenshot → repo ke `live` branch me (dashboard dikhata hai) ──
+const GH_API = "https://api.github.com";
+let shotCount = 0;
+let lastShotAt = 0;
+let liveBranchReady = false;
+const MAX_SHOTS = Number(process.env.MAX_LIVE_SHOTS) || 8;
+
+async function ghJson(url, opts = {}) {
+  const r = await fetch(url.startsWith("http") ? url : `${GH_API}${url}`, {
+    ...opts,
+    headers: {
+      Authorization: `Bearer ${GH_TOKEN}`,
+      Accept: "application/vnd.github+json",
+      "Content-Type": "application/json",
+      "User-Agent": "browser-agent",
+      ...(opts.headers || {}),
+    },
+  });
+  const t = await r.text();
+  let j = null;
+  try { j = t ? JSON.parse(t) : null; } catch {}
+  return { ok: r.ok, status: r.status, json: j };
+}
+
+async function ensureLiveBranch(owner, repo, base) {
+  if (liveBranchReady) return true;
+  const chk = await ghJson(`/repos/${owner}/${repo}/git/ref/heads/live`);
+  if (chk.ok) { liveBranchReady = true; return true; }
+  const mainRef = await ghJson(`/repos/${owner}/${repo}/git/ref/heads/${base || "main"}`);
+  const sha = mainRef.json?.object?.sha;
+  if (!sha) return false;
+  const made = await ghJson(`/repos/${owner}/${repo}/git/refs`, {
+    method: "POST",
+    body: JSON.stringify({ ref: "refs/heads/live", sha }),
+  });
+  liveBranchReady = made.ok || made.status === 422;
+  return liveBranchReady;
+}
+
+async function pushLiveShot(page) {
+  if (!GH_TOKEN || !GH_REPO || shotCount >= MAX_SHOTS) return;
+  const now = Date.now();
+  if (now - lastShotAt < 9000) return; // throttle
+  lastShotAt = now;
+
+  try {
+    const [owner, repo] = GH_REPO.split("/");
+    if (!(await ensureLiveBranch(owner, repo, process.env.GITHUB_REF_NAME))) return;
+
+    const buf = await page.screenshot({ type: "jpeg", quality: 35 });
+    if (buf.length > 700_000) return;
+
+    const pathInRepo = "outputs/live/latest.jpg";
+    const url = `/repos/${owner}/${repo}/contents/${pathInRepo}`;
+    const cur = await ghJson(`${url}?ref=live`);
+    const sha = cur.ok ? cur.json?.sha : undefined;
+
+    const put = await ghJson(url, {
+      method: "PUT",
+      body: JSON.stringify({
+        message: `live frame ${shotCount + 1}`,
+        content: buf.toString("base64"),
+        branch: "live",
+        ...(sha ? { sha } : {}),
+      }),
+    });
+    if (put.ok) shotCount++;
+  } catch {}
+}
+
 const browser = new BrowserManager({
   userDataDir: process.env.USER_DATA_DIR || "./data/browser-profile",
   headless: true,
@@ -187,6 +258,7 @@ try {
         const human = (HUMAN[e.name] || (() => e.name))(a);
         timeline.push({ type: "tool", name: e.name, human, detail: String(a.query || a.url || a.text || "").slice(0, 90) });
         console.log(`  → ${human}`);
+        browser.page().then((pg) => pushLiveShot(pg)).catch(() => {});
       } else if (e.type === "tool_error") {
         timeline.push({ type: "tool_error", name: e.name, human: HUMAN[e.name] ? HUMAN[e.name]({}) : e.name, detail: String(e.message).slice(0, 120) });
         console.log(`  ✗ ${e.name}: ${String(e.message).slice(0, 120)}`);
