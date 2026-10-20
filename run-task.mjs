@@ -168,12 +168,15 @@ console.log(`  provider: ${PROVIDER} · model: ${MODEL_LABEL} · steps: ${proces
 
 await pushProgress(true);
 
-// ── live screenshot → repo ke `live` branch me (dashboard dikhata hai) ──
+// ── LIVE SCREEN → repo ke `live` branch me (Manus jaisa) ──────────────────
+// Har frame ek "root commit" (parents: []) banata hai aur branch tip ko force-move
+// karta hai — isliye history kabhi nahi badhti, repo nahi phoolta.
 const GH_API = "https://api.github.com";
-let shotCount = 0;
-let lastShotAt = 0;
-let liveBranchReady = false;
-const MAX_SHOTS = Number(process.env.MAX_LIVE_SHOTS) || 8;
+let frameCount = 0;
+let lastFrameAt = 0;
+let inflightFrame = false;
+const MAX_FRAMES = Number(process.env.MAX_LIVE_FRAMES) || 150;
+const FRAME_EVERY = Number(process.env.LIVE_FRAME_MS) || 2500;
 
 async function ghJson(url, opts = {}) {
   const r = await fetch(url.startsWith("http") ? url : `${GH_API}${url}`, {
@@ -192,56 +195,64 @@ async function ghJson(url, opts = {}) {
   return { ok: r.ok, status: r.status, json: j };
 }
 
-async function ensureLiveBranch(owner, repo, base) {
-  if (liveBranchReady) return true;
-  const chk = await ghJson(`/repos/${owner}/${repo}/git/ref/heads/live`);
-  if (chk.ok) { liveBranchReady = true; return true; }
-  const mainRef = await ghJson(`/repos/${owner}/${repo}/git/ref/heads/${base || "main"}`);
-  const sha = mainRef.json?.object?.sha;
-  if (!sha) return false;
-  const made = await ghJson(`/repos/${owner}/${repo}/git/refs`, {
-    method: "POST",
-    body: JSON.stringify({ ref: "refs/heads/live", sha }),
-  });
-  liveBranchReady = made.ok || made.status === 422;
-  return liveBranchReady;
-}
-
-async function pushLiveShot(page) {
-  if (!GH_TOKEN || !GH_REPO || shotCount >= MAX_SHOTS) return;
+async function pushLiveFrame(page) {
+  if (!GH_TOKEN || !GH_REPO || inflightFrame || frameCount >= MAX_FRAMES) return;
   const now = Date.now();
-  if (now - lastShotAt < 9000) return; // throttle
-  lastShotAt = now;
+  if (now - lastFrameAt < FRAME_EVERY) return;
+  lastFrameAt = now;
+  inflightFrame = true;
 
   try {
     const [owner, repo] = GH_REPO.split("/");
-    if (!(await ensureLiveBranch(owner, repo, process.env.GITHUB_REF_NAME))) return;
+    const buf = await page.screenshot({ type: "jpeg", quality: 28 });
+    if (buf.length > 400_000) return;
 
-    const buf = await page.screenshot({ type: "jpeg", quality: 35 });
-    if (buf.length > 700_000) return;
+    const blob = await ghJson(`/repos/${owner}/${repo}/git/blobs`, {
+      method: "POST",
+      body: JSON.stringify({ content: buf.toString("base64"), encoding: "base64" }),
+    });
+    if (!blob.ok) return;
 
-    const pathInRepo = "outputs/live/latest.jpg";
-    const url = `/repos/${owner}/${repo}/contents/${pathInRepo}`;
-    const cur = await ghJson(`${url}?ref=live`);
-    const sha = cur.ok ? cur.json?.sha : undefined;
-
-    const put = await ghJson(url, {
-      method: "PUT",
+    const tree = await ghJson(`/repos/${owner}/${repo}/git/trees`, {
+      method: "POST",
       body: JSON.stringify({
-        message: `live frame ${shotCount + 1}`,
-        content: buf.toString("base64"),
-        branch: "live",
-        ...(sha ? { sha } : {}),
+        tree: [{ path: "outputs/live/latest.jpg", mode: "100644", type: "blob", sha: blob.json.sha }],
       }),
     });
-    if (put.ok) shotCount++;
+    if (!tree.ok) return;
+
+    const commit = await ghJson(`/repos/${owner}/${repo}/git/commits`, {
+      method: "POST",
+      body: JSON.stringify({ message: `live frame ${frameCount + 1}`, tree: tree.json.sha, parents: [] }),
+    });
+    if (!commit.ok) return;
+
+    const moved = await ghJson(`/repos/${owner}/${repo}/git/refs/heads/live`, {
+      method: "PATCH",
+      body: JSON.stringify({ sha: commit.json.sha, force: true }),
+    });
+    if (!moved.ok) {
+      await ghJson(`/repos/${owner}/${repo}/git/refs`, {
+        method: "POST",
+        body: JSON.stringify({ ref: "refs/heads/live", sha: commit.json.sha }),
+      });
+    }
+    frameCount++;
   } catch {}
+  finally {
+    inflightFrame = false;
+  }
 }
 
 const browser = new BrowserManager({
   userDataDir: process.env.USER_DATA_DIR || "./data/browser-profile",
   headless: true,
 });
+
+// Manus jaisa: agent soch raha ho tab bhi screen update hoti rahe
+const liveTimer = setInterval(() => {
+  browser.page().then((pg) => pushLiveFrame(pg)).catch(() => {});
+}, FRAME_EVERY);
 
 let body;
 let ok = true;
@@ -258,7 +269,7 @@ try {
         const human = (HUMAN[e.name] || (() => e.name))(a);
         timeline.push({ type: "tool", name: e.name, human, detail: String(a.query || a.url || a.text || "").slice(0, 90) });
         console.log(`  → ${human}`);
-        browser.page().then((pg) => pushLiveShot(pg)).catch(() => {});
+        browser.page().then((pg) => pushLiveFrame(pg)).catch(() => {});
       } else if (e.type === "tool_error") {
         timeline.push({ type: "tool_error", name: e.name, human: HUMAN[e.name] ? HUMAN[e.name]({}) : e.name, detail: String(e.message).slice(0, 120) });
         console.log(`  ✗ ${e.name}: ${String(e.message).slice(0, 120)}`);
@@ -301,6 +312,13 @@ try {
     body = `## ❌ Agent fail ho gaya\n\n\`\`\`\n${msg.slice(0, 1500)}\n\`\`\``;
   }
 } finally {
+  clearInterval(liveTimer);
+  // aakhri frame hamesha
+  try {
+    const pg = await browser.page();
+    lastFrameAt = 0;
+    await pushLiveFrame(pg);
+  } catch {}
   await browser.close().catch(() => {});
 }
 
