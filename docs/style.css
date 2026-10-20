@@ -319,3 +319,106 @@ code { background:#0e1216; padding:1px 5px; border-radius:4px; font-size:11.5px;
 .live-log .li.head { color: #cfe0f0; font-weight: 600; font-size: 12px; }
 .live-log .li.meta { color: #7f8fa1; font-size: 11px; }
 .live-log .li.fail { color: var(--danger); }
+
+/* ══════════════════════════════════════════════════════════════════
+   RESPONSIVE FIXES — mobile pe layout squeeze/overflow theek karta hai
+   ══════════════════════════════════════════════════════════════════ */
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+
+html, body {
+  height: 100dvh;
+  min-height: 100dvh;
+  overflow: hidden;
+}
+
+body { min-height: 0; }
+
+.layout {
+  min-height: 0;
+  min-width: 0;
+  max-width: 1500px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.panel, .chat-panel, .side-panel { min-height: 0; min-width: 0; }
+.chat-scroll, .tab-body, .chat { min-height: 0; }
+
+/* lamba text ya URL kabhi layout na tode */
+.bubble, .card, .bubble pre, .card pre, .kv, .log-item, .step-row span,
+.sb-text, .live-goal, .pill, .title {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+pre { max-width: 100%; overflow-x: auto; }
+
+/* ── tablet / mobile ─────────────────────────────────────────────── */
+@media (max-width: 980px) {
+  .layout {
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(0, 1fr) minmax(0, 52dvh);
+    padding: 8px;
+    gap: 8px;
+  }
+  .side-panel { max-height: none; border-radius: 10px; }
+  .panel { border-radius: 10px; }
+
+  .topbar { padding: 8px 10px; gap: 8px; flex-wrap: wrap; }
+  .brand h1 { font-size: 13.5px; }
+  .brand { gap: 7px; min-width: 0; }
+  .pill { font-size: 10px; padding: 2px 7px; }
+  #modePill, #quotaPill { display: none; }
+  .topright { gap: 6px; }
+
+  .panel-head { padding: 8px 11px; }
+  .panel-head h2 { font-size: 11.5px; }
+
+  .chat-scroll { padding: 10px; gap: 10px; }
+  .bubble { font-size: 13.5px; padding: 9px 11px; }
+  .msg .who { font-size: 10px; }
+  .empty { max-width: 100%; padding: 0 4px; }
+  .empty h3 { font-size: 15.5px; }
+  .empty p { font-size: 12.5px; }
+  .sug { font-size: 12.5px; padding: 9px 10px; }
+
+  /* tabs — 4 tabs chhote screen pe squeeze na hon */
+  .tabs { overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none; }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab { flex: 1 0 auto; min-width: 70px; padding: 10px 8px; font-size: 12px; }
+
+  .tab-body { padding: 10px; }
+
+  /* iOS me input pe zoom na ho */
+  .composer textarea, .sched-form input, .sched-form textarea, .sched-form select,
+  #fApiKey, #fPassword, #fOwner, #fRepo, #fBranch {
+    font-size: 16px !important;
+  }
+  .composer { padding: 9px; gap: 8px; }
+  .composer textarea { padding: 9px 10px; }
+
+  .setup-banner { margin: 8px 8px 0; padding: 9px 11px; flex-wrap: wrap; }
+  .sb-text b { font-size: 12px; }
+  .sb-text span { font-size: 11px; }
+
+  .live-strip { margin: 0 8px; padding: 8px 10px; font-size: 12px; }
+
+  .card { padding: 9px 10px; font-size: 12px; }
+  .step-row { font-size: 12px; padding: 4px 6px; }
+  .live-log { padding-left: 8px; }
+}
+
+/* ── chhote phone ────────────────────────────────────────────────── */
+@media (max-width: 420px) {
+  #keyWarn, #repoPill { display: none; }
+  .brand h1 { font-size: 13px; }
+  .layout { padding: 6px; gap: 6px; }
+  .tab { min-width: 62px; font-size: 11.5px; padding: 9px 6px; }
+  .bubble { font-size: 13px; }
+  .btn { padding: 8px 11px; font-size: 13px; }
+  .btn.tiny { font-size: 10.5px; padding: 4px 8px; }
+}
+
+/* ── landscape phone: side panel chhota ──────────────────────────── */
+@media (max-width: 980px) and (orientation: landscape) {
+  .layout { grid-template-rows: minmax(0, 1fr) minmax(0, 46dvh); }
+}
