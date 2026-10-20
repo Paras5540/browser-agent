@@ -175,21 +175,30 @@ async function loadFiles() {
 }
 
 // ── live progress ────────────────────────────────────────────────────────────
-const ICON = { success: "✓", failure: "✗", skipped: "·", cancelled: "⊘" };
-
-function stepClass(s) {
-  if (s.status === "in_progress") return "active";
-  if (s.conclusion === "failure") return "fail";
-  if (s.conclusion === "success") return "done";
-  if (s.conclusion === "skipped") return "";
-  return s.status === "queued" ? "" : "";
-}
+let lastManualTabAt = 0;
+let lastActiveRunId = null;
 
 function fmtElapsed(from, to) {
   const a = new Date(from).getTime();
   const b = to ? new Date(to).getTime() : Date.now();
   const s = Math.max(0, Math.round((b - a) / 1000));
   return s < 60 ? `${s}s` : `${Math.floor(s / 60)}m ${s % 60}s`;
+}
+
+function stepIcon(s) {
+  if (s.status === "in_progress") return "⟳";
+  if (s.conclusion === "success") return "✓";
+  if (s.conclusion === "failure") return "✗";
+  if (s.conclusion === "skipped") return "·";
+  if (s.conclusion === "cancelled") return "⊘";
+  return "○";
+}
+
+function stepCls(s) {
+  if (s.status === "in_progress") return "active";
+  if (s.conclusion === "failure") return "fail";
+  if (s.conclusion === "success") return "done";
+  return "";
 }
 
 async function loadLive() {
@@ -200,68 +209,114 @@ async function loadLive() {
 
   try {
     const runs = await gh(`${repoPath()}/actions/runs?per_page=12`);
-    const agentRuns = (runs.workflow_runs || []).filter((r) => r.path?.includes("agent.yml") || r.name === "Browser Agent");
+    const agentRuns = (runs.workflow_runs || []).filter((r) => r.path?.includes("agent.yml"));
+
     if (!agentRuns.length) {
       header.style.display = "none";
-      $("liveStrip").classList.add("hide");
-      stepsEl.innerHTML = `<p class="hint">Abhi koi run nahi hua.</p>`;
+      stepsEl.innerHTML = `<p class="hint">Abhi koi run nahi hua. Chat me task likhein.</p>`;
       logEl.innerHTML = "";
+      $("liveStrip").classList.add("hide");
       return;
     }
 
-    const active =
-      agentRuns.find((r) => r.status === "in_progress" || r.status === "queued") || agentRuns[0];
+    const active = agentRuns.find((r) => r.status === "in_progress" || r.status === "queued") || agentRuns[0];
+    const isLive = active.status !== "completed";
+
+    // ── running task ka tab khud khul jaye ──
+    if (isLive) {
+      const isNewRun = lastActiveRunId !== active.id;
+      lastActiveRunId = active.id;
+      const userJustClicked = Date.now() - lastManualTabAt < 45000;
+      if (isNewRun || !userJustClicked) switchTab("live");
+    }
 
     const m = /issue #(\d+)/.exec(active.name || "");
-    const issueNum = m ? Number(m[1]) : null;
+    const issueNum = m && m[1] !== "manual" ? Number(m[1]) : null;
 
     const jobsRes = await gh(`${repoPath()}/actions/runs/${active.id}/jobs`);
     const job = (jobsRes.jobs || [])[0];
     const steps = job?.steps || [];
 
     header.style.display = "";
-    const isLive = active.status !== "completed";
+    $("liveTitle").innerHTML =
+      `${esc(active.name || "run")}` +
+      `<span class="badge ${isLive ? "running" : active.conclusion === "success" ? "done" : "error"}">${isLive ? "running" : active.conclusion}</span>`;
 
-    // hamesha dikhne wala strip
+    const total = steps.length;
+    const doneCount = steps.filter((s) => s.conclusion === "success").length;
+    $("liveMeta").innerHTML =
+      `<span>${doneCount}/${total} steps</span>` +
+      `<span>· ${fmtElapsed(active.created_at, active.status === "completed" ? active.updated_at : null)}</span>` +
+      (issueNum ? `<span>· <a href="${active.html_url}" target="_blank" rel="noopener" style="color:var(--accent)">issue #${issueNum}</a></span>` : "");
+    $("liveLink").href = active.html_url;
+
+    // hamesha dikhne wali strip
     const strip = $("liveStrip");
     strip.classList.toggle("hide", !isLive);
     if (isLive) {
-      const curStep = steps.find((x) => x.status === "in_progress");
-      $("lsText").textContent = curStep ? curStep.name : active.status === "queued" ? "Queue me hai… (1-2 min)" : "Shuru ho raha hai…";
+      const cur = steps.find((x) => x.status === "in_progress");
+      $("lsText").textContent = cur
+        ? cur.name
+        : active.status === "queued"
+          ? "Queue me hai… (1-2 min lag sakte hain)"
+          : "Shuru ho raha hai…";
       $("lsTime").textContent = fmtElapsed(active.created_at);
     }
-    $("liveTitle").innerHTML = `${esc(active.name || "run")}<span class="badge ${isLive ? "running" : active.conclusion === "success" ? "done" : "error"}">${isLive ? "running" : active.conclusion}</span>`;
-    $("liveMeta").innerHTML =
-      `<span>${active.status}${active.conclusion ? "/" + active.conclusion : ""}</span>` +
-      `<span>· ${fmtElapsed(active.created_at, active.status === "completed" ? active.updated_at : null)}</span>` +
-      (job?.started_at ? `<span>· job ${fmtElapsed(job.started_at, job.completed_at)}</span>` : "");
-    $("liveLink").href = active.html_url;
-    if (active.status === "completed") $("liveStrip").classList.add("hide");
 
-    stepsEl.innerHTML = steps.length
-      ? steps
-          .map((s) => {
-            const cls = stepClass(s);
-            const ico = s.status === "in_progress" ? "⟳" : s.conclusion === "success" ? "✓" : s.conclusion === "failure" ? "✗" : s.conclusion === "skipped" ? "·" : "○";
-            return `<div class="step-row ${cls}"><span class="ico">${ico}</span><span>${esc(s.name)}</span></div>`;
+    // ── task ka goal + poore steps ──
+    let goalHtml = "";
+    let logBody = "";
+    if (issueNum) {
+      try {
+        const iss = await gh(`${repoPath()}/issues/${issueNum}`);
+        if (iss?.body) goalHtml = `<div class="live-goal">${esc(iss.body.slice(0, 600))}</div>`;
+      } catch {}
+      try {
+        const cs = await gh(`${repoPath()}/issues/${issueNum}/comments?per_page=100`);
+        logBody = cs?.length ? cs[cs.length - 1].body || "" : "";
+      } catch {}
+    }
+
+    stepsEl.innerHTML =
+      goalHtml +
+      (steps.length
+        ? steps
+            .map((s) => {
+              const dur = s.started_at && s.completed_at ? fmtElapsed(s.started_at, s.completed_at) : s.status === "in_progress" ? "…" : "";
+              return `<div class="step-row ${stepCls(s)}">
+                <span class="ico">${stepIcon(s)}</span>
+                <span class="step-name">${esc(s.name)}</span>
+                <span class="step-dur">${dur}</span>
+              </div>`;
+            })
+            .join("")
+        : `<p class="hint">Steps load ho rahe hain…</p>`);
+
+    // ── agent ka poora tool log ──
+    const lines = logBody
+      .split("\n")
+      .filter((l) => /^- /.test(l) || l.startsWith("**Elapsed") || l.startsWith("### "))
+      .slice(-120);
+    logEl.innerHTML = lines.length
+      ? `<div class="live-log-title">Agent log</div>` +
+        lines
+          .map((l) => {
+            if (l.startsWith("### ")) return `<div class="li head">${esc(l.replace(/^### /, ""))}</div>`;
+            if (l.startsWith("**Elapsed")) return `<div class="li meta">${esc(l.replace(/\*\*/g, ""))}</div>`;
+            const clean = esc(l.replace(/^- /, "").replace(/`/g, ""));
+            const fail = l.includes("✗");
+            return `<div class="li${fail ? " fail" : ""}">${clean}</div>`;
           })
           .join("")
-      : `<p class="hint">Steps load ho rahe hain…</p>`;
+      : "";
 
-    // agent ka live log — progress comment se
-    if (issueNum) {
-      const cs = await gh(`${repoPath()}/issues/${issueNum}/comments?per_page=100`);
-      const body = cs?.length ? cs[cs.length - 1].body || "" : "";
-      const lines = body.split("\n").filter((l) => l.startsWith("- ") || l.startsWith("**Elapsed"));
-      logEl.innerHTML = lines
-        .slice(-18)
-        .map((l) => {
-          const clean = esc(l.replace(/^- /, "").replace(/`/g, ""));
-          return `<div class="li">${clean}</div>`;
-        })
-        .join("");
-    } else {
-      logEl.innerHTML = "";
+    // active step tak auto-scroll
+    if (isLive) {
+      requestAnimationFrame(() => {
+        const act = stepsEl.querySelector(".step-row.active");
+        if (act) act.scrollIntoView({ block: "nearest", behavior: "smooth" });
+        logEl.scrollTop = logEl.scrollHeight;
+      });
     }
   } catch (err) {
     stepsEl.innerHTML = `<p class="hint" style="color:var(--danger)">${esc(err.message)}</p>`;
@@ -331,13 +386,14 @@ $("runNow").addEventListener("click", async () => {
 
 // ── tabs ─────────────────────────────────────────────────────────────────────
 const TABS = ["live", "tasks", "files", "setup"];
-function switchTab(name) {
+function switchTab(name, manual = false) {
+  if (manual) lastManualTabAt = Date.now();
   document.querySelectorAll(".tab").forEach((x) => x.classList.toggle("active", x.dataset.tab === name));
   TABS.forEach((k) => $("tab-" + k).classList.toggle("hide", k !== name));
 }
 document.querySelectorAll(".tab").forEach((t) =>
   t.addEventListener("click", () => {
-    switchTab(t.dataset.tab);
+    switchTab(t.dataset.tab, true);
     if (t.dataset.tab === "live") loadLive();
     if (t.dataset.tab === "tasks") loadTasks();
     if (t.dataset.tab === "files") loadFiles();
