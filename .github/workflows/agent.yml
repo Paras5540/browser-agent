@@ -1,0 +1,139 @@
+name: Browser Agent
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Free tier note: private repo pe `schedule` (cron) chalta HI nahi.
+# Isliye repo PUBLIC rakhein — public repo me cron chalta hai aur minutes unlimited.
+# ─────────────────────────────────────────────────────────────────────────────
+
+on:
+  workflow_dispatch:
+    inputs:
+      goal:
+        description: "Task (goal) — khaali chhodein to tasks/scheduled.txt chalega"
+        required: false
+        type: string
+
+  issues:
+    types: [opened, labeled]
+
+  schedule:
+    # Roz 03:00 UTC = 08:30 IST. Public repo me hi chalega.
+    - cron: "0 3 * * *"
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: browser-agent
+  cancel-in-progress: false
+
+jobs:
+  run:
+    # Issue-event sirf tab chale jab label "agent-task" ho
+    if: >
+      github.event_name != 'issues' ||
+      (github.event.issue != null &&
+       contains(github.event.issue.labels.*.name, 'agent-task'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      # Browser profile (logins/cookies) cache — runs ke beech rehta hai
+      - name: Restore browser profile
+        uses: actions/cache@v4
+        with:
+          path: data/browser-profile
+          key: browser-profile-${{ github.run_id }}
+          restore-keys: |
+            browser-profile-
+
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund || npm install --no-audit --no-fund
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Mark issue as running
+        if: github.event_name == 'issues'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const n = context.issue.number;
+            const add = ['agent-running'];
+            try { await github.rest.issues.addLabels({ ...context.repo, issue_number: n, labels: add }); } catch (e) {}
+
+      - name: Run agent
+        id: run
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_MODEL: ${{ vars.GEMINI_MODEL || 'gemini-2.5-flash' }}
+          MAX_STEPS: ${{ vars.MAX_STEPS || '45' }}
+          TASK_GOAL: ${{ github.event.inputs.goal || github.event.issue.body || '' }}
+        run: node run-task.mjs
+
+      - name: Upload result artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent-output-${{ github.run_number }}
+          path: |
+            outputs/
+            result.md
+          retention-days: 30
+
+      - name: Commit results to repo
+        if: always()
+        run: |
+          git config user.name  "browser-agent"
+          git config user.email "browser-agent@users.noreply.github.com"
+          git add outputs/ result.md 2>/dev/null || true
+          git commit -m "agent: run #${{ github.run_number }}" || echo "kuch naya nahi"
+          git push || echo "push skip"
+
+      - name: Comment result on issue
+        if: always() && github.event_name == 'issues'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            let body = '⚠️ Result file nahi mili — Actions log check karein.';
+            try { body = fs.readFileSync('result.md', 'utf8'); } catch (e) {}
+            if (body.length > 60000) body = body.slice(0, 60000) + '\n\n_(truncated)_';
+            await github.rest.issues.createComment({
+              ...context.repo,
+              issue_number: context.issue.number,
+              body
+            });
+
+      - name: Set final status label
+        if: always() && github.event_name == 'issues'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const n = context.issue.number;
+            const outcome = '${{ steps.run.outcome }}';
+            try { await github.rest.issues.removeLabel({ ...context.repo, issue_number: n, name: 'agent-running' }); } catch (e) {}
+            try {
+              await github.rest.issues.addLabels({
+                ...context.repo,
+                issue_number: n,
+                labels: [outcome === 'success' ? 'agent-done' : 'agent-failed']
+              });
+            } catch (e) {}
+            if (outcome === 'success') {
+              try { await github.rest.issues.update({ ...context.repo, issue_number: n, state: 'closed' }); } catch (e) {}
+            }
+
+      - name: Comment result on scheduled/manual run
+        if: always() && github.event_name != 'issues'
+        run: |
+          echo "### Run result" >> "$GITHUB_STEP_SUMMARY"
+          cat result.md >> "$GITHUB_STEP_SUMMARY" 2>/dev/null || true
