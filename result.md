@@ -2,7 +2,7 @@
 
 **Goal:** Kaggle mein account create kro is mail se or baki sb tum dal dena rahula5540@gmail.com or otp bolna jb chahiye ho
 
-**Time:** 59s · **Actions:** 1
+**Time:** 1m 40s · **Actions:** 9
 
 ---
 
@@ -17,4 +17,4 @@
    Repo → Settings → Secrets → `GEMINI_API_KEY` update
 3. Free tier ka daily quota reset hota hai **~12:30 PM IST** ke aas paas
 
-<sub>raw: QUOTA: gemini-2.5-flash-lite</sub>
+<sub>raw: QUOTA: gemini-flash-lite-latest</sub>
