@@ -292,7 +292,7 @@ const input = $("input");
 
 function autoGrow() {
   input.style.height = "auto";
-  input.style.height = Math.min(input.scrollHeight, 88) + "px";
+  input.style.height = Math.min(input.scrollHeight, 72) + "px";
 }
 input?.addEventListener("input", autoGrow);
 
@@ -424,6 +424,7 @@ async function loadLive() {
       const isNewRun = lastActiveRunId !== active.id;
       lastActiveRunId = active.id;
       if (isNewRun || Date.now() - lastManualTabAt > 45000) switchTab("live");
+      // mobile pe panel khud na khule — chat full-screen rehti hai (strip me status dikhta hai)
     }
 
     const m = /issue #(\d+)/.exec(active.name || "");
@@ -591,6 +592,12 @@ on("cfgBtn", "click", () => switchTab("setup"));
 on("lsOpen", "click", () => {
   switchTab("live", true);
   loadLive();
+});
+
+on("panelBtn", "click", () => {
+  const open = document.body.classList.toggle("show-panel");
+  const b = $("panelBtn");
+  if (b) b.textContent = open ? "▦" : "▤";
 });
 
 on("themeBtn", "click", () => {
