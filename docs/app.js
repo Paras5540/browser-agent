@@ -14,6 +14,35 @@ const esc = (s) =>
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const configured = () => cfg.owner && cfg.repo && cfg.token;
 
+/** null-safe event binding — ek missing element poori app na tode */
+const on = (id, ev, fn) => {
+  const el = $(id);
+  if (el) el.addEventListener(ev, fn);
+  return el;
+};
+
+/* ── theme: dark / light ────────────────────────────────────────────── */
+const THEME_KEY = "ba_theme";
+function applyTheme(t) {
+  document.documentElement.setAttribute("data-theme", t);
+  try {
+    localStorage.setItem(THEME_KEY, t);
+  } catch {}
+  const m = document.querySelector('meta[name="theme-color"]');
+  if (m) m.setAttribute("content", t === "dark" ? "#171614" : "#f5f4ee");
+  const b = $("themeBtn");
+  if (b) b.textContent = t === "dark" ? "☀" : "☾";
+}
+function initTheme() {
+  let t = null;
+  try {
+    t = localStorage.getItem(THEME_KEY);
+  } catch {}
+  if (!t) t = window.matchMedia?.("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  applyTheme(t);
+}
+initTheme();
+
 /* ── markdown-lite → HTML (result bodies ke liye) ───────────────────────── */
 function mdToHtml(mdx) {
   let s = esc(mdx || "");
@@ -206,9 +235,9 @@ function autoGrow() {
   input.style.height = "auto";
   input.style.height = Math.min(input.scrollHeight, 260) + "px";
 }
-input.addEventListener("input", autoGrow);
+input?.addEventListener("input", autoGrow);
 
-form.addEventListener("submit", async (e) => {
+form?.addEventListener("submit", async (e) => {
   e.preventDefault();
   const goal = input.value.trim();
   if (!goal) return;
@@ -240,7 +269,7 @@ form.addEventListener("submit", async (e) => {
   }
 });
 
-input.addEventListener("keydown", (e) => {
+input?.addEventListener("keydown", (e) => {
   if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) form.requestSubmit();
 });
 
@@ -252,7 +281,7 @@ document.querySelectorAll(".sug").forEach((b) =>
   })
 );
 
-$("clearChat").addEventListener("click", () => {
+on("clearChat", "click", () => {
   chat.innerHTML = `<div class="empty" id="chatEmpty"><h3>Chat clear</h3><p>Naya task likhein.</p></div>`;
 });
 
@@ -470,7 +499,7 @@ document.querySelectorAll(".tab").forEach((t) =>
   })
 );
 
-$("runNow").addEventListener("click", async () => {
+on("runNow", "click", async () => {
   if (!configured()) return switchTab("setup");
   try {
     await dispatchWorkflow("");
@@ -480,11 +509,16 @@ $("runNow").addEventListener("click", async () => {
   }
 });
 
-$("goSetup").addEventListener("click", () => switchTab("setup"));
-$("cfgBtn").addEventListener("click", () => switchTab("setup"));
-$("lsOpen")?.addEventListener("click", () => {
+on("goSetup", "click", () => switchTab("setup"));
+on("cfgBtn", "click", () => switchTab("setup"));
+on("lsOpen", "click", () => {
   switchTab("live", true);
   loadLive();
+});
+
+on("themeBtn", "click", () => {
+  const cur = document.documentElement.getAttribute("data-theme");
+  applyTheme(cur === "dark" ? "light" : "dark");
 });
 
 function setConfigUI() {
@@ -503,7 +537,7 @@ function showSetupMsg(kind, text) {
   el.classList.remove("hide");
 }
 
-$("setupForm").addEventListener("submit", async (e) => {
+on("setupForm", "submit", async (e) => {
   e.preventDefault();
   cfg.owner = $("fOwner").value.trim() || cfg.owner;
   cfg.repo = $("fRepo").value.trim() || cfg.repo;
