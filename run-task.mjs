@@ -60,17 +60,41 @@ const elapsed = () => {
   return s < 60 ? `${s}s` : `${Math.floor(s / 60)}m ${s % 60}s`;
 };
 
+const HUMAN = {
+  search: (a) => `web pe dhoondh raha hoon — "${a.query || ""}"`,
+  navigate: (a) => `khol raha hoon — ${String(a.url || "").replace(/^https?:\/\//, "").slice(0, 60)}`,
+  elements: () => "page ke buttons aur links dekh raha hoon",
+  click: (a) => `click kar raha hoon — ${String(a.text || a.selector || (a.index !== undefined ? `[${a.index}]` : "")).slice(0, 50)}`,
+  type: (a) => `likh raha hoon — "${String(a.text || "").slice(0, 40)}"`,
+  press: (a) => `${a.key || "Enter"} dabaa raha hoon`,
+  scroll: (a) => `scroll kar raha hoon ${a.direction === "up" ? "upar" : "neeche"}`,
+  back: () => "pichle page pe jaa raha hoon",
+  forward: () => "aage ke page pe jaa raha hoon",
+  wait: () => "intezaar kar raha hoon",
+  read_page: () => "page ka content padh raha hoon",
+  extract: (a) => `data nikaal raha hoon — ${String(a.selector || "").slice(0, 40)}`,
+  tabs: (a) => `tabs manage kar raha hoon (${a.action || "list"})`,
+  screenshot: () => "screen dekh raha hoon",
+  save_results: (a) => `file bana raha hoon — ${String(a.filename || "result")}`,
+  note: () => "progress note save kar raha hoon",
+  read_notes: () => "apne purane notes padh raha hoon",
+  finish: () => "kaam khatam kar raha hoon",
+};
+
 function renderProgress() {
   const lines = timeline.slice(-22).map((e) => {
-    if (e.type === "tool") return `- ✓ \`${e.name}\`${e.detail ? ` — ${e.detail}` : ""}`;
-    if (e.type === "tool_error") return `- ✗ \`${e.name}\` — ${e.detail}`;
+    if (e.type === "tool") return `- ✓ ${e.human || e.name}`;
+    if (e.type === "tool_error") return `- ✗ ${e.human || e.name} — ${e.detail}`;
     return `- 💬 ${e.detail}`;
   });
+  const lastTool = [...timeline].reverse().find((t) => t.type === "tool" || t.type === "tool_error");
+  const current = lastTool?.human || "shuru kar raha hoon…";
   return [
-    "### 🔄 Agent chal raha hai…",
+    "### ◐ Agent chal raha hai…",
     "",
     `**Task:** ${goal.split("\n")[0].slice(0, 160)}`,
-    `**Elapsed:** ${elapsed()} · **Actions:** ${timeline.filter((t) => t.type === "tool").length}`,
+    `**Abhi:** ${current}`,
+    `**Elapsed:** ${elapsed()} · **Steps:** ${timeline.filter((t) => t.type === "tool").length}`,
     "",
     lines.length ? lines.join("\n") : "_shuru ho raha hai…_",
     "",
@@ -146,11 +170,11 @@ try {
     onEvent: (e) => {
       if (e.type === "tool") {
         const a = e.args || {};
-        const d = a.query || a.url || a.text || a.selector || "";
-        timeline.push({ type: "tool", name: e.name, detail: String(d).slice(0, 90) });
-        console.log(`  → ${e.name}${d ? `: ${String(d).slice(0, 80)}` : ""}`);
+        const human = (HUMAN[e.name] || (() => e.name))(a);
+        timeline.push({ type: "tool", name: e.name, human, detail: String(a.query || a.url || a.text || "").slice(0, 90) });
+        console.log(`  → ${human}`);
       } else if (e.type === "tool_error") {
-        timeline.push({ type: "tool_error", name: e.name, detail: String(e.message).slice(0, 120) });
+        timeline.push({ type: "tool_error", name: e.name, human: HUMAN[e.name] ? HUMAN[e.name]({}) : e.name, detail: String(e.message).slice(0, 120) });
         console.log(`  ✗ ${e.name}: ${String(e.message).slice(0, 120)}`);
       } else if (e.type === "say") {
         timeline.push({ type: "say", detail: e.text.slice(0, 160) });
