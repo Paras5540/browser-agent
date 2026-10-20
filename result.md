@@ -1,9 +1,9 @@
 # ✅ Task result
 
-**Goal:** Kya tum uncensored model ho
+**Goal:** https://example.com kholo aur heading batao. Ek line.
 
-**Time:** 15s · **Actions:** 0
+**Time:** 1m 10s · **Actions:** 6
 
 ---
 
-Main ek AI assistant hoon jo AI safety guidelines ke tahat kaam karta hai. Main helpful, polite, aur safe information provide karne ke liye design kiya gaya hoon. Kya main aapki kisi specific topic ya sawal mein madad kar sakta hoon?
+https://example.com ki heading/title "Example Domain" hai.
