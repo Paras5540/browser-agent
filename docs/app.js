@@ -328,7 +328,7 @@ async function loadThreads() {
     el.innerHTML = `<div class="empty"><h3>Setup chahiye</h3>
       <p>GitHub repo aur token daalne ke baad task chalenge.</p>
       <button class="btn primary" id="emptySetup">⚙ Setup kholein</button></div>`;
-    el.querySelector("#emptySetup")?.addEventListener("click", () => switchTab("setup"));
+    el.querySelector("#emptySetup")?.addEventListener("click", () => openSetup());
     return;
   }
   try {
@@ -366,6 +366,14 @@ async function loadThreads() {
   }
 }
 
+/** Setup tab kholo — mobile pe side panel bhi open ho jaye */
+function openSetup() {
+  switchTab("setup", true);
+  document.body.classList.add("show-panel");
+  const b = $("panelBtn");
+  if (b) b.textContent = "▦";
+}
+
 /* ── panel menu (⋮) ── */
 function closeMenu() {
   $("panelMenu")?.classList.add("hide");
@@ -387,6 +395,11 @@ function toggleMenu() {
   menu.style.top = `${Math.round(r.bottom + 6)}px`;
   menu.style.left = `${Math.round(Math.min(r.right - w, window.innerWidth - w - 10))}px`;
 }
+
+on("menuSetup", "click", () => {
+  closeMenu();
+  openSetup();
+});
 
 on("menuBtn", "click", (e) => {
   e.stopPropagation();
@@ -468,7 +481,7 @@ form?.addEventListener("submit", async (e) => {
   const goal = input.value.trim();
   if (!goal) return;
   if (!configured()) {
-    switchTab("setup");
+    openSetup();
     showSetupMsg("err", "Pehle Setup tab me repo + token daalein.");
     return;
   }
@@ -738,7 +751,7 @@ document.querySelectorAll(".tab").forEach((t) =>
 
 on("runNow", "click", async () => {
   closeMenu();
-  if (!configured()) return switchTab("setup");
+  if (!configured()) return openSetup();
   try {
     await dispatchWorkflow("");
     toast("✓ Scheduled task trigger ho gaya — Live tab me progress dekhein");
@@ -747,8 +760,8 @@ on("runNow", "click", async () => {
   }
 });
 
-on("goSetup", "click", () => switchTab("setup"));
-on("cfgBtn", "click", () => switchTab("setup"));
+on("goSetup", "click", () => openSetup());
+on("cfgBtn", "click", () => openSetup());
 on("lsOpen", "click", () => {
   switchTab("live", true);
   loadLive();
