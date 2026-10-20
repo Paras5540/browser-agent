@@ -41,7 +41,11 @@ if (!goal) {
   console.error("✗ Koi task nahi mila. TASK_GOAL env, CLI arg, ya tasks/scheduled.txt dein.");
   process.exit(1);
 }
-if (!process.env.GEMINI_API_KEY) {
+const API_KEYS = [process.env.GEMINI_API_KEY, process.env.GEMINI_KEY_2, process.env.GEMINI_KEY_3, process.env.GEMINI_KEY_4]
+  .map((k) => (k || "").trim())
+  .filter(Boolean);
+
+if (!API_KEYS.length) {
   console.error("✗ GEMINI_API_KEY set nahi hai (Settings → Secrets → GEMINI_API_KEY).");
   process.exit(1);
 }
@@ -150,7 +154,7 @@ async function finalComment(body) {
 }
 
 console.log(`▶ Task: ${goal.slice(0, 200)}`);
-console.log(`  model: ${process.env.GEMINI_MODEL || "gemini-2.5-flash"} · max steps: ${process.env.MAX_STEPS || 45}`);
+console.log(`  model: ${process.env.GEMINI_MODEL || "gemini-2.5-flash"} · steps: ${process.env.MAX_STEPS || 15} · keys: ${API_KEYS.length}`);
 
 await pushProgress(true);
 
@@ -165,7 +169,8 @@ try {
   const out = await runAgentTask({
     goal,
     browser,
-    apiKey: process.env.GEMINI_API_KEY,
+    apiKey: API_KEYS[0],
+    apiKeys: API_KEYS,
     maxSteps: Number(process.env.MAX_STEPS) || 45,
     onEvent: (e) => {
       if (e.type === "tool") {
