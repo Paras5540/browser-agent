@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="theme-color" content="#f5f4ee" />
 <title>Browser Agent</title>
-<link rel="stylesheet" href="style.css?v=12" />
+<link rel="stylesheet" href="style.css?v=13" />
 <script src="https://cdn.jsdelivr.net/npm/libsodium-wrappers@0.7.15/dist/bundles/libsodium-wrappers.min.js"></script>
 </head>
 <body>
@@ -111,6 +111,37 @@
         <div id="pipeList" class="pipe-list"><p class="hint">—</p></div>
       </div>
 
+      <form id="provForm" class="sched-form">
+        <label>LLM Provider</label>
+        <select id="pProvider">
+          <option value="gemini">Gemini (Google)</option>
+          <option value="openai">Groq / OpenAI-compatible</option>
+        </select>
+
+        <label>Base URL</label>
+        <input id="pBase" placeholder="https://api.groq.com/openai/v1" autocomplete="off" spellcheck="false" />
+
+        <label>Model</label>
+        <input id="pModel" list="modelList" placeholder="llama-3.3-70b-versatile" autocomplete="off" spellcheck="false" />
+        <datalist id="modelList">
+          <option value="llama-3.3-70b-versatile"></option>
+          <option value="llama-3.1-8b-instant"></option>
+          <option value="openai/gpt-oss-120b"></option>
+          <option value="qwen/qwen3-32b"></option>
+          <option value="moonshotai/kimi-k2-instruct"></option>
+        </datalist>
+
+        <label>Groq API key</label>
+        <input id="pKey" type="password" placeholder="gsk_… (console.groq.com se)" autocomplete="off" spellcheck="false" />
+        <p class="hint">GitHub Secrets me <code>LLM_API_KEY</code> ke naam se save hoti hai. Gemini key ki jagah ye use hogi.</p>
+
+        <div class="row" style="margin-top:8px">
+          <button class="btn wide" type="button" id="testProv">Test Groq</button>
+          <button class="btn primary wide" type="submit">Save provider</button>
+        </div>
+        <div id="provMsg" class="settings-msg hide"></div>
+      </form>
+
       <form id="keysForm" class="sched-form">
         <label>Gemini keys <span class="hint">(quota badhane ke liye 2-4 keys)</span></label>
         <div class="key-row"><input id="k1" type="password" placeholder="GEMINI_API_KEY — AIza… ya AQ…" autocomplete="off" spellcheck="false" /><span class="key-state" id="st1">—</span></div>
@@ -179,6 +210,6 @@
   </section>
 </main>
 
-<script src="app.js?v=12"></script>
+<script src="app.js?v=13"></script>
 </body>
 </html>
