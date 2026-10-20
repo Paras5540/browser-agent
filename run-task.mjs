@@ -174,9 +174,13 @@ await pushProgress(true);
 const GH_API = "https://api.github.com";
 let frameCount = 0;
 let lastFrameAt = 0;
-let inflightFrame = false;
-const MAX_FRAMES = Number(process.env.MAX_LIVE_FRAMES) || 150;
-const FRAME_EVERY = Number(process.env.LIVE_FRAME_MS) || 2500;
+let frameInflight = 0;
+const MAX_INFLIGHT = 3;             // 3 frames ek saath upload (parallel)
+let ghRemaining = 1000;            // GITHUB_TOKEN: 1000 req/hour
+const MAX_FRAMES = Number(process.env.MAX_LIVE_FRAMES) || 400;
+const BASE_EVERY = Number(process.env.LIVE_FRAME_MS) || 1000;
+// rate limit khatam ho raha ho to apne aap slow
+const frameEvery = () => (ghRemaining < 250 ? 5000 : ghRemaining < 500 ? 2500 : BASE_EVERY);
 
 async function ghJson(url, opts = {}) {
   const r = await fetch(url.startsWith("http") ? url : `${GH_API}${url}`, {
@@ -189,6 +193,8 @@ async function ghJson(url, opts = {}) {
       ...(opts.headers || {}),
     },
   });
+  const rem = Number(r.headers.get("x-ratelimit-remaining"));
+  if (Number.isFinite(rem) && rem > 0) ghRemaining = rem;
   const t = await r.text();
   let j = null;
   try { j = t ? JSON.parse(t) : null; } catch {}
@@ -196,15 +202,17 @@ async function ghJson(url, opts = {}) {
 }
 
 async function pushLiveFrame(page) {
-  if (!GH_TOKEN || !GH_REPO || inflightFrame || frameCount >= MAX_FRAMES) return;
+  if (!GH_TOKEN || !GH_REPO) return;
+  if (frameInflight >= MAX_INFLIGHT || frameCount >= MAX_FRAMES) return;
   const now = Date.now();
-  if (now - lastFrameAt < FRAME_EVERY) return;
+  if (now - lastFrameAt < frameEvery()) return;
   lastFrameAt = now;
-  inflightFrame = true;
+  frameInflight++;
 
   try {
     const [owner, repo] = GH_REPO.split("/");
-    const buf = await page.screenshot({ type: "jpeg", quality: 28 });
+    // chhota + halka frame = tez upload
+    const buf = await page.screenshot({ type: "jpeg", quality: 22 });
     if (buf.length > 400_000) return;
 
     const blob = await ghJson(`/repos/${owner}/${repo}/git/blobs`, {
@@ -240,7 +248,7 @@ async function pushLiveFrame(page) {
     frameCount++;
   } catch {}
   finally {
-    inflightFrame = false;
+    frameInflight--;
   }
 }
 
@@ -252,7 +260,7 @@ const browser = new BrowserManager({
 // Manus jaisa: agent soch raha ho tab bhi screen update hoti rahe
 const liveTimer = setInterval(() => {
   browser.page().then((pg) => pushLiveFrame(pg)).catch(() => {});
-}, FRAME_EVERY);
+}, 900);
 
 let body;
 let ok = true;
@@ -313,6 +321,7 @@ try {
   }
 } finally {
   clearInterval(liveTimer);
+  onEvent({ type: "frames", text: `${frameCount} live frames bheje` });
   // aakhri frame hamesha
   try {
     const pg = await browser.page();
