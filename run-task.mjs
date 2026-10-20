@@ -175,10 +175,10 @@ const GH_API = "https://api.github.com";
 let frameCount = 0;
 let lastFrameAt = 0;
 let frameInflight = 0;
-const MAX_INFLIGHT = 3;             // 3 frames ek saath upload (parallel)
+const MAX_INFLIGHT = 5;             // 3 frames ek saath upload (parallel)
 let ghRemaining = 1000;            // GITHUB_TOKEN: 1000 req/hour
 const MAX_FRAMES = Number(process.env.MAX_LIVE_FRAMES) || 400;
-const BASE_EVERY = Number(process.env.LIVE_FRAME_MS) || 1000;
+const BASE_EVERY = Number(process.env.LIVE_FRAME_MS) || 800;
 // rate limit khatam ho raha ho to apne aap slow
 const frameEvery = () => (ghRemaining < 250 ? 5000 : ghRemaining < 500 ? 2500 : BASE_EVERY);
 
