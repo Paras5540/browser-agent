@@ -106,12 +106,12 @@ async function ensureLabel(name, color = "6b6b6b") {
   }
 }
 
-async function createTask(goal) {
+async function createTask(goal, titleOverride) {
   await ensureLabel("agent-task");
   await ensureLabel("agent-running", "b0b0b0");
   await ensureLabel("agent-done", "1f1e1d");
   await ensureLabel("agent-failed", "a33a2c");
-  const title = goal.split("\n")[0].slice(0, 72) || "agent task";
+  const title = (titleOverride || goal.split("\n")[0] || "agent task").slice(0, 90);
   return gh(`${repoPath()}/issues`, {
     method: "POST",
     body: JSON.stringify({ title, body: goal, labels: ["agent-task"] }),
@@ -129,6 +129,8 @@ async function dispatchWorkflow(goal = "") {
 const chat = $("chat");
 const issueUIs = new Map();   // issue# → chat bubble
 let trackedIssue = null;      // jis issue ko har second poll karna hai
+let replyTo = null;           // follow-up kis issue pe ja raha hai
+const issueResults = new Map(); // issue# → last result text
 
 /* live timing (1-second ticker ke liye) */
 let liveActive = false;
@@ -148,14 +150,20 @@ function addUserMsg(text) {
   return el;
 }
 
+function whoHtml(n, badgeCls, badgeText) {
+  const link = n
+    ? ` <a class="issue-link" href="https://github.com/${cfg.owner}/${cfg.repo}/issues/${n}" target="_blank" rel="noopener">#${n}</a>`
+    : "";
+  const fu = n ? `<button class="btn tiny ghost fu" data-followup="${n}" title="Isi task me aage kaam karein">↩ Follow-up</button>` : "";
+  return `<span class="dot-sm"></span>Agent${link}<span class="badge ${badgeCls}" data-badge>${badgeText}</span>${fu}`;
+}
+
 function addAgentMsg(issueNumber) {
   $("chatEmpty")?.remove();
   const el = document.createElement("div");
   el.className = "msg agent";
   el.innerHTML = `
-    <div class="who"><span class="dot-sm"></span>Agent${
-      issueNumber ? ` <a class="issue-link" href="https://github.com/${cfg.owner}/${cfg.repo}/issues/${issueNumber}" target="_blank" rel="noopener">#${issueNumber}</a>` : ""
-    }<span class="badge running" data-badge>running</span></div>
+    <div class="who">${whoHtml(issueNumber, "running", "running")}</div>
     <div class="bubble running" data-bubble><span class="muted">Queue me daal raha hoon…</span></div>`;
   chat.appendChild(el);
   scrollChat();
@@ -177,6 +185,7 @@ async function watchIssue(n, ui) {
     const labels = (iss.labels || []).map((l) => l.name);
     const body = cs?.length ? cs.at(-1).body || "" : "";
     const finished = labels.includes("agent-done") || labels.includes("agent-failed") || iss.state === "closed";
+    if (body) issueResults.set(n, body);
 
     ui.bubble.innerHTML = body
       ? mdToHtml(body)
@@ -210,6 +219,7 @@ async function loadChatHistory() {
       const body = cs?.length ? cs.at(-1).body || "" : "";
       const labels = (iss.labels || []).map((l) => l.name);
       issueUIs.set(iss.number, ui);
+      if (body) issueResults.set(iss.number, body);
       ui.bubble.innerHTML = body ? mdToHtml(body) : `<span class="muted">Koi output nahi</span>`;
       const done = labels.includes("agent-done");
       const failed = labels.includes("agent-failed");
@@ -225,6 +235,55 @@ async function loadChatHistory() {
   } catch (err) {
     console.warn("history:", err.message);
   }
+}
+
+/* ── follow-up / reply mode ── */
+function setReply(n) {
+  replyTo = n;
+  const chip = $("replyChip");
+  if (!chip) return;
+  chip.classList.toggle("hide", !n);
+  if (n) {
+    $("replyTo").textContent = `#${n}`;
+    $("input").focus();
+  }
+}
+
+on("replyCancel", "click", () => setReply(null));
+
+chat.addEventListener("click", (e) => {
+  const b = e.target.closest("[data-followup]");
+  if (!b) return;
+  setReply(Number(b.dataset.followup));
+  $("input").placeholder = `#${b.dataset.followup} me aage kaam — naya instruction likhein…`;
+});
+
+/** Purana task chat me kholo / us tak scroll karo */
+async function focusIssue(n) {
+  let ui = issueUIs.get(n);
+  if (!ui) {
+    // chat history me nahi hai — load karke append karo
+    try {
+      const iss = await gh(`${repoPath()}/issues/${n}`);
+      const cs = await gh(`${repoPath()}/issues/${n}/comments?per_page=100`);
+      const body = cs?.length ? cs.at(-1).body || "" : "";
+      addUserMsg(iss.body || iss.title);
+      ui = addAgentMsg(n);
+      const labels = (iss.labels || []).map((l) => l.name);
+      const failed = labels.includes("agent-failed");
+      ui.root.querySelector(".who").innerHTML = whoHtml(n, failed ? "error" : "done", failed ? "failed" : "done");
+      ui.badge = ui.root.querySelector("[data-badge]");
+      ui.bubble.innerHTML = body ? mdToHtml(body) : `<span class="muted">Koi output nahi</span>`;
+      ui.bubble.classList.remove("running");
+      issueUIs.set(n, ui);
+      if (body) issueResults.set(n, body);
+    } catch (err) {
+      return;
+    }
+  }
+  ui.root.scrollIntoView({ behavior: "smooth", block: "start" });
+  ui.root.classList.add("highlight");
+  setTimeout(() => ui.root.classList.remove("highlight"), 2200);
 }
 
 /* ── composer ── */
@@ -253,9 +312,19 @@ form?.addEventListener("submit", async (e) => {
   const ui = addAgentMsg(null);
 
   try {
-    const issue = await createTask(goal);
-    ui.root.querySelector(".who").innerHTML =
-      `<span class="dot-sm"></span>Agent <a class="issue-link" href="${issue.html_url}" target="_blank" rel="noopener">#${issue.number}</a><span class="badge running" data-badge>queued</span>`;
+    let issue;
+    if (replyTo) {
+      const prev = issueResults.get(replyTo) || "";
+      const body =
+        `Continuing task #${replyTo} (same website/work).\n\n` +
+        (prev ? `Previous result:\n${prev.slice(0, 3000)}\n\n` : "") +
+        `New instruction:\n${goal}`;
+      issue = await createTask(body, `Follow-up #${replyTo}: ${goal}`);
+      setReply(null);
+    } else {
+      issue = await createTask(goal);
+    }
+    ui.root.querySelector(".who").innerHTML = whoHtml(issue.number, "running", "queued");
     ui.badge = ui.root.querySelector("[data-badge]");
     issueUIs.set(issue.number, ui);
     trackedIssue = issue.number;
@@ -314,7 +383,7 @@ function stepCls(s) {
 function renderLiveLog(el, logBody) {
   const lines = (logBody || "")
     .split("\n")
-    .filter((l) => /^- /.test(l) || l.startsWith("**Elapsed") || l.startsWith("### "))
+    .filter((l) => /^- /.test(l) || l.startsWith("**Elapsed") || l.startsWith("**Abhi") || l.startsWith("### "))
     .slice(-120);
   el.innerHTML = lines.length
     ? `<div class="live-log-title">Agent log</div>` +
@@ -322,6 +391,7 @@ function renderLiveLog(el, logBody) {
         .map((l) => {
           if (l.startsWith("### ")) return `<div class="li head">${esc(l.replace(/^### /, ""))}</div>`;
           if (l.startsWith("**Elapsed")) return `<div class="li meta">${esc(l.replace(/\*\*/g, ""))}</div>`;
+          if (l.startsWith("**Abhi")) return `<div class="li head">${esc(l.replace(/\*\*/g, ""))}</div>`;
           const fail = l.includes("✗");
           return `<div class="li${fail ? " fail" : ""}">${esc(l.replace(/^- /, "").replace(/`/g, ""))}</div>`;
         })
@@ -398,8 +468,13 @@ async function loadLive() {
       } catch {}
     }
 
+    const abhi = (logBody.match(/\*\*Abhi:\*\*\s*(.+)/) || [])[1] || "";
+    const narration = abhi
+      ? `<div class="narration"><span class="n-ico">◐</span><div><b>Abhi:</b> ${esc(abhi.slice(0, 200))}</div></div>`
+      : "";
+
     stepsEl.innerHTML =
-      goalHtml +
+      narration + goalHtml +
       (steps.length
         ? steps
             .map((s) => {
@@ -445,14 +520,15 @@ async function loadTasks() {
     el.innerHTML = issues
       .map((i) => {
         const st = statusOf(i);
-        return `<div class="card">
+        return `<div class="card clickable" data-open="${i.number}">
           <div class="title">${esc(i.title)}<span class="badge ${st.cls}">${st.text}</span></div>
-          <div class="meta"><a class="issue-link" href="${i.html_url}" target="_blank" rel="noopener">#${i.number}</a><span>· ${new Date(
-          i.created_at
-        ).toLocaleString()}</span></div>
+          <div class="meta"><span>#${i.number}</span><span>· ${new Date(i.created_at).toLocaleString()}</span></div>
         </div>`;
       })
       .join("");
+    el.querySelectorAll("[data-open]").forEach((c) =>
+      c.addEventListener("click", () => focusIssue(Number(c.dataset.open)))
+    );
   } catch (err) {
     el.innerHTML = `<p class="hint" style="color:var(--danger)">${esc(err.message)}</p>`;
   }
