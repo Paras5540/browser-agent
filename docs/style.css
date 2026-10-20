@@ -291,3 +291,14 @@ code { background:#0e1216; padding:1px 5px; border-radius:4px; font-size:11.5px;
 }
 .live-log .li { font-size: 11.5px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--muted); }
 .live-log .li b { color: var(--accent); }
+
+/* ── always-visible live strip ───────────────────────────────────── */
+.live-strip {
+  display: flex; align-items: center; gap: 10px;
+  margin: 0 12px; padding: 9px 12px;
+  background: #16232f; border: 1px solid #24425c; border-radius: 10px;
+  font-size: 12.5px;
+}
+.live-strip .ls-spin { color: var(--accent); animation: spin 1.4s linear infinite; font-size: 14px; }
+.live-strip .ls-text { flex: 1; color: #cfe0f0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.live-strip .ls-time { color: var(--muted); font-variant-numeric: tabular-nums; }
