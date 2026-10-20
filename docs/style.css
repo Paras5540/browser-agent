@@ -702,3 +702,61 @@ body {
   0%, 60%, 100% { opacity: .2; }
   30% { opacity: 1; }
 }
+
+/* ══════════════════ LOADING / STARTING ANIMATIONS ══════════════════ */
+.runbar {
+  height: 2px; width: 100%; overflow: hidden;
+  background: var(--line); flex: 0 0 auto;
+}
+.runbar i {
+  display: block; height: 100%; width: 40%;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  animation: runbar-slide 1.3s ease-in-out infinite;
+}
+@keyframes runbar-slide {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(350%); }
+}
+
+/* skeleton shimmer */
+.skel { display: flex; flex-direction: column; gap: 7px; margin-bottom: 10px; }
+.skel i {
+  display: block; height: 9px; border-radius: 5px;
+  background: linear-gradient(90deg, var(--line) 25%, var(--panel-2) 50%, var(--line) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+}
+.skel i:nth-child(1) { width: 78%; }
+.skel i:nth-child(2) { width: 92%; animation-delay: .15s; }
+.skel i:nth-child(3) { width: 55%; animation-delay: .3s; }
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.startmsg {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 12.5px; color: var(--muted);
+}
+.startmsg .si { color: var(--accent); animation: spin 1.5s linear infinite; }
+
+/* ══════════════════ LIVE SCREEN ══════════════════ */
+.shot-wrap {
+  position: relative; margin-bottom: 10px;
+  border: 1px solid var(--line); border-radius: 10px; overflow: hidden;
+  background: var(--panel-2);
+}
+.shot-wrap img { display: block; width: 100%; height: auto; }
+.shot-badge {
+  position: absolute; top: 7px; left: 7px;
+  background: rgba(0,0,0,.72); color: #fff;
+  font-size: 9.5px; font-weight: 700; letter-spacing: .6px;
+  padding: 2px 7px; border-radius: 5px;
+}
+.shot-open {
+  position: absolute; top: 6px; right: 6px;
+  background: rgba(0,0,0,.6); color: #fff; text-decoration: none;
+  width: 24px; height: 24px; border-radius: 6px;
+  display: grid; place-items: center; font-size: 13px;
+}
+.shot-open:hover { background: rgba(0,0,0,.85); }
