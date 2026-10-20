@@ -366,6 +366,44 @@ async function loadThreads() {
   }
 }
 
+/* ── panel menu (⋮) ── */
+function closeMenu() {
+  $("panelMenu")?.classList.add("hide");
+  $("menuBtn")?.setAttribute("aria-expanded", "false");
+}
+
+function toggleMenu() {
+  const btn = $("menuBtn");
+  const menu = $("panelMenu");
+  if (!btn || !menu) return;
+  if (!menu.classList.contains("hide")) return closeMenu();
+
+  menu.classList.remove("hide");
+  btn.setAttribute("aria-expanded", "true");
+
+  // fixed positioning — panel ke overflow se clip na ho
+  const r = btn.getBoundingClientRect();
+  const w = menu.offsetWidth || 200;
+  menu.style.top = `${Math.round(r.bottom + 6)}px`;
+  menu.style.left = `${Math.round(Math.min(r.right - w, window.innerWidth - w - 10))}px`;
+}
+
+on("menuBtn", "click", (e) => {
+  e.stopPropagation();
+  toggleMenu();
+});
+
+document.addEventListener("click", (e) => {
+  if (!e.target.closest("#panelMenu") && !e.target.closest("#menuBtn")) closeMenu();
+});
+
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") closeMenu();
+});
+
+window.addEventListener("resize", closeMenu);
+window.addEventListener("scroll", closeMenu, true);
+
 /* ── toast ── */
 function toast(text, isErr = false) {
   let el = $("toast");
@@ -395,8 +433,9 @@ function setReply(n) {
 }
 
 on("replyCancel", "click", () => setReply(null));
-on("backBtn", "click", () => showList());
+on("backBtn", "click", () => { closeMenu(); showList(); });
 on("clearChat", "click", () => {
+  closeMenu();
   if (threadVisible()) showList();
   else loadThreads();
 });
@@ -698,6 +737,7 @@ document.querySelectorAll(".tab").forEach((t) =>
 );
 
 on("runNow", "click", async () => {
+  closeMenu();
   if (!configured()) return switchTab("setup");
   try {
     await dispatchWorkflow("");
