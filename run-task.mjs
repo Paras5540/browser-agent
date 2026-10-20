@@ -49,6 +49,7 @@ const GEMINI_KEYS = [process.env.GEMINI_API_KEY, process.env.GEMINI_KEY_2, proce
   .filter(Boolean);
 
 const API_KEYS = PROVIDER === "openai" ? (LLM_KEY ? [LLM_KEY] : []) : GEMINI_KEYS;
+const API_KEY_MAIN = API_KEYS[0];
 
 if (!API_KEYS.length) {
   console.error(
@@ -289,6 +290,30 @@ try {
   });
   body = out.result;
   if (out.hitLimit) ok = false;
+
+  // bina tool use kiye ruk gaya? ek baar dobara, sakht instruction ke saath
+  const usedTools = timeline.filter((t) => t.type === "tool").length;
+  const looksRefused = /\b(cannot|can't|can not|unable|not able|i'm sorry|sorry,? i)/i.test(body);
+  if (usedTools === 0 || looksRefused) {
+    console.log("  ↻ koi kaam nahi hua — dobara try");
+    const retry = await runAgentTask({
+      goal:
+        goal +
+        "\n\nIMPORTANT: Pehle attempt me koi tool use nahi hua. Ab turant tool call karo — " +
+        "search() ya navigate() se shuru karo. Koi explanation nahi, seedha kaam.",
+      browser,
+      apiKey: API_KEY_MAIN,
+      apiKeys: API_KEYS,
+      maxSteps: Math.max(6, Math.floor(maxSteps / 2)),
+      onEvent: (e) => {
+        if (e.type === "tool") timeline.push({ type: "tool", name: e.name, human: e.human || e.name });
+        pushProgress();
+      },
+    });
+    if ((timeline.filter((t) => t.type === "tool").length > usedTools) || retry.result.length > body.length) {
+      body = retry.result;
+    }
+  }
 } catch (err) {
   ok = false;
   const msg = String(err.message || err);
