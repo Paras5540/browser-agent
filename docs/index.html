@@ -55,12 +55,23 @@
 
   <section class="panel side-panel">
     <div class="tabs">
-      <button class="tab active" data-tab="tasks">Tasks</button>
+      <button class="tab active" data-tab="live">Live</button>
+      <button class="tab" data-tab="tasks">Tasks</button>
       <button class="tab" data-tab="files">Files</button>
       <button class="tab" data-tab="setup">Setup</button>
     </div>
 
-    <div class="tab-body" id="tab-tasks">
+    <div class="tab-body" id="tab-live">
+      <div id="liveHeader" class="card" style="display:none">
+        <div class="title" id="liveTitle">—</div>
+        <div class="meta" id="liveMeta">—</div>
+        <div class="actions"><a class="btn tiny" id="liveLink" href="#" target="_blank" rel="noopener">Actions me dekhein</a></div>
+      </div>
+      <div id="liveSteps" class="steps-live"></div>
+      <div id="liveLog" class="live-log"></div>
+    </div>
+
+    <div class="tab-body hide" id="tab-tasks">
       <p class="hint">Har 8 second auto-refresh</p>
       <div id="taskList" class="list"><p class="hint">Configure karein…</p></div>
     </div>
