@@ -366,12 +366,9 @@ async function loadThreads() {
   }
 }
 
-/** Setup tab kholo — mobile pe side panel bhi open ho jaye */
+/** Setup kholo */
 function openSetup() {
-  switchTab("setup", true);
-  document.body.classList.add("show-panel");
-  const b = $("panelBtn");
-  if (b) b.textContent = "▦";
+  navTo("setup");
 }
 
 /* ── panel menu (⋮) ── */
@@ -733,21 +730,34 @@ async function loadFiles() {
 
 /* ══════════════════════ TABS / SETUP ══════════════════════ */
 const TABS = ["live", "tasks", "files", "keys", "setup"];
+const TAB_LABEL = { live: "Live", tasks: "Tasks", files: "Files", keys: "Keys", setup: "Setup" };
+
 function switchTab(name, manual = false) {
   if (manual) lastManualTabAt = Date.now();
-  document.querySelectorAll(".tab").forEach((x) => x.classList.toggle("active", x.dataset.tab === name));
-  TABS.forEach((k) => $("tab-" + k).classList.toggle("hide", k !== name));
+  TABS.forEach((k) => $("tab-" + k)?.classList.toggle("hide", k !== name));
+  document.querySelectorAll("[data-nav]").forEach((b) => b.classList.toggle("active", b.dataset.nav === name));
+  const t = $("sideTitle");
+  if (t) t.textContent = TAB_LABEL[name] || name;
 }
 
-document.querySelectorAll(".tab").forEach((t) =>
-  t.addEventListener("click", () => {
-    switchTab(t.dataset.tab, true);
-    if (t.dataset.tab === "live") loadLive();
-    if (t.dataset.tab === "tasks") loadTasks();
-    if (t.dataset.tab === "files") loadFiles();
-    if (t.dataset.tab === "keys") loadKeys();
-  })
+/** Menu se panel ka section kholo (mobile pe panel bhi khule) */
+function navTo(name) {
+  switchTab(name, true);
+  document.body.classList.add("show-panel");
+  const b = $("panelBtn");
+  if (b) b.textContent = "▦";
+  closeMenu();
+  if (name === "live") loadLive();
+  if (name === "tasks") loadTasks();
+  if (name === "files") loadFiles();
+  if (name === "keys") loadKeys();
+}
+
+document.querySelectorAll("[data-nav]").forEach((btn) =>
+  btn.addEventListener("click", () => navTo(btn.dataset.nav))
 );
+
+
 
 on("runNow", "click", async () => {
   closeMenu();
