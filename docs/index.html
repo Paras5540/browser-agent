@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="theme-color" content="#f5f4ee" />
 <title>Browser Agent</title>
-<link rel="stylesheet" href="style.css?v=11" />
+<link rel="stylesheet" href="style.css?v=12" />
 <script src="https://cdn.jsdelivr.net/npm/libsodium-wrappers@0.7.15/dist/bundles/libsodium-wrappers.min.js"></script>
 </head>
 <body>
@@ -26,7 +26,10 @@
 <main class="layout">
   <section class="panel chat-panel">
     <div class="panel-head">
-      <h2>Chat</h2>
+      <div class="head-title">
+        <button class="btn tiny ghost hide" id="backBtn">←</button>
+        <h2 id="threadTitle">Tasks</h2>
+      </div>
       <div class="head-actions">
         <button class="btn tiny ghost" id="runNow">Run scheduled</button>
         <button class="btn tiny ghost" id="clearChat">Clear</button>
@@ -41,7 +44,9 @@
       <button class="btn primary tiny" id="goSetup">Setup</button>
     </div>
 
-    <div class="chat-scroll" id="chat">
+    <div class="thread-list" id="threadList"></div>
+
+    <div class="chat-scroll hide" id="chat">
       <div class="empty" id="chatEmpty">
         <h3>Kya karna hai batayein</h3>
         <p>Agent cloud me khud browser chalayega — search, click, form fill, data collection.</p>
@@ -174,6 +179,6 @@
   </section>
 </main>
 
-<script src="app.js?v=11"></script>
+<script src="app.js?v=12"></script>
 </body>
 </html>
