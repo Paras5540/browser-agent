@@ -216,16 +216,16 @@ body {
 
 /* ── composer (bada chat box) ────────────────────────────────────── */
 .composer {
-  display: flex; gap: 10px; align-items: flex-end;
-  padding: 14px 16px 16px; border-top: 1px solid var(--line);
+  display: flex; gap: 8px; align-items: flex-end;
+  padding: 10px 14px 12px; border-top: 1px solid var(--line);
   background: var(--panel); flex: 0 0 auto;
 }
 .composer textarea {
   flex: 1 1 auto; resize: none;
-  min-height: 64px; max-height: 260px;
+  min-height: 44px; max-height: 120px;
   background: var(--panel-2); color: var(--text);
   border: 1px solid var(--line); border-radius: 14px;
-  padding: 13px 15px; font: inherit; font-size: 15px; line-height: 1.55;
+  padding: 11px 13px; font: inherit; font-size: 14.5px; line-height: 1.45;
   outline: none; transition: border-color .15s, background .15s;
 }
 .composer textarea::placeholder { color: var(--faint); }
@@ -437,8 +437,8 @@ body {
   .chat-scroll { padding: 13px 12px; gap: 14px; }
   .bubble { font-size: 14px; padding: 11px 13px; }
   .msg.user .bubble { max-width: 94%; }
-  .composer { padding: 11px 12px 13px; gap: 8px; }
-  .composer textarea { min-height: 58px; font-size: 16px; padding: 12px 13px; }
+  .composer { padding: 8px 10px 10px; gap: 7px; }
+  .composer textarea { min-height: 42px; max-height: 96px; font-size: 16px; padding: 10px 11px; }
   .btn { padding: 10px 15px; font-size: 13.5px; }
   .live-strip { margin: 10px 12px 0; padding: 9px 11px; font-size: 12.5px; }
   .setup-banner { margin: 10px 12px 0; }
