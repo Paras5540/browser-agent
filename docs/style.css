@@ -568,3 +568,61 @@ body {
   .tab { font-size: 10px; letter-spacing: 0; }
   .brand h1 { font-size: 13.5px; }
 }
+
+/* ══════════════════════════════════════════════════════════════════
+   MAX-CHAT MODE — input chhota, side panel chhota/collapsible
+   ══════════════════════════════════════════════════════════════════ */
+
+.only-mobile { display: none; }
+
+/* ── composer: ek line ka patla box ── */
+.composer { padding: 6px 10px 10px; gap: 7px; }
+.composer textarea {
+  min-height: 34px;
+  max-height: 72px;
+  padding: 7px 11px;
+  font-size: 14px;
+  line-height: 1.35;
+  border-radius: 10px;
+}
+.composer .btn.primary {
+  height: 34px;
+  padding: 0 16px;
+  font-size: 13px;
+  border-radius: 10px;
+}
+
+/* ── zyada output bina scroll ── */
+.chat-scroll { padding: 14px 16px 4px; gap: 13px; }
+.bubble { padding: 11px 14px; font-size: 14px; line-height: 1.6; }
+.msg { gap: 4px; }
+.msg .who { font-size: 11px; }
+.empty h3 { font-size: 19px; margin-bottom: 6px; }
+.empty p { font-size: 13px; margin-bottom: 16px; }
+.sug { padding: 10px 12px; font-size: 13px; }
+
+/* ── desktop: side panel 320 → 280px ── */
+@media (min-width: 1081px) {
+  .layout { grid-template-columns: minmax(0, 1fr) 280px; gap: 12px; padding: 12px; }
+  .tab { font-size: 11px; padding: 10px 2px; }
+  .tab-body { padding: 10px; }
+}
+
+/* ── mobile/tablet: chat full height, panel collapsible ── */
+@media (max-width: 1080px) {
+  .layout {
+    grid-template-rows: minmax(0, 1fr);
+    padding: 8px; gap: 8px;
+  }
+  .side-panel { display: none; }
+  body.show-panel .layout { grid-template-rows: minmax(0, 1fr) minmax(0, 46dvh); }
+  body.show-panel .side-panel { display: flex; }
+  .only-mobile { display: inline-flex; }
+
+  .composer textarea { min-height: 34px; max-height: 64px; font-size: 15px; padding: 7px 10px; }
+  .composer .btn.primary { height: 34px; padding: 0 14px; }
+  .chat-scroll { padding: 12px 11px 4px; gap: 11px; }
+  .bubble { font-size: 13.8px; padding: 10px 12px; }
+  .live-strip { margin: 6px 10px 0; padding: 7px 10px; font-size: 11.5px; }
+  .reply-chip { margin: 0 10px 5px; padding: 5px 9px; font-size: 11px; }
+}
