@@ -1,10 +1,16 @@
-# Task result
+# ⚠️ Task result
 
-**Goal:** https://en.wikipedia.org/wiki/Artificial_intelligence kholo aur page ka title aur pehla heading batao. Chhota jawab do.
+**Goal:** https://example.com, https://example.org aur https://www.iana.org kholo aur teeno ka page title batao. Chhota jawab.
 
-**Run:** 2026-10-20T16:57:45.816Z
+**Time:** 57s · **Actions:** 1
 
 ---
 
-Page Title: Artificial intelligence - Wikipedia
-Pehla heading: Artificial intelligence
+❌ Agent fail ho gaya:
+
+```
+Gemini 429: {
+  "error": {
+    "code": 429,
+    "message": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota ex
+```
