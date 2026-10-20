@@ -174,6 +174,89 @@ async function loadFiles() {
   }
 }
 
+// ── live progress ────────────────────────────────────────────────────────────
+const ICON = { success: "✓", failure: "✗", skipped: "·", cancelled: "⊘" };
+
+function stepClass(s) {
+  if (s.status === "in_progress") return "active";
+  if (s.conclusion === "failure") return "fail";
+  if (s.conclusion === "success") return "done";
+  if (s.conclusion === "skipped") return "";
+  return s.status === "queued" ? "" : "";
+}
+
+function fmtElapsed(from, to) {
+  const a = new Date(from).getTime();
+  const b = to ? new Date(to).getTime() : Date.now();
+  const s = Math.max(0, Math.round((b - a) / 1000));
+  return s < 60 ? `${s}s` : `${Math.floor(s / 60)}m ${s % 60}s`;
+}
+
+async function loadLive() {
+  if (!configured()) return;
+  const header = $("liveHeader");
+  const stepsEl = $("liveSteps");
+  const logEl = $("liveLog");
+
+  try {
+    const runs = await gh(`${repoPath()}/actions/runs?per_page=12`);
+    const agentRuns = (runs.workflow_runs || []).filter((r) => r.path?.includes("agent.yml") || r.name === "Browser Agent");
+    if (!agentRuns.length) {
+      header.style.display = "none";
+      stepsEl.innerHTML = `<p class="hint">Abhi koi run nahi hua.</p>`;
+      logEl.innerHTML = "";
+      return;
+    }
+
+    const active =
+      agentRuns.find((r) => r.status === "in_progress" || r.status === "queued") || agentRuns[0];
+
+    const m = /issue #(\d+)/.exec(active.name || "");
+    const issueNum = m ? Number(m[1]) : null;
+
+    const jobsRes = await gh(`${repoPath()}/actions/runs/${active.id}/jobs`);
+    const job = (jobsRes.jobs || [])[0];
+    const steps = job?.steps || [];
+
+    header.style.display = "";
+    const isLive = active.status !== "completed";
+    $("liveTitle").innerHTML = `${esc(active.name || "run")}<span class="badge ${isLive ? "running" : active.conclusion === "success" ? "done" : "error"}">${isLive ? "running" : active.conclusion}</span>`;
+    $("liveMeta").innerHTML =
+      `<span>${active.status}${active.conclusion ? "/" + active.conclusion : ""}</span>` +
+      `<span>· ${fmtElapsed(active.created_at, active.status === "completed" ? active.updated_at : null)}</span>` +
+      (job?.started_at ? `<span>· job ${fmtElapsed(job.started_at, job.completed_at)}</span>` : "");
+    $("liveLink").href = active.html_url;
+
+    stepsEl.innerHTML = steps.length
+      ? steps
+          .map((s) => {
+            const cls = stepClass(s);
+            const ico = s.status === "in_progress" ? "⟳" : s.conclusion === "success" ? "✓" : s.conclusion === "failure" ? "✗" : s.conclusion === "skipped" ? "·" : "○";
+            return `<div class="step-row ${cls}"><span class="ico">${ico}</span><span>${esc(s.name)}</span></div>`;
+          })
+          .join("")
+      : `<p class="hint">Steps load ho rahe hain…</p>`;
+
+    // agent ka live log — progress comment se
+    if (issueNum) {
+      const cs = await gh(`${repoPath()}/issues/${issueNum}/comments?per_page=100`);
+      const body = cs?.length ? cs[cs.length - 1].body || "" : "";
+      const lines = body.split("\n").filter((l) => l.startsWith("- ") || l.startsWith("**Elapsed"));
+      logEl.innerHTML = lines
+        .slice(-18)
+        .map((l) => {
+          const clean = esc(l.replace(/^- /, "").replace(/`/g, ""));
+          return `<div class="li">${clean}</div>`;
+        })
+        .join("");
+    } else {
+      logEl.innerHTML = "";
+    }
+  } catch (err) {
+    stepsEl.innerHTML = `<p class="hint" style="color:var(--danger)">${esc(err.message)}</p>`;
+  }
+}
+
 // ── chat ─────────────────────────────────────────────────────────────────────
 const chat = $("chat");
 
@@ -236,12 +319,19 @@ $("runNow").addEventListener("click", async () => {
 });
 
 // ── tabs ─────────────────────────────────────────────────────────────────────
-const TABS = ["tasks", "files", "setup"];
+const TABS = ["live", "tasks", "files", "setup"];
 function switchTab(name) {
   document.querySelectorAll(".tab").forEach((x) => x.classList.toggle("active", x.dataset.tab === name));
   TABS.forEach((k) => $("tab-" + k).classList.toggle("hide", k !== name));
 }
-document.querySelectorAll(".tab").forEach((t) => t.addEventListener("click", () => switchTab(t.dataset.tab)));
+document.querySelectorAll(".tab").forEach((t) =>
+  t.addEventListener("click", () => {
+    switchTab(t.dataset.tab);
+    if (t.dataset.tab === "live") loadLive();
+    if (t.dataset.tab === "tasks") loadTasks();
+    if (t.dataset.tab === "files") loadFiles();
+  })
+);
 $("goSetup").addEventListener("click", () => switchTab("setup"));
 $("cfgBtn").addEventListener("click", () => switchTab("setup"));
 
@@ -275,6 +365,7 @@ $("setupForm").addEventListener("submit", async (e) => {
       `✓ Connected: ${r.full_name} · ${r.private ? "PRIVATE (cron nahi chalega — public karein)" : "public ✓"}`
     );
     setConfigUI();
+    loadLive();
     loadTasks();
     loadFiles();
   } catch (err) {
@@ -286,12 +377,16 @@ $("setupForm").addEventListener("submit", async (e) => {
 autoDetect();
 setConfigUI();
 if (configured()) {
+  loadLive();
   loadTasks();
   loadFiles();
   setInterval(() => {
     if (!document.hidden) {
+      loadLive();
       loadTasks();
-      loadFiles();
     }
-  }, 8000);
+  }, 5000);
+  setInterval(() => {
+    if (!document.hidden) loadFiles();
+  }, 20000);
 }
