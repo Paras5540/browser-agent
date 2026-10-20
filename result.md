@@ -1,9 +1,9 @@
 # ✅ Task result
 
-**Goal:** Kaggle open kro or batao kya dikh raha hai screen mein
+**Goal:** https://example.com kholo aur heading batao. Ek line.
 
-**Time:** 1m 5s · **Actions:** 4
+**Time:** 1m 9s · **Actions:** 5
 
 ---
 
-Kaggle website (https://www.kaggle.com/) successfully khol liya hai. Screen par header mein Kaggle ka logo, Competitions, Benchmarks, Game Arena, Data Hub options, Search bar, Login aur Sign Up buttons dikh rahe hain. Main tagline hai: "Evaluating what works at AI’s frontier" jiske neeche crowdsourced benchmarks, competitions, aur hackathons ka section hai. Neeche OpenAI, DeepMind, Stanford, Cohere jaise trusted teams ke logos bhi show ho rahe hain.
+Example.com khola aur heading (Title) "Example Domain" mili.
