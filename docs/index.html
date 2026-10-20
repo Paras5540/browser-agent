@@ -2,9 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Browser Agent — Cloud Dashboard</title>
-<link rel="stylesheet" href="style.css?v=5" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#f5f4ee" />
+<title>Browser Agent</title>
+<link rel="stylesheet" href="style.css?v=6" />
 </head>
 <body>
 <header class="topbar">
@@ -12,10 +13,10 @@
     <span class="dot"></span>
     <h1>Browser Agent</h1>
     <span class="pill" id="repoPill">—</span>
-    <span class="pill ghost" id="quotaPill">free · GitHub Actions</span>
   </div>
   <div class="topright">
     <span class="pill warn hide" id="cfgWarn">setup needed</span>
+    <button class="btn icon" id="themeBtn" title="Dark / Light mode" aria-label="Toggle theme">◐</button>
     <button class="btn ghost" id="cfgBtn">⚙ Setup</button>
   </div>
 </header>
@@ -24,7 +25,10 @@
   <section class="panel chat-panel">
     <div class="panel-head">
       <h2>Chat</h2>
-      <button class="btn tiny ghost" id="runNow">Run scheduled now</button>
+      <div class="head-actions">
+        <button class="btn tiny ghost" id="runNow">Run scheduled</button>
+        <button class="btn tiny ghost" id="clearChat">Clear</button>
+      </div>
     </div>
 
     <div class="setup-banner hide" id="setupBanner">
@@ -37,8 +41,8 @@
 
     <div class="chat-scroll" id="chat">
       <div class="empty" id="chatEmpty">
-        <h3>Task likhein, agent cloud me chalega</h3>
-        <p>Har task ek GitHub Issue ban jati hai. Agent chalta hai, result wahin comment hota hai — phone band hote hi bhi chalta rehta hai.</p>
+        <h3>Kya karna hai batayein</h3>
+        <p>Agent cloud me khud browser chalayega — search, click, form fill, data collection.</p>
         <div class="suggestions">
           <button class="sug">Hacker News pe aaj ke top 10 posts ka title aur link CSV me nikaalo</button>
           <button class="sug">Amazon pe top 5 noise cancelling headphones ke naam, price, rating nikaalo</button>
@@ -48,14 +52,14 @@
     </div>
 
     <div class="live-strip hide" id="liveStrip">
-      <span class="ls-spin">⟳</span>
+      <span class="ls-spin">◐</span>
       <span class="ls-text" id="lsText">Agent chal raha hai…</span>
       <span class="ls-time" id="lsTime"></span>
       <button class="btn tiny ghost" id="lsOpen">Live</button>
     </div>
 
     <form class="composer" id="composer">
-      <textarea id="input" rows="2" placeholder="Task likhein… (Ctrl+Enter)"></textarea>
+      <textarea id="input" rows="3" placeholder="Task likhein… (Ctrl+Enter to send)"></textarea>
       <button class="btn primary" id="sendBtn" type="submit">Run</button>
     </form>
   </section>
@@ -79,8 +83,8 @@
     </div>
 
     <div class="tab-body hide" id="tab-tasks">
-      <p class="hint">Har 8 second auto-refresh</p>
-      <div id="taskList" class="list"><p class="hint">Configure karein…</p></div>
+      <p class="hint">Saare tasks — har 5 second refresh</p>
+      <div id="taskList" class="list"><p class="hint">—</p></div>
     </div>
 
     <div class="tab-body hide" id="tab-files">
@@ -103,9 +107,8 @@
         <input id="fToken" type="password" placeholder="github_pat_…" autocomplete="off" />
         <p class="hint">
           Token sirf aapke browser me (localStorage) rehta hai, kisi server pe nahi jaata.<br>
-          Banana: GitHub → Settings → Developer settings → <b>Fine-grained tokens</b> →
-          repo select → permissions: <b>Issues: Read & write</b>, <b>Contents: Read</b>,
-          <b>Actions: Read & write</b>, <b>Metadata: Read</b>.
+          Permissions: <b>Issues: Read &amp; write</b>, <b>Contents: Read</b>,
+          <b>Actions: Read &amp; write</b>, <b>Metadata: Read</b>.
         </p>
 
         <button class="btn primary wide" type="submit" style="margin-top:10px">Save + Test</button>
@@ -114,17 +117,17 @@
 
       <div class="card" style="margin-top:12px">
         <div class="title">Pehli baar?</div>
-        <div class="meta" style="display:block;line-height:1.7">
+        <div class="meta" style="display:block;line-height:1.8">
           1. Repo <b>public</b> hona chahiye (private me cron chalta nahi)<br>
           2. Repo → Settings → Secrets → Actions → <code>GEMINI_API_KEY</code><br>
-          3. Repo → Settings → Pages → Source: <b>main</b> branch, folder <b>/docs</b><br>
-          4. Label <code>agent-task</code> ban jayega automatically
+          3. Repo → Settings → Pages → Source: <b>main</b>, folder <b>/docs</b><br>
+          4. Dashboard ke Setup me token daalein
         </div>
       </div>
     </div>
   </section>
 </main>
 
-<script src="app.js?v=5"></script>
+<script src="app.js?v=6"></script>
 </body>
 </html>
