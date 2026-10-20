@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="theme-color" content="#f5f4ee" />
 <title>Browser Agent</title>
-<link rel="stylesheet" href="style.css?v=8" />
+<link rel="stylesheet" href="style.css?v=9" />
+<script src="https://cdn.jsdelivr.net/npm/libsodium-wrappers@0.7.15/dist/bundles/libsodium-wrappers.min.js"></script>
 </head>
 <body>
 <header class="topbar">
@@ -74,6 +75,7 @@
       <button class="tab active" data-tab="live">Live</button>
       <button class="tab" data-tab="tasks">Tasks</button>
       <button class="tab" data-tab="files">Files</button>
+      <button class="tab" data-tab="keys">Keys</button>
       <button class="tab" data-tab="setup">Setup</button>
     </div>
 
@@ -95,6 +97,44 @@
     <div class="tab-body hide" id="tab-files">
       <p class="hint">Agent ne jo files banayi (repo ke <code>outputs/</code> me)</p>
       <div id="fileList" class="list"><p class="hint">—</p></div>
+    </div>
+
+    <div class="tab-body hide" id="tab-keys">
+      <div class="card">
+        <div class="title">Pipeline status <button class="btn tiny ghost" id="pipeRefresh" style="float:right">↻</button></div>
+        <div id="pipeList" class="pipe-list"><p class="hint">—</p></div>
+      </div>
+
+      <form id="keysForm" class="sched-form">
+        <label>Gemini keys <span class="hint">(quota badhane ke liye 2-4 keys)</span></label>
+        <div class="key-row"><input id="k1" type="password" placeholder="GEMINI_API_KEY — AIza… ya AQ…" autocomplete="off" spellcheck="false" /><span class="key-state" id="st1">—</span></div>
+        <div class="key-row"><input id="k2" type="password" placeholder="GEMINI_KEY_2 (optional)" autocomplete="off" spellcheck="false" /><span class="key-state" id="st2">—</span></div>
+        <div class="key-row"><input id="k3" type="password" placeholder="GEMINI_KEY_3 (optional)" autocomplete="off" spellcheck="false" /><span class="key-state" id="st3">—</span></div>
+        <div class="key-row"><input id="k4" type="password" placeholder="GEMINI_KEY_4 (optional)" autocomplete="off" spellcheck="false" /><span class="key-state" id="st4">—</span></div>
+        <p class="hint">Khaali chhodein to wo key nahi badlegi. Keys GitHub Secrets me jaati hain — repo me code me kabhi nahi.</p>
+
+        <div class="row" style="margin-top:8px">
+          <button class="btn wide" type="button" id="testKeys">Test keys</button>
+          <button class="btn primary wide" type="submit">Save to Secrets</button>
+        </div>
+        <div id="keysMsg" class="settings-msg hide"></div>
+      </form>
+
+      <form id="varsForm" class="sched-form">
+        <label>Model</label>
+        <select id="vModel">
+          <option value="gemini-flash-lite-latest">gemini-flash-lite-latest (quota-friendly)</option>
+          <option value="gemini-2.5-flash-lite">gemini-2.5-flash-lite</option>
+          <option value="gemini-2.5-flash">gemini-2.5-flash</option>
+          <option value="gemini-flash-latest">gemini-flash-latest</option>
+        </select>
+        <label>Max steps per task</label>
+        <input id="vSteps" type="number" min="5" max="60" />
+        <label>Fallback models (comma se)</label>
+        <input id="vFallback" placeholder="gemini-2.5-flash-lite,gemini-flash-lite-latest" />
+        <button class="btn wide" type="submit" style="margin-top:10px">Save variables</button>
+        <div id="varsMsg" class="settings-msg hide"></div>
+      </form>
     </div>
 
     <div class="tab-body hide" id="tab-setup">
@@ -133,6 +173,6 @@
   </section>
 </main>
 
-<script src="app.js?v=8"></script>
+<script src="app.js?v=9"></script>
 </body>
 </html>
