@@ -292,7 +292,7 @@ const input = $("input");
 
 function autoGrow() {
   input.style.height = "auto";
-  input.style.height = Math.min(input.scrollHeight, 260) + "px";
+  input.style.height = Math.min(input.scrollHeight, 120) + "px";
 }
 input?.addEventListener("input", autoGrow);
 
