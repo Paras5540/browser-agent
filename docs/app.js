@@ -187,6 +187,32 @@ function addAgentMsg(n) {
   return ui;
 }
 
+/* ── live ticker: har second kuch na kuch chalta dikhe ── */
+const THINK_WORDS = [
+  "soch raha hoon",
+  "plan bana raha hoon",
+  "page dekh raha hoon",
+  "agla step chun raha hoon",
+  "kaam kar raha hoon",
+];
+let streamTick = null;
+
+function stopThinkTick() {
+  if (streamTick) clearInterval(streamTick);
+  streamTick = null;
+}
+
+function startThinkTick(el, t0) {
+  stopThinkTick();
+  streamTick = setInterval(() => {
+    const box = el.querySelector(".sthink");
+    if (!box) return stopThinkTick();
+    const sec = Math.round((Date.now() - t0) / 1000);
+    const w = THINK_WORDS[Math.floor(sec / 5) % THINK_WORDS.length];
+    box.innerHTML = `<span class="si">◐</span><span class="w">${w}<span class="dots"><i>.</i><i>.</i><i>.</i></span></span><span class="stime">${sec}s</span>`;
+  }, 1000);
+}
+
 /** Live steps chat ke andar — Claude jaisa realtime */
 function renderStream(el, body) {
   const steps = (body || "")
@@ -200,13 +226,10 @@ function renderStream(el, body) {
   el.innerHTML =
     `<div class="stream">` +
     steps.map((s) => `<div class="srow done"><span class="si">✓</span><span>${esc(s)}</span></div>`).join("") +
-    (cur
-      ? `<div class="srow active"><span class="si">◐</span><span>${esc(cur)}</span></div>`
-      : steps.length
-        ? ""
-        : `<div class="srow active"><span class="si">◐</span><span>Shuru kar raha hoon…</span></div>`) +
+    (cur ? `<div class="srow active"><span class="si">◐</span><span>${esc(cur)}</span></div>` : "") +
     `</div>` +
-    (elapsed ? `<div class="smeta">${esc(elapsed)}</div>` : "");
+    (elapsed ? `<div class="smeta">${esc(elapsed)}</div>` : "") +
+    `<div class="sthink"><span class="si">◐</span><span class="w">soch raha hoon<span class="dots"><i>.</i><i>.</i><i>.</i></span></span><span class="stime">0s</span></div>`;
 }
 
 /** Ek task ki live poll — steps chat me add hote jaate hain */
@@ -235,11 +258,13 @@ async function streamThread(n, ui) {
         ui.badge.className = `badge ${failed ? "error" : "done"}`;
         ui.badge.textContent = failed ? "failed" : "done";
         ui.bubble.classList.remove("running");
+        stopThinkTick();
         scrollChat();
         loadThreads();
         return;
       }
       renderStream(ui.bubble, body);
+      startThinkTick(ui.bubble, t0);
       scrollChat();
     }
     await sleep(1200);
@@ -268,6 +293,7 @@ async function openThread(n, opts = {}) {
     ui.bubble.classList.remove("running");
     scrollChat();
   } else {
+    startThinkTick(ui.bubble, Date.now());
     streamThread(n, ui);
   }
 }
@@ -416,6 +442,7 @@ form?.addEventListener("submit", async (e) => {
     ui.bubble.innerHTML = `<span style="color:var(--danger)">✗ ${esc(err.message)}</span>`;
     ui.badge.className = "badge error";
     ui.badge.textContent = "error";
+    stopThinkTick();
   }
 });
 
@@ -720,6 +747,21 @@ on("setupForm", "submit", async (e) => {
 
 /* ══════════════════════ KEYS / PIPELINE ══════════════════════ */
 const KEY_NAMES = ["GEMINI_API_KEY", "GEMINI_KEY_2", "GEMINI_KEY_3", "GEMINI_KEY_4"];
+const GROQ_BASE = "https://api.groq.com/openai/v1";
+const GROQ_DEFAULT_MODEL = "llama-3.3-70b-versatile";
+
+/** provider select badalne pe sensible defaults */
+function applyProviderDefaults() {
+  const p = $("pProvider")?.value;
+  if (!p) return;
+  if (p === "openai") {
+    if (!$("pBase").value) $("pBase").value = GROQ_BASE;
+    if (!$("pModel").value) $("pModel").value = GROQ_DEFAULT_MODEL;
+  } else {
+    if ($("pBase").value === GROQ_BASE || !$("pBase").value) $("pBase").value = "";
+    if ($("pModel").value === GROQ_DEFAULT_MODEL) $("pModel").value = "";
+  }
+}
 
 function msg(elId, kind, text) {
   const el = $(elId);
@@ -808,6 +850,20 @@ async function loadKeys() {
     const v = await gh(`${repoPath()}/actions/variables`);
     for (const x of v.variables || []) vars[x.name] = x.value;
     rows.push({ ok: Object.keys(vars).length > 0, html: `Variables — model <b>${esc(vars.GEMINI_MODEL || "—")}</b>, steps <b>${esc(vars.MAX_STEPS || "—")}</b>` });
+
+    const prov = vars.LLM_PROVIDER || "gemini";
+    const hasLlmKey = secretNames.includes("LLM_API_KEY");
+    rows.push({
+      ok: prov === "gemini" ? true : hasLlmKey,
+      html:
+        prov === "gemini"
+          ? "Provider: <b>Gemini</b>"
+          : `Provider: <b>${esc(prov)}</b> · <code>${esc(vars.LLM_MODEL || "—")}</code> ${hasLlmKey ? "· key ✓" : "· <b style=\"color:var(--danger)\">key missing</b>"}`,
+    });
+
+    if ($("pProvider")) $("pProvider").value = prov === "openai" ? "openai" : "gemini";
+    if ($("pBase") && vars.LLM_BASE_URL) $("pBase").value = vars.LLM_BASE_URL;
+    if ($("pModel") && vars.LLM_MODEL) $("pModel").value = vars.LLM_MODEL;
   } catch {
     rows.push({ ok: false, html: "Variables padhne ki permission nahi (Variables: Read)" });
   }
@@ -824,12 +880,55 @@ async function loadKeys() {
     st.className = `key-state ${has ? "ok" : ""}`;
   }
 
+  if ($("pProvider") && !vars.LLM_PROVIDER) $("pProvider").value = "gemini";
   if ($("vModel") && vars.GEMINI_MODEL) $("vModel").value = vars.GEMINI_MODEL;
   if ($("vSteps") && vars.MAX_STEPS) $("vSteps").value = vars.MAX_STEPS;
   if ($("vFallback") && vars.FALLBACK_MODELS) $("vFallback").value = vars.FALLBACK_MODELS;
 }
 
 on("pipeRefresh", "click", loadKeys);
+on("pProvider", "change", applyProviderDefaults);
+
+on("testProv", "click", async () => {
+  const base = ($("pBase")?.value || GROQ_BASE).replace(/\/+$/, "");
+  const key = $("pKey")?.value.trim();
+  if (!key) return msg("provMsg", "err", "Pehle Groq key paste karein (gsk_…).");
+  msg("provMsg", "ok", "Test ho raha hai…");
+  try {
+    const r = await fetch(`${base}/models`, { headers: { Authorization: `Bearer ${key}` } });
+    if (!r.ok) return msg("provMsg", "err", `✗ ${r.status} — key galat ya expired`);
+    const j = await r.json();
+    const names = (j.data || []).map((m) => m.id).filter((n) => !/whisper|tts|guard/i.test(n)).slice(0, 8);
+    msg("provMsg", "ok", `✓ Key valid · models: ${names.join(", ")}`);
+  } catch (e) {
+    msg("provMsg", "err", `✗ Network error: ${e.message}`);
+  }
+});
+
+on("provForm", "submit", async (e) => {
+  e.preventDefault();
+  const prov = $("pProvider").value;
+  const base = prov === "openai" ? ($("pBase")?.value.trim() || GROQ_BASE) : "";
+  const model = $("pModel")?.value.trim() || (prov === "openai" ? GROQ_DEFAULT_MODEL : "");
+  const key = $("pKey")?.value.trim();
+
+  msg("provMsg", "ok", "Save ho raha hai…");
+  try {
+    await setVariable("LLM_PROVIDER", prov);
+    if (prov === "openai") {
+      await setVariable("LLM_BASE_URL", base);
+      await setVariable("LLM_MODEL", model);
+      if (key) {
+        await setSecret("LLM_API_KEY", key);
+        $("pKey").value = "";
+      }
+    }
+    msg("provMsg", "ok", `✓ Provider: ${prov}${prov === "openai" ? ` · ${model}` : ""}. Agla task isi se chalega.`);
+    loadKeys();
+  } catch (err) {
+    msg("provMsg", "err", `✗ ${err.message} — token me Secrets/Variables write permission chahiye`);
+  }
+});
 
 on("testKeys", "click", async () => {
   const vals = [1, 2, 3, 4].map((i) => $(`k${i}`)?.value.trim() || "").filter(Boolean);
