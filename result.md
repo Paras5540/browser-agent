@@ -1,9 +1,9 @@
 # ✅ Task result
 
-**Goal:** Phir se try kro or keval @gmail.com mail use kro kaggle mein login ke liye
+**Goal:** Kaggle mein register kro kya kya chahie batao mein deta hu
 
-**Time:** 58s · **Actions:** 16
+**Time:** 30s · **Actions:** 6
 
 ---
 
-Successfully navigated to Kaggle login and reached the Google Sign-In page where a @gmail.com email account is required to continue.
+Kaggle mein register karne ke liye niche di gayi cheezein chahiye:\n1. **Email Address** (Valid email jisse account banega)\n2. **Password** (Minimum 7 characters ka)\n3. **Full Name** (Aapka poora naam jo profile par dikhega)\n\nAap chahein toh directly **Google Account**, **Facebook**, ya **Yahoo** se bhi ek click mein sign up kar sakte hain!\n\nAap apna Email, Password aur Full Name bhej dijiye, ya Google account se direct login kar lijiye.
