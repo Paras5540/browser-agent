@@ -450,3 +450,23 @@ body {
 @media (max-width: 1080px) and (orientation: landscape) {
   .layout { grid-template-rows: minmax(0, 1fr) minmax(0, 42dvh); }
 }
+
+/* ── keys tab ────────────────────────────────────────────────────── */
+.pipe-list { display: flex; flex-direction: column; gap: 5px; margin-top: 6px; }
+.pipe-item {
+  display: flex; align-items: flex-start; gap: 7px;
+  font-size: 12px; color: var(--muted); line-height: 1.45;
+}
+.pipe-item .pi-ico { flex: 0 0 13px; text-align: center; font-weight: 700; }
+.pipe-item.ok .pi-ico { color: #3f7a3a; }
+[data-theme="dark"] .pipe-item.ok .pi-ico { color: #8fd07f; }
+.pipe-item.bad .pi-ico { color: var(--danger); }
+.pipe-item b { color: var(--text); font-weight: 600; }
+.pipe-item a { color: var(--muted); text-decoration: underline; }
+
+.key-row { display: flex; gap: 6px; align-items: center; }
+.key-row input { flex: 1; }
+.key-state { font-size: 10.5px; color: var(--faint); min-width: 44px; text-align: right; }
+.key-state.ok { color: #3f7a3a; }
+[data-theme="dark"] .key-state.ok { color: #8fd07f; }
+.key-state.bad { color: var(--danger); }
