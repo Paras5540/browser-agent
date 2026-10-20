@@ -41,12 +41,20 @@ if (!goal) {
   console.error("✗ Koi task nahi mila. TASK_GOAL env, CLI arg, ya tasks/scheduled.txt dein.");
   process.exit(1);
 }
-const API_KEYS = [process.env.GEMINI_API_KEY, process.env.GEMINI_KEY_2, process.env.GEMINI_KEY_3, process.env.GEMINI_KEY_4]
+const PROVIDER = (process.env.LLM_PROVIDER || "gemini").toLowerCase();
+const LLM_KEY = (process.env.LLM_API_KEY || "").trim();
+const GEMINI_KEYS = [process.env.GEMINI_API_KEY, process.env.GEMINI_KEY_2, process.env.GEMINI_KEY_3, process.env.GEMINI_KEY_4]
   .map((k) => (k || "").trim())
   .filter(Boolean);
 
+const API_KEYS = PROVIDER === "openai" ? (LLM_KEY ? [LLM_KEY] : []) : GEMINI_KEYS;
+
 if (!API_KEYS.length) {
-  console.error("✗ GEMINI_API_KEY set nahi hai (Settings → Secrets → GEMINI_API_KEY).");
+  console.error(
+    PROVIDER === "openai"
+      ? "✗ LLM_API_KEY set nahi hai (Groq key) — Repo → Settings → Secrets → LLM_API_KEY"
+      : "✗ GEMINI_API_KEY set nahi hai — Repo → Settings → Secrets → GEMINI_API_KEY"
+  );
   process.exit(1);
 }
 
@@ -154,7 +162,8 @@ async function finalComment(body) {
 }
 
 console.log(`▶ Task: ${goal.slice(0, 200)}`);
-console.log(`  model: ${process.env.GEMINI_MODEL || "gemini-2.5-flash"} · steps: ${process.env.MAX_STEPS || 15} · keys: ${API_KEYS.length}`);
+const MODEL_LABEL = PROVIDER === "openai" ? (process.env.LLM_MODEL || "groq-default") : (process.env.GEMINI_MODEL || "gemini-2.5-flash");
+console.log(`  provider: ${PROVIDER} · model: ${MODEL_LABEL} · steps: ${process.env.MAX_STEPS || 15} · keys: ${API_KEYS.length}`);
 
 await pushProgress(true);
 
