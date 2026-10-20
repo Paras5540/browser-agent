@@ -125,23 +125,40 @@ async function dispatchWorkflow(goal = "") {
   });
 }
 
-/* ══════════════════════ CHAT ══════════════════════ */
+/* ══════════════════════ THREADS (har task = alag chat) ══════════════════════ */
 const chat = $("chat");
-const issueUIs = new Map();   // issue# → chat bubble
-let trackedIssue = null;      // jis issue ko har second poll karna hai
-let replyTo = null;           // follow-up kis issue pe ja raha hai
-const issueResults = new Map(); // issue# → last result text
-
-/* live timing (1-second ticker ke liye) */
+const issueUIs = new Map();
+const issueResults = new Map();
+let trackedIssue = null;
+let replyTo = null;
+let currentThread = null;
 let liveActive = false;
 let liveStartedAt = null;
+
+const threadVisible = () => !$("chat").classList.contains("hide");
+
+function showList() {
+  currentThread = null;
+  $("threadList").classList.remove("hide");
+  $("chat").classList.add("hide");
+  $("backBtn").classList.add("hide");
+  $("threadTitle").textContent = "Tasks";
+  loadThreads();
+}
+
+function showThreadView(n, title) {
+  currentThread = n;
+  $("threadList").classList.add("hide");
+  $("chat").classList.remove("hide");
+  $("backBtn").classList.remove("hide");
+  $("threadTitle").textContent = title || `#${n}`;
+}
 
 function scrollChat() {
   chat.scrollTop = chat.scrollHeight;
 }
 
 function addUserMsg(text) {
-  $("chatEmpty")?.remove();
   const el = document.createElement("div");
   el.className = "msg user";
   el.innerHTML = `<div class="bubble">${esc(text)}</div>`;
@@ -154,90 +171,170 @@ function whoHtml(n, badgeCls, badgeText) {
   const link = n
     ? ` <a class="issue-link" href="https://github.com/${cfg.owner}/${cfg.repo}/issues/${n}" target="_blank" rel="noopener">#${n}</a>`
     : "";
-  const fu = n ? `<button class="btn tiny ghost fu" data-followup="${n}" title="Isi task me aage kaam karein">↩ Follow-up</button>` : "";
+  const fu = n ? `<button class="btn tiny ghost fu" data-followup="${n}" title="Isi task me aage kaam">↩ Follow-up</button>` : "";
   return `<span class="dot-sm"></span>Agent${link}<span class="badge ${badgeCls}" data-badge>${badgeText}</span>${fu}`;
 }
 
-function addAgentMsg(issueNumber) {
-  $("chatEmpty")?.remove();
+function addAgentMsg(n) {
   const el = document.createElement("div");
   el.className = "msg agent";
-  el.innerHTML = `
-    <div class="who">${whoHtml(issueNumber, "running", "running")}</div>
-    <div class="bubble running" data-bubble><span class="muted">Queue me daal raha hoon…</span></div>`;
+  el.innerHTML = `<div class="who">${whoHtml(n, "running", "running")}</div>
+    <div class="bubble running" data-bubble><span class="muted">Shuru ho raha hai…</span></div>`;
   chat.appendChild(el);
   scrollChat();
-  return { root: el, bubble: el.querySelector("[data-bubble]"), badge: el.querySelector("[data-badge]") };
+  const ui = { root: el, bubble: el.querySelector("[data-bubble]"), badge: el.querySelector("[data-badge]") };
+  if (n) issueUIs.set(n, ui);
+  return ui;
 }
 
-/** Issue ko poll karta hai aur result seedha chat bubble me likhta hai. */
-async function watchIssue(n, ui) {
-  const started = Date.now();
-  while (Date.now() - started < 50 * 60 * 1000) {
+/** Live steps chat ke andar — Claude jaisa realtime */
+function renderStream(el, body) {
+  const steps = (body || "")
+    .split("\n")
+    .filter((l) => /^- ✓/.test(l))
+    .map((l) => l.replace(/^- ✓\s*/, "").replace(/`/g, "").trim());
+  const abhi = (body?.match(/\*\*Abhi:\*\*\s*(.+)/) || [])[1];
+  const elapsed = (body?.match(/\*\*Elapsed:\*\*\s*([^·|]+)/) || [])[1] || "";
+  const cur = abhi && (!steps.length || steps[steps.length - 1] !== abhi.trim()) ? abhi.trim() : "";
+
+  el.innerHTML =
+    `<div class="stream">` +
+    steps.map((s) => `<div class="srow done"><span class="si">✓</span><span>${esc(s)}</span></div>`).join("") +
+    (cur
+      ? `<div class="srow active"><span class="si">◐</span><span>${esc(cur)}</span></div>`
+      : steps.length
+        ? ""
+        : `<div class="srow active"><span class="si">◐</span><span>Shuru kar raha hoon…</span></div>`) +
+    `</div>` +
+    (elapsed ? `<div class="smeta">${esc(elapsed)}</div>` : "");
+}
+
+/** Ek task ki live poll — steps chat me add hote jaate hain */
+async function streamThread(n, ui) {
+  const t0 = Date.now();
+  let lastBody = "";
+  while (Date.now() - t0 < 55 * 60 * 1000) {
     let iss, cs;
     try {
       iss = await gh(`${repoPath()}/issues/${n}`);
-      cs = await gh(`${repoPath()}/issues/${n}/comments?per_page=100`);
+      cs = await gh(`${repoPath()}/issues/${n}/comments?per_page=1&sort=created&direction=desc`);
     } catch {
-      await sleep(6000);
+      await sleep(2500);
       continue;
     }
     const labels = (iss.labels || []).map((l) => l.name);
-    const body = cs?.length ? cs.at(-1).body || "" : "";
-    const finished = labels.includes("agent-done") || labels.includes("agent-failed") || iss.state === "closed";
-    if (body) issueResults.set(n, body);
+    const body = cs?.[0]?.body || "";
+    const failed = labels.includes("agent-failed");
+    const done = labels.includes("agent-done") || failed || iss.state === "closed";
 
-    ui.bubble.innerHTML = body
-      ? mdToHtml(body)
-      : `<span class="muted">${iss.state === "open" ? "Queue me hai…" : "Koi output nahi"}</span>`;
-
-    if (finished) {
-      ui.badge.className = `badge ${labels.includes("agent-failed") ? "error" : "done"}`;
-      ui.badge.textContent = labels.includes("agent-failed") ? "failed" : "done";
-      ui.bubble.classList.remove("running");
-      scrollChat();
-      return;
-    }
-    ui.bubble.classList.add("running");
-    scrollChat();
-    await sleep(5000);
-  }
-}
-
-/** Purane tasks ko chat ki tarah render karo (page reload ke baad bhi dikhein). */
-async function loadChatHistory() {
-  if (!configured()) return;
-  try {
-    const issues = await gh(`${repoPath()}/issues?labels=agent-task&state=all&per_page=12&sort=created&direction=desc`);
-    if (!issues.length) return;
-    $("chatEmpty")?.remove();
-
-    for (const iss of [...issues].reverse()) {
-      addUserMsg(iss.body || iss.title);
-      const ui = addAgentMsg(iss.number);
-      const cs = await gh(`${repoPath()}/issues/${iss.number}/comments?per_page=100`);
-      const body = cs?.length ? cs.at(-1).body || "" : "";
-      const labels = (iss.labels || []).map((l) => l.name);
-      issueUIs.set(iss.number, ui);
-      if (body) issueResults.set(iss.number, body);
-      ui.bubble.innerHTML = body ? mdToHtml(body) : `<span class="muted">Koi output nahi</span>`;
-      const done = labels.includes("agent-done");
-      const failed = labels.includes("agent-failed");
-      if (done || failed || iss.state === "closed") {
+    if (body && body !== lastBody) {
+      lastBody = body;
+      if (done) {
+        ui.bubble.innerHTML = mdToHtml(body);
+        issueResults.set(n, body);
         ui.badge.className = `badge ${failed ? "error" : "done"}`;
         ui.badge.textContent = failed ? "failed" : "done";
         ui.bubble.classList.remove("running");
-      } else {
-        watchIssue(iss.number, ui); // abhi bhi chal raha hai to poll karte raho
+        scrollChat();
+        loadThreads();
+        return;
       }
+      renderStream(ui.bubble, body);
+      scrollChat();
     }
-    scrollChat();
-  } catch (err) {
-    console.warn("history:", err.message);
+    await sleep(1200);
   }
 }
 
-/* ── follow-up / reply mode ── */
+async function openThread(n, opts = {}) {
+  const iss = await gh(`${repoPath()}/issues/${n}`).catch(() => null);
+  if (!iss) return;
+  chat.innerHTML = "";
+  showThreadView(n, iss.title);
+  if (!opts.skipUser) addUserMsg(iss.body || iss.title);
+
+  const ui = addAgentMsg(n);
+  const labels = (iss.labels || []).map((l) => l.name);
+  const done = labels.includes("agent-done") || labels.includes("agent-failed") || iss.state === "closed";
+
+  if (done) {
+    const cs = await gh(`${repoPath()}/issues/${n}/comments?per_page=1&sort=created&direction=desc`).catch(() => []);
+    const body = cs?.[0]?.body || "";
+    const failed = labels.includes("agent-failed");
+    ui.bubble.innerHTML = body ? mdToHtml(body) : `<span class="muted">Koi output nahi</span>`;
+    if (body) issueResults.set(n, body);
+    ui.badge.className = `badge ${failed ? "error" : "done"}`;
+    ui.badge.textContent = failed ? "failed" : "done";
+    ui.bubble.classList.remove("running");
+    scrollChat();
+  } else {
+    streamThread(n, ui);
+  }
+}
+
+/** Tasks list (alag alag chats) */
+async function loadThreads() {
+  const el = $("threadList");
+  if (!el || threadVisible()) return;
+  if (!configured()) {
+    el.innerHTML = `<div class="empty"><h3>Setup chahiye</h3>
+      <p>GitHub repo aur token daalne ke baad task chalenge.</p>
+      <button class="btn primary" id="emptySetup">⚙ Setup kholein</button></div>`;
+    el.querySelector("#emptySetup")?.addEventListener("click", () => switchTab("setup"));
+    return;
+  }
+  try {
+    const issues = await gh(`${repoPath()}/issues?labels=agent-task&state=all&per_page=40&sort=created&direction=desc`);
+    if (!issues.length) {
+      el.innerHTML = `<div class="empty"><h3>Kya karna hai batayein</h3>
+        <p>Har task apni alag chat banti hai. Neeche likhkar shuru karein.</p>
+        <div class="suggestions">
+          <button class="sug">Hacker News pe aaj ke top 10 posts ka title aur link CSV me nikaalo</button>
+          <button class="sug">Amazon pe top 5 noise cancelling headphones ke naam, price, rating nikaalo</button>
+          <button class="sug">Google pe "best CRM for small business 2025" search karke top 5 results ka summary do</button>
+        </div></div>`;
+      el.querySelectorAll(".sug").forEach((b) =>
+        b.addEventListener("click", () => {
+          input.value = b.textContent.trim();
+          input.focus();
+        })
+      );
+      return;
+    }
+    el.innerHTML = issues
+      .map((i) => {
+        const st = statusOf(i);
+        return `<div class="thread" data-thread="${i.number}">
+          <div class="th-top"><span class="th-title">${esc(i.title)}</span><span class="badge ${st.cls}">${st.text}</span></div>
+          <div class="th-meta">#${i.number} · ${new Date(i.created_at).toLocaleString([], { dateStyle: "short", timeStyle: "short" })}</div>
+        </div>`;
+      })
+      .join("");
+    el.querySelectorAll("[data-thread]").forEach((t) =>
+      t.addEventListener("click", () => openThread(Number(t.dataset.thread)))
+    );
+  } catch (err) {
+    el.innerHTML = `<p class="hint" style="color:var(--danger)">${esc(err.message)}</p>`;
+  }
+}
+
+/* ── toast ── */
+function toast(text, isErr = false) {
+  let el = $("toast");
+  if (!el) {
+    el = document.createElement("div");
+    el.id = "toast";
+    el.className = "toast";
+    document.body.appendChild(el);
+  }
+  el.textContent = text;
+  el.classList.toggle("err", isErr);
+  el.classList.add("show");
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove("show"), 4000);
+}
+
+/* ── follow-up ── */
 function setReply(n) {
   replyTo = n;
   const chip = $("replyChip");
@@ -250,40 +347,23 @@ function setReply(n) {
 }
 
 on("replyCancel", "click", () => setReply(null));
+on("backBtn", "click", () => showList());
+on("clearChat", "click", () => {
+  if (threadVisible()) showList();
+  else loadThreads();
+});
 
 chat.addEventListener("click", (e) => {
   const b = e.target.closest("[data-followup]");
   if (!b) return;
   setReply(Number(b.dataset.followup));
-  $("input").placeholder = `#${b.dataset.followup} me aage kaam — naya instruction likhein…`;
+  $("input").placeholder = `#${b.dataset.followup} me aage kaam — naya instruction…`;
 });
 
-/** Purana task chat me kholo / us tak scroll karo */
+/** purane task ko kholna (Tasks tab se bhi) */
 async function focusIssue(n) {
-  let ui = issueUIs.get(n);
-  if (!ui) {
-    // chat history me nahi hai — load karke append karo
-    try {
-      const iss = await gh(`${repoPath()}/issues/${n}`);
-      const cs = await gh(`${repoPath()}/issues/${n}/comments?per_page=100`);
-      const body = cs?.length ? cs.at(-1).body || "" : "";
-      addUserMsg(iss.body || iss.title);
-      ui = addAgentMsg(n);
-      const labels = (iss.labels || []).map((l) => l.name);
-      const failed = labels.includes("agent-failed");
-      ui.root.querySelector(".who").innerHTML = whoHtml(n, failed ? "error" : "done", failed ? "failed" : "done");
-      ui.badge = ui.root.querySelector("[data-badge]");
-      ui.bubble.innerHTML = body ? mdToHtml(body) : `<span class="muted">Koi output nahi</span>`;
-      ui.bubble.classList.remove("running");
-      issueUIs.set(n, ui);
-      if (body) issueResults.set(n, body);
-    } catch (err) {
-      return;
-    }
-  }
-  ui.root.scrollIntoView({ behavior: "smooth", block: "start" });
-  ui.root.classList.add("highlight");
-  setTimeout(() => ui.root.classList.remove("highlight"), 2200);
+  switchTab("live", true);
+  await openThread(n);
 }
 
 /* ── composer ── */
@@ -308,6 +388,8 @@ form?.addEventListener("submit", async (e) => {
 
   input.value = "";
   autoGrow();
+  chat.innerHTML = "";
+  showThreadView(null, goal.slice(0, 40) + (goal.length > 40 ? "…" : ""));
   addUserMsg(goal);
   const ui = addAgentMsg(null);
 
@@ -328,9 +410,8 @@ form?.addEventListener("submit", async (e) => {
     ui.badge = ui.root.querySelector("[data-badge]");
     issueUIs.set(issue.number, ui);
     trackedIssue = issue.number;
-    watchIssue(issue.number, ui);
+    streamThread(issue.number, ui);
     loadTasks();
-    loadLive();
   } catch (err) {
     ui.bubble.innerHTML = `<span style="color:var(--danger)">✗ ${esc(err.message)}</span>`;
     ui.badge.className = "badge error";
@@ -340,18 +421,6 @@ form?.addEventListener("submit", async (e) => {
 
 input?.addEventListener("keydown", (e) => {
   if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) form.requestSubmit();
-});
-
-document.querySelectorAll(".sug").forEach((b) =>
-  b.addEventListener("click", () => {
-    input.value = b.textContent.trim();
-    autoGrow();
-    input.focus();
-  })
-);
-
-on("clearChat", "click", () => {
-  chat.innerHTML = `<div class="empty" id="chatEmpty"><h3>Chat clear</h3><p>Naya task likhein.</p></div>`;
 });
 
 /* ══════════════════════ LIVE ══════════════════════ */
@@ -581,9 +650,9 @@ on("runNow", "click", async () => {
   if (!configured()) return switchTab("setup");
   try {
     await dispatchWorkflow("");
-    addAgentMsg(null).bubble.innerHTML = `<span class="muted">Scheduled task trigger ho gaya — Actions tab me progress dekhein.</span>`;
+    toast("✓ Scheduled task trigger ho gaya — Live tab me progress dekhein");
   } catch (err) {
-    addAgentMsg(null).bubble.innerHTML = `<span style="color:var(--danger)">✗ ${esc(err.message)}</span>`;
+    toast(`✗ ${err.message}`, true);
   }
 });
 
@@ -643,7 +712,7 @@ on("setupForm", "submit", async (e) => {
     loadKeys();
     loadTasks();
     loadFiles();
-    loadChatHistory();
+    loadThreads();
   } catch (err) {
     showSetupMsg("err", `✗ ${err.message} — token ki permissions check karein.`);
   }
@@ -840,12 +909,13 @@ async function fastPoll() {
   try {
     const cs = await gh(`${repoPath()}/issues/${trackedIssue}/comments?per_page=1&sort=created&direction=desc`);
     const body = cs?.[0]?.body || "";
-    if (body) {
+    if (body && currentThread === trackedIssue) {
       const ui = issueUIs.get(trackedIssue);
       if (ui && !ui.badge?.classList.contains("done") && !ui.badge?.classList.contains("error")) {
         ui.bubble.innerHTML = mdToHtml(body);
         scrollChat();
       }
+      if (issueUIs.get(trackedIssue)?.badge?.classList.contains("done")) return;
       const logEl = $("liveLog");
       if (logEl) renderLiveLog(logEl, body);
     }
@@ -857,7 +927,7 @@ async function fastPoll() {
 autoDetect();
 setConfigUI();
 if (configured()) {
-  loadChatHistory();
+  loadThreads();
   loadLive();
   loadKeys();
   loadTasks();
