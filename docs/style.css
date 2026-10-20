@@ -626,3 +626,58 @@ body {
   .live-strip { margin: 6px 10px 0; padding: 7px 10px; font-size: 11.5px; }
   .reply-chip { margin: 0 10px 5px; padding: 5px 9px; font-size: 11px; }
 }
+
+/* ══════════════════════════════════════════════════════════════════
+   THREADS — har task apni chat + realtime streaming
+   ══════════════════════════════════════════════════════════════════ */
+.head-title { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.head-title h2 { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 46vw; }
+#backBtn { padding: 3px 8px; font-size: 13px; }
+
+.thread-list {
+  flex: 1 1 auto; overflow-y: auto; min-height: 0;
+  padding: 10px; display: flex; flex-direction: column; gap: 7px;
+}
+.thread {
+  border: 1px solid var(--line); border-radius: 11px;
+  padding: 10px 12px; cursor: pointer; background: var(--panel);
+  transition: border-color .15s, background .15s;
+}
+.thread:hover { border-color: var(--line-2); background: var(--panel-2); }
+.thread.active { border-color: var(--accent); }
+.th-top { display: flex; align-items: flex-start; gap: 8px; justify-content: space-between; }
+.th-title {
+  font-size: 13px; font-weight: 550; line-height: 1.4;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.th-meta { font-size: 10.5px; color: var(--faint); margin-top: 4px; }
+
+/* realtime stream rows (chat ke andar) */
+.stream { display: flex; flex-direction: column; gap: 3px; margin: 2px 0; }
+.srow {
+  display: flex; align-items: flex-start; gap: 8px;
+  font-size: 13px; color: var(--muted); line-height: 1.45;
+  padding: 3px 0;
+}
+.srow .si { flex: 0 0 13px; text-align: center; }
+.srow.done { color: var(--faint); }
+.srow.done .si { color: #3f7a3a; }
+[data-theme="dark"] .srow.done .si { color: #8fd07f; }
+.srow.active { color: var(--text); }
+.srow.active .si { color: var(--accent); animation: spin 1.4s linear infinite; }
+.smeta { font-size: 11px; color: var(--faint); margin-top: 6px; }
+.sresult {
+  margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--line);
+}
+
+/* ── toast ── */
+.toast {
+  position: fixed; left: 50%; bottom: 22px; transform: translate(-50%, 14px);
+  background: var(--accent); color: var(--accent-fg);
+  padding: 10px 16px; border-radius: 11px; font-size: 13px;
+  opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s;
+  z-index: 60; max-width: 88vw; text-align: center;
+  box-shadow: 0 6px 24px rgba(0,0,0,.18);
+}
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+.toast.err { background: var(--danger); color: #fff; }
