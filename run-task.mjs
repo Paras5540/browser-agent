@@ -162,7 +162,34 @@ try {
   if (out.hitLimit) ok = false;
 } catch (err) {
   ok = false;
-  body = `❌ Agent fail ho gaya:\n\n\`\`\`\n${String(err.message || err).slice(0, 2000)}\n\`\`\``;
+  const msg = String(err.message || err);
+
+  if (/QUOTA|429|RESOURCE_EXHAUSTED/i.test(msg)) {
+    body = [
+      "## ⚠️ Gemini ka quota khatam hai",
+      "",
+      "**Ye aapki key ka limit hai, code ka bug nahi.** Free tier ki limit ho gayi hai.",
+      "",
+      "**Kya karein (koi ek):**",
+      "1. **2-3 minute baad dobara chalayein** — per-minute rate limit bhi ho sakta hai",
+      "2. **Nayi key, naye project me** — quota per-project hoti hai:",
+      "   `aistudio.google.com/apikey` → Create API key → project me **New project** → key copy →",
+      "   Repo → Settings → Secrets → `GEMINI_API_KEY` update",
+      "3. Free tier ka daily quota reset hota hai **~12:30 PM IST** ke aas paas",
+      "",
+      `<sub>raw: ${msg.slice(0, 200)}</sub>`,
+    ].join("\n");
+  } else if (/thought_signature/i.test(msg)) {
+    body = [
+      "## ⚠️ Model signature error",
+      "",
+      "Task ke beech model badal gaya tha. Dobara chalane se theek ho jayega (ab model pin hota hai).",
+      "",
+      `<sub>raw: ${msg.slice(0, 200)}</sub>`,
+    ].join("\n");
+  } else {
+    body = `## ❌ Agent fail ho gaya\n\n\`\`\`\n${msg.slice(0, 1500)}\n\`\`\``;
+  }
 } finally {
   await browser.close().catch(() => {});
 }
