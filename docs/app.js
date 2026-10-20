@@ -203,6 +203,7 @@ async function loadLive() {
     const agentRuns = (runs.workflow_runs || []).filter((r) => r.path?.includes("agent.yml") || r.name === "Browser Agent");
     if (!agentRuns.length) {
       header.style.display = "none";
+      $("liveStrip").classList.add("hide");
       stepsEl.innerHTML = `<p class="hint">Abhi koi run nahi hua.</p>`;
       logEl.innerHTML = "";
       return;
@@ -220,12 +221,22 @@ async function loadLive() {
 
     header.style.display = "";
     const isLive = active.status !== "completed";
+
+    // hamesha dikhne wala strip
+    const strip = $("liveStrip");
+    strip.classList.toggle("hide", !isLive);
+    if (isLive) {
+      const curStep = steps.find((x) => x.status === "in_progress");
+      $("lsText").textContent = curStep ? curStep.name : active.status === "queued" ? "Queue me hai… (1-2 min)" : "Shuru ho raha hai…";
+      $("lsTime").textContent = fmtElapsed(active.created_at);
+    }
     $("liveTitle").innerHTML = `${esc(active.name || "run")}<span class="badge ${isLive ? "running" : active.conclusion === "success" ? "done" : "error"}">${isLive ? "running" : active.conclusion}</span>`;
     $("liveMeta").innerHTML =
       `<span>${active.status}${active.conclusion ? "/" + active.conclusion : ""}</span>` +
       `<span>· ${fmtElapsed(active.created_at, active.status === "completed" ? active.updated_at : null)}</span>` +
       (job?.started_at ? `<span>· job ${fmtElapsed(job.started_at, job.completed_at)}</span>` : "");
     $("liveLink").href = active.html_url;
+    if (active.status === "completed") $("liveStrip").classList.add("hide");
 
     stepsEl.innerHTML = steps.length
       ? steps
@@ -333,6 +344,7 @@ document.querySelectorAll(".tab").forEach((t) =>
   })
 );
 $("goSetup").addEventListener("click", () => switchTab("setup"));
+$("lsOpen")?.addEventListener("click", () => { switchTab("live"); loadLive(); });
 $("cfgBtn").addEventListener("click", () => switchTab("setup"));
 
 // ── setup form ───────────────────────────────────────────────────────────────
