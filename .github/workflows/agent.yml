@@ -37,7 +37,7 @@ jobs:
       (github.event.issue != null &&
        contains(github.event.issue.labels.*.name, 'agent-task'))
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 350   # GitHub max 6h — task poora hone tak chalta rahe
 
     steps:
       - uses: actions/checkout@v4
@@ -89,7 +89,9 @@ jobs:
           LLM_BASE_URL: ${{ vars.LLM_BASE_URL }}
           LLM_MODEL: ${{ vars.LLM_MODEL }}
           LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
-          MAX_STEPS: ${{ vars.MAX_STEPS || '45' }}
+          MAX_STEPS: ${{ vars.MAX_STEPS || '15' }}
+          MAX_PHASES: ${{ vars.MAX_PHASES || '6' }}
+          MAX_RUNTIME_MIN: ${{ vars.MAX_RUNTIME_MIN || '300' }}
           TASK_GOAL: ${{ github.event.inputs.goal || github.event.issue.body || '' }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ISSUE_NUMBER: ${{ github.event.issue.number }}
