@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="theme-color" content="#f5f4ee" />
 <title>Browser Agent</title>
-<link rel="stylesheet" href="style.css?v=17" />
+<link rel="stylesheet" href="style.css?v=18" />
 <script src="https://cdn.jsdelivr.net/npm/libsodium-wrappers@0.7.15/dist/bundles/libsodium-wrappers.min.js"></script>
 </head>
 <body>
@@ -19,7 +19,6 @@
     <span class="pill warn hide" id="cfgWarn">setup needed</span>
     <button class="btn icon only-mobile" id="panelBtn" title="Live panel">▤</button>
     <button class="btn icon" id="themeBtn" title="Dark / Light mode" aria-label="Toggle theme">◐</button>
-    <button class="btn ghost" id="cfgBtn">⚙ Setup</button>
   </div>
 </header>
 
@@ -35,6 +34,7 @@
     <div class="menu hide" id="panelMenu" role="menu">
       <button class="menu-item hide" id="backBtn" role="menuitem"><span class="mi-ico">←</span> Back to tasks</button>
       <button class="menu-item" id="runNow" role="menuitem"><span class="mi-ico">▶</span> Run scheduled task</button>
+      <button class="menu-item" id="menuSetup" role="menuitem"><span class="mi-ico">⚙</span> Setup</button>
       <div class="menu-sep"></div>
       <button class="menu-item danger" id="clearChat" role="menuitem"><span class="mi-ico">✕</span> Clear</button>
     </div>
@@ -221,6 +221,6 @@
   </section>
 </main>
 
-<script src="app.js?v=17"></script>
+<script src="app.js?v=18"></script>
 </body>
 </html>
