@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="theme-color" content="#f5f4ee" />
 <title>Browser Agent</title>
-<link rel="stylesheet" href="style.css?v=22" />
+<link rel="stylesheet" href="style.css?v=23" />
 <script src="https://cdn.jsdelivr.net/npm/libsodium-wrappers@0.7.15/dist/bundles/libsodium-wrappers.min.js"></script>
 </head>
 <body>
@@ -28,7 +28,6 @@
   <button class="menu-item" data-nav="live" role="menuitem"><span class="mi-ico">◉</span> Live</button>
   <button class="menu-item" data-nav="tasks" role="menuitem"><span class="mi-ico">☰</span> Tasks</button>
   <button class="menu-item" data-nav="files" role="menuitem"><span class="mi-ico">▣</span> Files</button>
-  <button class="menu-item" data-nav="keys" role="menuitem"><span class="mi-ico">⌘</span> Keys</button>
   <button class="menu-item" data-nav="setup" role="menuitem"><span class="mi-ico">⚙</span> Setup</button>
   <div class="menu-sep"></div>
   <div class="menu-label">Actions</div>
@@ -136,124 +135,106 @@
       <div id="fileList" class="list"><p class="hint">—</p></div>
     </div>
 
-    <div class="tab-body hide" id="tab-keys">
-      <div class="card">
-        <div class="title">Pipeline status <button class="btn tiny ghost" id="pipeRefresh" style="float:right">↻</button></div>
-        <div id="pipeList" class="pipe-list"><p class="hint">—</p></div>
-      </div>
+    <div class="tab-body hide" id="tab-setup">
 
-      <form id="provForm" class="sched-form">
-        <label>LLM Provider</label>
-        <select id="pProvider">
-          <option value="gemini">Gemini (Google)</option>
-          <option value="groq">Groq (llama-3.3-70b-versatile)</option>
-          <option value="zen">OpenCode Zen (free models)</option>
-          <option value="openai">Custom OpenAI-compatible</option>
-        </select>
+      <!-- ── 1. GitHub connection ── -->
+      <section class="sec">
+        <div class="sec-head"><span class="sec-n">1</span> GitHub connection</div>
+        <form id="setupForm" class="sched-form">
+          <label>Username / org</label>
+          <input id="fOwner" placeholder="parasgupta" autocomplete="off" />
+          <label>Repository</label>
+          <input id="fRepo" placeholder="browser-agent" autocomplete="off" />
+          <label>Branch</label>
+          <input id="fBranch" value="main" autocomplete="off" />
+          <label>Personal Access Token</label>
+          <input id="fToken" type="password" placeholder="github_pat_…" autocomplete="off" />
+          <p class="hint">Token sirf aapke browser me rehta hai. Permissions: <b>Issues</b> RW · <b>Contents</b> R · <b>Actions</b> RW · <b>Secrets</b> RW · <b>Variables</b> RW</p>
+          <button class="btn primary wide" type="submit" style="margin-top:8px">Save + Test</button>
+          <div id="setupMsg" class="settings-msg hide"></div>
+        </form>
+      </section>
 
-        <label>Base URL</label>
-        <input id="pBase" placeholder="https://api.groq.com/openai/v1" autocomplete="off" spellcheck="false" />
+      <!-- ── 2. API keys ── -->
+      <section class="sec">
+        <div class="sec-head"><span class="sec-n">2</span> API keys</div>
+        <p class="hint" style="margin-bottom:8px">Jis provider se chalana hai uski key daalein. Teeno rakh sakte hain — switch kabhi bhi kar sakte hain.</p>
 
-        <label>Model</label>
-        <input id="pModel" list="modelList" placeholder="llama-3.3-70b-versatile" autocomplete="off" spellcheck="false" />
-        <datalist id="modelList">
-          <option value="llama-3.3-70b-versatile"></option>
-          <option value="llama-3.1-8b-instant"></option>
-          <option value="openai/gpt-oss-120b"></option>
-          <option value="qwen/qwen3-32b"></option>
-          <option value="moonshotai/kimi-k2-instruct"></option>
-          <option value="nemotron-3-ultra-free"></option>
-          <option value="big-pickle"></option>
-          <option value="ling-3.1-flash-free"></option>
-          <option value="mimo-v2.5-free"></option>
-          <option value="longcat-2.5-preview-free"></option>
-          <option value="step-5-preview-free"></option>
-          <option value="exo-free"></option>
-          <option value="space-bunny-free"></option>
-        </datalist>
-
-        <label>API key</label>
-        <input id="pKey" type="password" placeholder="gsk_… (Groq) / Zen key (opencode.ai/auth)" autocomplete="off" spellcheck="false" />
-        <p class="hint">
-          GitHub Secrets me <code>LLM_API_KEY</code> ke naam se save hoti hai.<br>
-          <b>Groq:</b> console.groq.com · <b>OpenCode Zen:</b> opencode.ai/auth (free models milte hain)
-        </p>
-
-        <div class="row" style="margin-top:8px">
-          <button class="btn wide" type="button" id="testProv">Test Groq</button>
-          <button class="btn primary wide" type="submit">Save provider</button>
+        <div class="key-card">
+          <div class="kc-head"><b>Google Gemini</b><span class="chip" id="chip-gemini">—</span></div>
+          <div class="kc-sub">Free key: aistudio.google.com/apikey</div>
+          <div class="key-row">
+            <input id="key-gemini" type="password" placeholder="AIza… ya AQ…" autocomplete="off" spellcheck="false" />
+            <button class="btn tiny" data-save="gemini">Save</button>
+          </div>
         </div>
-        <div id="provMsg" class="settings-msg hide"></div>
-      </form>
 
-      <form id="keysForm" class="sched-form">
-        <label>Gemini keys <span class="hint">(quota badhane ke liye 2-4 keys)</span></label>
-        <div class="key-row"><input id="k1" type="password" placeholder="GEMINI_API_KEY — AIza… ya AQ…" autocomplete="off" spellcheck="false" /><span class="key-state" id="st1">—</span></div>
-        <div class="key-row"><input id="k2" type="password" placeholder="GEMINI_KEY_2 (optional)" autocomplete="off" spellcheck="false" /><span class="key-state" id="st2">—</span></div>
-        <div class="key-row"><input id="k3" type="password" placeholder="GEMINI_KEY_3 (optional)" autocomplete="off" spellcheck="false" /><span class="key-state" id="st3">—</span></div>
-        <div class="key-row"><input id="k4" type="password" placeholder="GEMINI_KEY_4 (optional)" autocomplete="off" spellcheck="false" /><span class="key-state" id="st4">—</span></div>
-        <p class="hint">Khaali chhodein to wo key nahi badlegi. Keys GitHub Secrets me jaati hain — repo me code me kabhi nahi.</p>
+        <div class="key-card">
+          <div class="kc-head"><b>Groq</b><span class="chip" id="chip-groq">—</span></div>
+          <div class="kc-sub">Free key: console.groq.com → API Keys (gsk_…)</div>
+          <div class="key-row">
+            <input id="key-groq" type="password" placeholder="gsk_…" autocomplete="off" spellcheck="false" />
+            <button class="btn tiny" data-save="groq">Save</button>
+          </div>
+        </div>
+
+        <div class="key-card">
+          <div class="kc-head"><b>OpenCode Zen</b><span class="chip" id="chip-zen">—</span></div>
+          <div class="kc-sub">Free models: opencode.ai/auth se key</div>
+          <div class="key-row">
+            <input id="key-zen" type="password" placeholder="Zen API key" autocomplete="off" spellcheck="false" />
+            <button class="btn tiny" data-save="zen">Save</button>
+          </div>
+        </div>
 
         <div class="row" style="margin-top:8px">
           <button class="btn wide" type="button" id="testKeys">Test keys</button>
-          <button class="btn primary wide" type="submit">Save to Secrets</button>
         </div>
         <div id="keysMsg" class="settings-msg hide"></div>
-      </form>
+      </section>
 
-      <form id="varsForm" class="sched-form">
-        <label>Model</label>
-        <select id="vModel">
-          <option value="gemini-flash-lite-latest">gemini-flash-lite-latest (quota-friendly)</option>
-          <option value="gemini-2.5-flash-lite">gemini-2.5-flash-lite</option>
-          <option value="gemini-2.5-flash">gemini-2.5-flash</option>
-          <option value="gemini-flash-latest">gemini-flash-latest</option>
-        </select>
-        <label>Max steps per task</label>
-        <input id="vSteps" type="number" min="5" max="60" />
-        <label>Fallback models (comma se)</label>
-        <input id="vFallback" placeholder="gemini-2.5-flash-lite,gemini-flash-lite-latest" />
-        <button class="btn wide" type="submit" style="margin-top:10px">Save variables</button>
-        <div id="varsMsg" class="settings-msg hide"></div>
-      </form>
-    </div>
-
-    <div class="tab-body hide" id="tab-setup">
-      <form id="setupForm" class="sched-form">
-        <label>GitHub username / org</label>
-        <input id="fOwner" placeholder="parasgupta" autocomplete="off" />
-
-        <label>Repository name</label>
-        <input id="fRepo" placeholder="browser-agent" autocomplete="off" />
-
-        <label>Branch</label>
-        <input id="fBranch" placeholder="main" value="main" autocomplete="off" />
-
-        <label>Personal Access Token (fine-grained)</label>
-        <input id="fToken" type="password" placeholder="github_pat_…" autocomplete="off" />
-        <p class="hint">
-          Token sirf aapke browser me (localStorage) rehta hai, kisi server pe nahi jaata.<br>
-          Permissions: <b>Issues: Read &amp; write</b>, <b>Contents: Read</b>,
-          <b>Actions: Read &amp; write</b>, <b>Metadata: Read</b>.
-        </p>
-
-        <button class="btn primary wide" type="submit" style="margin-top:10px">Save + Test</button>
-        <div id="setupMsg" class="settings-msg hide"></div>
-      </form>
-
-      <div class="card" style="margin-top:12px">
-        <div class="title">Pehli baar?</div>
-        <div class="meta" style="display:block;line-height:1.8">
-          1. Repo <b>public</b> hona chahiye (private me cron chalta nahi)<br>
-          2. Repo → Settings → Secrets → Actions → <code>GEMINI_API_KEY</code><br>
-          3. Repo → Settings → Pages → Source: <b>main</b>, folder <b>/docs</b><br>
-          4. Dashboard ke Setup me token daalein
+      <!-- ── 3. Active model ── -->
+      <section class="sec">
+        <div class="sec-head"><span class="sec-n">3</span> Kaun sa model chalega</div>
+        <div class="sched-form">
+          <label>Provider</label>
+          <select id="activeProv">
+            <option value="gemini">Google Gemini</option>
+            <option value="groq">Groq</option>
+            <option value="zen">OpenCode Zen</option>
+          </select>
+          <label>Model</label>
+          <select id="activeModel"></select>
+          <button class="btn primary wide" type="button" id="applyModel" style="margin-top:8px">Apply model</button>
+          <div id="modelMsg" class="settings-msg hide"></div>
         </div>
-      </div>
+      </section>
+
+      <!-- ── 4. Limits ── -->
+      <section class="sec">
+        <div class="sec-head"><span class="sec-n">4</span> Task limits</div>
+        <div class="sched-form">
+          <label>Steps per phase</label>
+          <input id="vSteps" type="number" min="5" max="60" />
+          <label>Max phases (task continue karega)</label>
+          <input id="vPhases" type="number" min="1" max="12" />
+          <label>Accuracy target (%)</label>
+          <input id="vAcc" type="number" min="50" max="100" />
+          <button class="btn wide" type="button" id="saveLimits" style="margin-top:8px">Save limits</button>
+          <div id="limitsMsg" class="settings-msg hide"></div>
+        </div>
+      </section>
+
+      <!-- ── 5. Status ── -->
+      <section class="sec">
+        <div class="sec-head"><span class="sec-n">5</span> Pipeline status <button class="btn tiny ghost" id="pipeRefresh" style="margin-left:auto">↻</button></div>
+        <div id="pipeList" class="pipe-list"><p class="hint">—</p></div>
+      </section>
     </div>
+
   </section>
 </main>
 
-<script src="app.js?v=22"></script>
+<script src="app.js?v=23"></script>
 </body>
 </html>
