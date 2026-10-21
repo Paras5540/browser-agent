@@ -70,11 +70,15 @@ async function buildGoalFromIssue() {
   }
 }
 
-let goal = resolveGoal();
-const wantsContinue = String(process.env.EVENT_NAME || "") === "issue_comment";
-if ((wantsContinue || !goal) && ISSUE && GH_REPO) {
-  const fromIssue = await buildGoalFromIssue();
-  if (fromIssue) goal = fromIssue;
+const EVENT = String(process.env.EVENT_NAME || "");
+const issueDriven = (EVENT === "issues" || EVENT === "issue_comment") && ISSUE && GH_REPO;
+
+// Issue se chalne wale run me goal HAMESHA issue thread se banta hai
+// (root goal + purani instructions + last result) — scheduled text kabhi nahi.
+let goal = issueDriven ? "" : resolveGoal();
+if (issueDriven) {
+  goal = await buildGoalFromIssue();
+  if (!goal) goal = resolveGoal();
 }
 if (!goal) {
   console.error("✗ Koi task nahi mila. TASK_GOAL env, CLI arg, ya tasks/scheduled.txt dein.");
