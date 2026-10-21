@@ -37,7 +37,45 @@ function resolveGoal() {
   return "";
 }
 
-const goal = resolveGoal();
+/** Same issue ki poori memory: root goal + purani instructions + last result */
+async function buildGoalFromIssue() {
+  try {
+    const [owner, repo] = GH_REPO.split("/");
+    const iss = await ghJson(`/repos/${owner}/${repo}/issues/${ISSUE}`);
+    const cs = await ghJson(`/repos/${owner}/${repo}/issues/${ISSUE}/comments?per_page=100`);
+    const base = (iss.json?.body || iss.json?.title || "").trim();
+    const comments = (cs.json || []).map((c) => c.body || "");
+
+    const instructions = [];
+    let lastResult = "";
+    for (const c of comments) {
+      const m = c.match(/<!--\s*agent-continue\s*-->[\s\S]*?NEW INSTRUCTION:\s*([\s\S]*)/i);
+      if (m) instructions.push(m[1].replace(/<!--[\s\S]*?-->/g, "").trim().slice(0, 800));
+      else if (/#\s*(✅|⚠️)\s*Task result/i.test(c)) lastResult = c;
+    }
+
+    const parts = [`ROOT GOAL:\n${base}`];
+    if (instructions.length > 1) {
+      parts.push(`PREVIOUS INSTRUCTIONS:\n${instructions.slice(0, -1).map((x, i) => `${i + 1}. ${x}`).join("\n")}`);
+    }
+    if (lastResult) parts.push(`PREVIOUS RESULT:\n${lastResult.slice(0, 3000)}`);
+    if (instructions.length) parts.push(`CURRENT INSTRUCTION:\n${instructions[instructions.length - 1]}`);
+    parts.push(
+      "NOTE: ye wahi task hai jo pehle chal chuka hai. Jo ho chuka hai DOBARA MAT KARO. " +
+        "Pichhle result ko improve/complete karo aur ROOT GOAL ke hisaab se hi jawab do."
+    );
+    return parts.join("\n\n");
+  } catch (e) {
+    return "";
+  }
+}
+
+let goal = resolveGoal();
+const wantsContinue = String(process.env.EVENT_NAME || "") === "issue_comment";
+if ((wantsContinue || !goal) && ISSUE && GH_REPO) {
+  const fromIssue = await buildGoalFromIssue();
+  if (fromIssue) goal = fromIssue;
+}
 if (!goal) {
   console.error("✗ Koi task nahi mila. TASK_GOAL env, CLI arg, ya tasks/scheduled.txt dein.");
   process.exit(1);
