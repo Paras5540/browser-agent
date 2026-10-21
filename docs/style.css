@@ -809,3 +809,58 @@ body {
 .menu-item.active .mi-ico { color: var(--accent); }
 .menu { min-width: 214px; }
 #menuBtn { padding: 5px 9px; font-size: 18px; line-height: 1; }
+
+/* ══════════════════ PAGE MODE (har menu option ka apna page) ══════════ */
+#pageBack { display: none; padding: 3px 8px; font-size: 13px; }
+
+@media (max-width: 1080px) {
+  body.page-mode .chat-panel { display: none; }
+  body.page-mode .layout { grid-template-rows: minmax(0, 1fr); }
+  body.page-mode .side-panel {
+    display: flex; position: fixed; inset: 0;
+    border-radius: 0; border: 0; z-index: 40;
+  }
+  body.page-mode #pageBack { display: inline-flex; }
+  body.page-mode .topbar { display: none; }
+}
+
+/* ══════════════════ JUMP TO LATEST ══════════════════ */
+.jump-btn {
+  position: absolute; left: 50%; transform: translateX(-50%);
+  bottom: 118px; z-index: 20;
+  background: var(--accent); color: var(--accent-fg);
+  border: 0; border-radius: 999px; padding: 6px 14px;
+  font-size: 12px; font-weight: 600; cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0,0,0,.18);
+}
+.chat-panel { position: relative; }
+
+/* ══════════════════ MODEL SWITCHER ══════════════════ */
+.model-bar {
+  display: flex; align-items: center; gap: 6px;
+  padding: 0 12px 4px;
+}
+.model-btn {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: var(--panel-2); border: 1px solid var(--line);
+  color: var(--muted); border-radius: 999px;
+  padding: 4px 11px; font: inherit; font-size: 11.5px;
+  cursor: pointer; max-width: 100%;
+}
+.model-btn:hover { color: var(--text); border-color: var(--line-2); }
+.model-btn .mb-dot {
+  width: 6px; height: 6px; border-radius: 50%; background: var(--accent);
+}
+.model-btn .mb-chev { font-size: 9px; opacity: .7; }
+#modelLabel { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 58vw; }
+
+.model-menu { min-width: 250px; max-height: 62vh; overflow-y: auto; }
+.model-opt {
+  display: flex; align-items: center; gap: 9px; width: 100%;
+  padding: 8px 10px; border: 0; border-radius: 8px;
+  background: transparent; color: var(--text);
+  font: inherit; font-size: 12.5px; text-align: left; cursor: pointer;
+}
+.model-opt:hover { background: var(--panel-2); }
+.model-opt.active { background: var(--panel-2); font-weight: 600; }
+.model-opt .mo-sub { display: block; font-size: 10.5px; color: var(--faint); font-weight: 400; }
