@@ -88,7 +88,14 @@ if (!goal) {
   process.exit(1);
 }
 const PROVIDER = (process.env.LLM_PROVIDER || "gemini").toLowerCase();
-const LLM_KEY = (process.env.LLM_API_KEY || "").trim();
+const LLM_BASE = (process.env.LLM_BASE_URL || "").toLowerCase();
+const LLM_KEY = (
+  /opencode\.ai/.test(LLM_BASE)
+    ? process.env.ZEN_API_KEY
+    : /groq\.com/.test(LLM_BASE)
+      ? process.env.GROQ_API_KEY
+      : process.env.LLM_API_KEY
+) || process.env.LLM_API_KEY || "").trim();
 const GEMINI_KEYS = [process.env.GEMINI_API_KEY, process.env.GEMINI_KEY_2, process.env.GEMINI_KEY_3, process.env.GEMINI_KEY_4]
   .map((k) => (k || "").trim())
   .filter(Boolean);
