@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="theme-color" content="#f5f4ee" />
 <title>Browser Agent</title>
-<link rel="stylesheet" href="style.css?v=21" />
+<link rel="stylesheet" href="style.css?v=22" />
 <script src="https://cdn.jsdelivr.net/npm/libsodium-wrappers@0.7.15/dist/bundles/libsodium-wrappers.min.js"></script>
 </head>
 <body>
@@ -69,6 +69,8 @@
       </div>
     </div>
 
+    <button class="jump-btn hide" id="jumpBtn">↓ new</button>
+
     <div class="live-strip hide" id="liveStrip">
       <span class="ls-spin">◐</span>
       <span class="ls-text" id="lsText">Agent chal raha hai…</span>
@@ -81,6 +83,21 @@
       <button class="btn tiny ghost" id="replyCancel" type="button">Cancel</button>
     </div>
 
+    <div class="model-bar">
+      <button class="model-btn" id="modelBtn">
+        <span class="mb-dot"></span>
+        <span id="modelLabel">model</span>
+        <span class="mb-chev">▾</span>
+      </button>
+    </div>
+
+    <div class="menu model-menu hide" id="modelMenu" role="menu">
+      <div class="menu-label">Model chunein</div>
+      <div id="modelList"></div>
+      <div class="menu-sep"></div>
+      <button class="menu-item" id="modelMore" role="menuitem"><span class="mi-ico">⚙</span> Keys &amp; custom model</button>
+    </div>
+
     <form class="composer" id="composer">
       <textarea id="input" rows="3" placeholder="Task likhein… (Ctrl+Enter to send)"></textarea>
       <button class="btn primary" id="sendBtn" type="submit">Run</button>
@@ -89,6 +106,7 @@
 
   <section class="panel side-panel">
     <div class="panel-head">
+      <button class="btn tiny ghost" id="pageBack">←</button>
       <h2 id="sideTitle">Live</h2>
     </div>
 
@@ -236,6 +254,6 @@
   </section>
 </main>
 
-<script src="app.js?v=21"></script>
+<script src="app.js?v=22"></script>
 </body>
 </html>
