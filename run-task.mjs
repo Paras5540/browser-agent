@@ -392,13 +392,16 @@ try {
   const msg = String(err.message || err);
 
   if (/QUOTA|429|RESOURCE_EXHAUSTED/i.test(msg)) {
+    const provLabel = PROVIDER === "openai" ? (/opencode\.ai/i.test(process.env.LLM_BASE_URL || "") ? "OpenCode Zen" : "Groq") : "Gemini";
     body = [
-      "## ⚠️ Gemini ka quota khatam hai",
+      `## ⚠️ ${provLabel} ka rate limit (quota)`,
       "",
-      "**Ye aapki key ka limit hai, code ka bug nahi.** Free tier ki limit ho gayi hai.",
+      `**Model:** \`${MODEL_LABEL}\` — provider ne 429 diya (per-minute token limit).`,
+      "**Ye aapki key ka limit hai, code ka bug nahi.**",
       "",
       "**Kya karein (koi ek):**",
-      "1. **2-3 minute baad dobara chalayein** — per-minute rate limit bhi ho sakta hai",
+      "1. **2-3 minute baad dobara chalayein** — per-minute limit reset ho jati hai",
+      "2. **Model badal dein** — chat ke upar model button se `llama-3.1-8b-instant` (zyada TPM) chunein",
       "2. **Nayi key, naye project me** — quota per-project hoti hai:",
       "   `aistudio.google.com/apikey` → Create API key → project me **New project** → key copy →",
       "   Repo → Settings → Secrets → `GEMINI_API_KEY` update",
