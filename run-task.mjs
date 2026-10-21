@@ -20,6 +20,7 @@ fs.mkdirSync(OUTPUTS, { recursive: true });
 
 const GH_TOKEN = process.env.GITHUB_TOKEN || "";
 const GH_REPO = process.env.GITHUB_REPOSITORY || "";
+const GH_API = "https://api.github.com";
 const ISSUE = process.env.ISSUE_NUMBER || "";
 const REPO = process.env.GITHUB_REPOSITORY || "";
 
@@ -247,7 +248,6 @@ await pushProgress(true);
 // ── LIVE SCREEN → repo ke `live` branch me (Manus jaisa) ──────────────────
 // Har frame ek "root commit" (parents: []) banata hai aur branch tip ko force-move
 // karta hai — isliye history kabhi nahi badhti, repo nahi phoolta.
-const GH_API = "https://api.github.com";
 let frameCount = 0;
 let lastFrameAt = 0;
 let frameInflight = 0;
