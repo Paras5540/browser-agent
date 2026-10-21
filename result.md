@@ -12,7 +12,7 @@ NOTE: ye wahi task hai jo pehle chal chuka hai. Jo ho chuka hai DOBARA MAT KARO.
 ## ❌ Agent fail ho gaya
 
 ```
-big-pickle 403: {"type":"error","error":{"type":"FreeTierError","message":"OpenCode's free tier can only be used from within OpenCode. Download it at https://opencode.ai and keep building."}}
+nemotron-3-ultra-free 403: {"type":"error","error":{"type":"FreeTierError","message":"OpenCode's free tier can only be used from within OpenCode. Download it at https://opencode.ai and keep building."}}
 ```
 
 <details><summary>Work report (0 entries)</summary>
