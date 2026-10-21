@@ -1038,7 +1038,7 @@ const SECRET_FOR = { gemini: "GEMINI_API_KEY", groq: "GROQ_API_KEY", zen: "ZEN_A
 const BASE_FOR = { groq: "https://api.groq.com/openai/v1", zen: "https://opencode.ai/zen/v1" };
 const MODEL_LIST = {
   gemini: ["gemini-flash-lite-latest", "gemini-2.5-flash-lite", "gemini-2.5-flash", "gemini-flash-latest"],
-  groq: ["llama-3.3-70b-versatile", "llama-3.1-8b-instant", "openai/gpt-oss-120b", "qwen/qwen3-32b"],
+  groq: ["openai/gpt-oss-20b", "openai/gpt-oss-120b", "qwen/qwen3.8-27b", "allam-2-7b"],
   zen: ["nemotron-3-ultra-free", "big-pickle", "ling-3.1-flash-free", "mimo-v2.5-free", "longcat-2.5-preview-free", "step-5-preview-free", "exo-free"],
 };
 
