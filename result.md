@@ -1,21 +1,26 @@
-# ✅ Task result
+# ⚠️ Task result
 
 **Goal:** Hacker News pe aaj ke top 10 posts ka title aur link nikaalo. CSV file banao.
 
-**Time:** 53s · **Steps:** 7 · **Phases:** 1
+**Time:** 59s · **Steps:** 1
 
 ---
 
-Hacker News ke aaj ke top 10 posts ke titles aur links extract karke CSV file 'hacker_news_top_10.csv' mein save kar diye gaye hain.
+## ⚠️ Gemini ka quota khatam hai
 
-<details><summary>Work report (7 entries)</summary>
+**Ye aapki key ka limit hai, code ka bug nahi.** Free tier ki limit ho gayi hai.
 
-- 05:45:31  web pe dhoondh raha hoon — "Hacker News top stories"
-- 05:45:35  khol raha hoon — news.ycombinator.com/
-- 05:45:38  data nikaal raha hoon — span.titleline > a
-- 05:45:38  data nikaal raha hoon — span.titleline > a
-- 05:45:56  file bana raha hoon — hacker_news_top_10.csv
-- 05:46:11  kaam khatam kar raha hoon
-- 05:46:20  ✔ Verify: undefined% ✓ poora
+**Kya karein (koi ek):**
+1. **2-3 minute baad dobara chalayein** — per-minute rate limit bhi ho sakta hai
+2. **Nayi key, naye project me** — quota per-project hoti hai:
+   `aistudio.google.com/apikey` → Create API key → project me **New project** → key copy →
+   Repo → Settings → Secrets → `GEMINI_API_KEY` update
+3. Free tier ka daily quota reset hota hai **~12:30 PM IST** ke aas paas
+
+<sub>raw: QUOTA: gemini-2.5-flash-lite</sub>
+
+<details><summary>Work report (1 entries)</summary>
+
+- 05:47:49  web pe dhoondh raha hoon — "Hacker News"
 
 </details>
