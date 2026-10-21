@@ -1,11 +1,8 @@
 # ⚠️ Task result
 
-**Goal:** ROOT GOAL:
-Kaggle mein account create kro is mail se or baki sb tum dal dena rahula5540@gmail.com or otp bolna jb chahiye ho
+**Goal:** Hacker News pe aaj ke top 10 posts ka title aur link nikaalo. CSV file banao.
 
-NOTE: ye wahi task hai jo pehle chal chuka hai. Jo ho chuka hai DOBARA MAT KARO. Pichhle result ko improve/complete karo aur ROOT GOAL ke hisaab se hi jawab do.
-
-**Time:** 6s · **Steps:** 0
+**Time:** 4s · **Steps:** 0
 
 ---
 
