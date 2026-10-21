@@ -549,7 +549,7 @@ on("modelBtn", "click", (e) => {
 
 on("modelMore", "click", () => {
   closeModelMenu();
-  navTo("keys");
+  navTo("setup");
 });
 
 document.addEventListener("click", (e) => {
@@ -578,10 +578,7 @@ function toggleMenu() {
   menu.style.left = `${Math.round(Math.min(r.right - w, window.innerWidth - w - 10))}px`;
 }
 
-on("menuSetup", "click", () => {
-  closeMenu();
-  openSetup();
-});
+
 
 on("menuBtn", "click", (e) => {
   e.stopPropagation();
@@ -931,8 +928,8 @@ async function loadFiles() {
 }
 
 /* ══════════════════════ TABS / SETUP ══════════════════════ */
-const TABS = ["live", "tasks", "files", "keys", "setup"];
-const TAB_LABEL = { live: "Live", tasks: "Tasks", files: "Files", keys: "Keys", setup: "Setup" };
+const TABS = ["live", "tasks", "files", "setup"];
+const TAB_LABEL = { live: "Live", tasks: "Tasks", files: "Files", setup: "Setup" };
 
 function switchTab(name, manual = false) {
   if (manual) lastManualTabAt = Date.now();
@@ -953,7 +950,7 @@ function navTo(name) {
   if (name === "live") loadLive();
   if (name === "tasks") loadTasks();
   if (name === "files") loadFiles();
-  if (name === "keys") loadKeys();
+  
 }
 
 document.querySelectorAll("[data-nav]").forEach((btn) =>
@@ -1026,7 +1023,7 @@ on("setupForm", "submit", async (e) => {
     showSetupMsg("ok", `✓ Connected: ${r.full_name} · ${r.private ? "PRIVATE (cron nahi chalega — public karein)" : "public ✓"}`);
     setConfigUI();
     loadLive();
-    loadKeys();
+    loadSetup();
     loadModelState();
     loadTasks();
     loadFiles();
@@ -1036,33 +1033,17 @@ on("setupForm", "submit", async (e) => {
   }
 });
 
-/* ══════════════════════ KEYS / PIPELINE ══════════════════════ */
-const KEY_NAMES = ["GEMINI_API_KEY", "GEMINI_KEY_2", "GEMINI_KEY_3", "GEMINI_KEY_4"];
-const GROQ_BASE = "https://api.groq.com/openai/v1";
-const GROQ_DEFAULT_MODEL = "llama-3.3-70b-versatile";
-const ZEN_BASE = "https://opencode.ai/zen/v1";
-const ZEN_DEFAULT_MODEL = "nemotron-3-ultra-free";
+/* ══════════════════════ SETUP (connection + keys + model + limits) ══════════════════════ */
+const SECRET_FOR = { gemini: "GEMINI_API_KEY", groq: "GROQ_API_KEY", zen: "ZEN_API_KEY" };
+const BASE_FOR = { groq: "https://api.groq.com/openai/v1", zen: "https://opencode.ai/zen/v1" };
+const MODEL_LIST = {
+  gemini: ["gemini-flash-lite-latest", "gemini-2.5-flash-lite", "gemini-2.5-flash", "gemini-flash-latest"],
+  groq: ["llama-3.3-70b-versatile", "llama-3.1-8b-instant", "openai/gpt-oss-120b", "qwen/qwen3-32b"],
+  zen: ["nemotron-3-ultra-free", "big-pickle", "ling-3.1-flash-free", "mimo-v2.5-free", "longcat-2.5-preview-free", "step-5-preview-free", "exo-free"],
+};
 
-/** provider select badalne pe sensible defaults */
-function applyProviderDefaults() {
-  const p = $("pProvider")?.value;
-  if (!p) return;
-  if (p === "groq" || p === "zen" || p === "openai") {
-    if (p === "zen") {
-      $("pBase").value = ZEN_BASE;
-      if (!$("pModel").value || /llama-3\.3/.test($("pModel").value)) $("pModel").value = ZEN_DEFAULT_MODEL;
-    } else if (p === "groq") {
-      $("pBase").value = GROQ_BASE;
-      if (!$("pModel").value || /-free$/.test($("pModel").value)) $("pModel").value = GROQ_DEFAULT_MODEL;
-    } else if (!$("pBase").value) {
-      $("pBase").value = GROQ_BASE;
-      if (!$("pModel").value) $("pModel").value = GROQ_DEFAULT_MODEL;
-    }
-  } else {
-    if ($("pBase").value === GROQ_BASE || !$("pBase").value) $("pBase").value = "";
-    if ($("pModel").value === GROQ_DEFAULT_MODEL) $("pModel").value = "";
-  }
-}
+let secretsCache = [];
+let varsCache = {};
 
 function msg(elId, kind, text) {
   const el = $(elId);
@@ -1074,12 +1055,11 @@ function msg(elId, kind, text) {
 
 async function sodiumLib() {
   const s = window.sodium;
-  if (!s) throw new Error("Encryption library load nahi hui — page reload karein / internet check karein");
+  if (!s) throw new Error("Encryption library load nahi hui — page reload karein");
   await s.ready;
   return s;
 }
 
-/** GitHub Actions secret set karta hai (libsodium sealed box). */
 async function setSecret(name, value) {
   const s = await sodiumLib();
   const pk = await gh(`${repoPath()}/actions/secrets/public-key`);
@@ -1105,202 +1085,176 @@ async function setVariable(name, value) {
   }
 }
 
-async function loadKeys() {
-  if (!configured()) return;
-  const list = $("pipeList");
-  const rows = [];
-  let secretNames = [];
-  let vars = {};
+function providerFromVars() {
+  const isOpenAI = (varsCache.LLM_PROVIDER || "gemini") === "openai";
+  if (!isOpenAI) return "gemini";
+  const base = varsCache.LLM_BASE_URL || "";
+  return /opencode\.ai/.test(base) ? "zen" : /groq\.com/.test(base) ? "groq" : "groq";
+}
 
-  // 1. repo
+async function loadSetup() {
+  if (!configured()) {
+    const el = $("pipeList");
+    if (el) el.innerHTML = `<p class="hint">Pehle step 1 me repo + token daalein.</p>`;
+    return;
+  }
+
+  try {
+    const v = await gh(`${repoPath()}/actions/variables`);
+    varsCache = {};
+    for (const x of v.variables || []) varsCache[x.name] = x.value;
+  } catch {}
+
+  try {
+    const sc = await gh(`${repoPath()}/actions/secrets`);
+    secretsCache = (sc.secrets || []).map((x) => x.name);
+  } catch {
+    secretsCache = [];
+  }
+
+  // key chips
+  for (const [prov, secret] of Object.entries(SECRET_FOR)) {
+    const chip = $(`chip-${prov}`);
+    if (!chip) continue;
+    const has = secretsCache.includes(secret);
+    chip.textContent = has ? "✓ saved" : "not set";
+    chip.className = `chip ${has ? "ok" : ""}`;
+  }
+
+  // active provider + model
+  const prov = providerFromVars();
+  if ($("activeProv")) $("activeProv").value = prov;
+  renderModelOptions(prov);
+  const curModel = prov === "gemini" ? varsCache.GEMINI_MODEL || "gemini-flash-lite-latest" : varsCache.LLM_MODEL || "";
+  if ($("activeModel") && curModel) {
+    if (![...$("activeModel").options].some((o) => o.value === curModel)) {
+      $("activeModel").add(new Option(curModel, curModel));
+    }
+    $("activeModel").value = curModel;
+  }
+
+  // limits
+  if ($("vSteps")) $("vSteps").value = varsCache.MAX_STEPS || 20;
+  if ($("vPhases")) $("vPhases").value = varsCache.MAX_PHASES || 6;
+  if ($("vAcc")) $("vAcc").value = varsCache.ACCURACY_TARGET || 90;
+
+  // status
+  const rows = [];
   try {
     const r = await gh(repoPath());
     rows.push({ ok: true, html: `Repo <b>${esc(r.full_name)}</b> — ${r.private ? "⚠ private (cron nahi chalega)" : "public ✓"}` });
   } catch (e) {
     rows.push({ ok: false, html: `Repo access ✗ — ${esc(e.message)}` });
   }
-
-  // 2. workflow file
-  try {
-    await gh(`${repoPath()}/contents/.github/workflows/agent.yml`);
-    rows.push({ ok: true, html: "Workflow <b>agent.yml</b> present ✓" });
-  } catch {
-    rows.push({ ok: false, html: "Workflow file nahi mili" });
-  }
-
-  // 3. Pages
   try {
     const p = await gh(`${repoPath()}/pages`);
-    rows.push({ ok: p.status === "built", html: `Dashboard Pages — ${esc(p.status)} · <a href="${p.html_url}" target="_blank" rel="noopener">kholo</a>` });
+    rows.push({ ok: p.status === "built", html: `Dashboard — ${esc(p.status)} · <a href="${p.html_url}" target="_blank" rel="noopener">kholo</a>` });
   } catch {
     rows.push({ ok: false, html: "Pages enabled nahi hai" });
   }
-
-  // 4. secrets
-  try {
-    const s = await gh(`${repoPath()}/actions/secrets`);
-    secretNames = (s.secrets || []).map((x) => x.name);
-    const gem = KEY_NAMES.filter((n) => secretNames.includes(n));
-    rows.push({ ok: gem.length > 0, html: `Keys set: <b>${gem.length}</b>/${KEY_NAMES.length} ${gem.map((g) => g.replace("GEMINI_", "")).join(", ")}` });
-  } catch (e) {
-    rows.push({ ok: false, html: `Secrets padhne ki permission nahi — token me <b>Secrets: Read and write</b> add karein` });
-  }
-
-  // 5. variables
-  try {
-    const v = await gh(`${repoPath()}/actions/variables`);
-    for (const x of v.variables || []) vars[x.name] = x.value;
-    rows.push({ ok: Object.keys(vars).length > 0, html: `Variables — model <b>${esc(vars.GEMINI_MODEL || "—")}</b>, steps <b>${esc(vars.MAX_STEPS || "—")}</b>` });
-
-    const prov = vars.LLM_PROVIDER || "gemini";
-    const hasLlmKey = secretNames.includes("LLM_API_KEY");
-    rows.push({
-      ok: prov === "gemini" ? true : hasLlmKey,
-      html:
-        prov === "gemini"
-          ? "Provider: <b>Gemini</b>"
-          : `Provider: <b>${esc(prov)}</b> · <code>${esc(vars.LLM_MODEL || "—")}</code> ${hasLlmKey ? "· key ✓" : "· <b style=\"color:var(--danger)\">key missing</b>"}`,
-    });
-
-    if ($("pProvider")) {
-      const base = vars.LLM_BASE_URL || "";
-      $("pProvider").value = prov !== "openai" ? "gemini" : /opencode\.ai/.test(base) ? "zen" : /groq\.com/.test(base) ? "groq" : "openai";
-    }
-    if ($("pBase") && vars.LLM_BASE_URL) $("pBase").value = vars.LLM_BASE_URL;
-    if ($("pModel") && vars.LLM_MODEL) $("pModel").value = vars.LLM_MODEL;
-  } catch {
-    rows.push({ ok: false, html: "Variables padhne ki permission nahi (Variables: Read)" });
-  }
-
-  list.innerHTML = rows
-    .map((r) => `<div class="pipe-item ${r.ok ? "ok" : "bad"}"><span class="pi-ico">${r.ok ? "✓" : "✗"}</span><span>${r.html}</span></div>`)
-    .join("");
-
-  for (let i = 0; i < 4; i++) {
-    const st = $("st" + (i + 1));
-    if (!st) continue;
-    const has = secretNames.includes(KEY_NAMES[i]);
-    st.textContent = has ? "saved" : "—";
-    st.className = `key-state ${has ? "ok" : ""}`;
-  }
-
-  if ($("pProvider") && !vars.LLM_PROVIDER) $("pProvider").value = "gemini";
-  if ($("vModel") && vars.GEMINI_MODEL) $("vModel").value = vars.GEMINI_MODEL;
-  if ($("vSteps") && vars.MAX_STEPS) $("vSteps").value = vars.MAX_STEPS;
-  if ($("vFallback") && vars.FALLBACK_MODELS) $("vFallback").value = vars.FALLBACK_MODELS;
+  const keyCount = Object.values(SECRET_FOR).filter((n) => secretsCache.includes(n)).length;
+  rows.push({ ok: keyCount > 0, html: `Keys set: <b>${keyCount}</b>/3` });
+  rows.push({
+    ok: true,
+    html: `Active model: <b>${esc(prov)}</b> · <code>${esc(curModel || "—")}</code>`,
+  });
+  const el = $("pipeList");
+  if (el)
+    el.innerHTML = rows
+      .map((r) => `<div class="pipe-item ${r.ok ? "ok" : "bad"}"><span class="pi-ico">${r.ok ? "✓" : "✗"}</span><span>${r.html}</span></div>`)
+      .join("");
 }
 
-on("pipeRefresh", "click", loadKeys);
-on("pProvider", "change", applyProviderDefaults);
+function renderModelOptions(prov) {
+  const sel = $("activeModel");
+  if (!sel) return;
+  sel.innerHTML = (MODEL_LIST[prov] || []).map((m) => `<option value="${m}">${m}</option>`).join("");
+}
 
-on("pBase", "change", () => {
-  const v = $("pBase").value.trim();
-  if (/opencode\.ai/.test(v)) {
-    $("pBase").value = ZEN_BASE;
-    if (!$("pModel").value) $("pModel").value = ZEN_DEFAULT_MODEL;
-  }
-});
+on("activeProv", "change", () => renderModelOptions($("activeProv").value));
 
-on("testProv", "click", async () => {
-  const base = ($("pBase")?.value || GROQ_BASE).replace(/\/+$/, "");
-  const key = $("pKey")?.value.trim();
-  if (!key) return msg("provMsg", "err", "Pehle Groq key paste karein (gsk_…).");
-  msg("provMsg", "ok", "Test ho raha hai…");
-  try {
-    const r = await fetch(`${base}/models`, { headers: { Authorization: `Bearer ${key}` } });
-    if (!r.ok) return msg("provMsg", "err", `✗ ${r.status} — key galat ya expired`);
-    const j = await r.json();
-    const names = (j.data || []).map((m) => m.id).filter((n) => !/whisper|tts|guard/i.test(n)).slice(0, 8);
-    msg("provMsg", "ok", `✓ Key valid · models: ${names.join(", ")}`);
-  } catch (e) {
-    msg("provMsg", "err", `✗ Network error: ${e.message}`);
-  }
-});
-
-on("provForm", "submit", async (e) => {
-  e.preventDefault();
-  const provSel = $("pProvider").value;
-  const prov = provSel === "gemini" ? "gemini" : "openai";
-  const base = prov === "openai" ? ($("pBase")?.value.trim() || GROQ_BASE) : "";
-  const model = $("pModel")?.value.trim() || (prov === "openai" ? GROQ_DEFAULT_MODEL : "");
-  const key = $("pKey")?.value.trim();
-
-  msg("provMsg", "ok", "Save ho raha hai…");
-  try {
-    await setVariable("LLM_PROVIDER", prov);
-    if (prov === "openai") {
-      await setVariable("LLM_BASE_URL", base);
-      await setVariable("LLM_MODEL", model);
-      if (key) {
-        await setSecret("LLM_API_KEY", key);
-        $("pKey").value = "";
-      }
+document.querySelectorAll("[data-save]").forEach((btn) =>
+  btn.addEventListener("click", async () => {
+    const prov = btn.dataset.save;
+    const input = $(`key-${prov}`);
+    const val = input?.value.trim();
+    if (!val) return msg("keysMsg", "err", "Pehle key paste karein.");
+    btn.disabled = true;
+    msg("keysMsg", "ok", `${prov} key save ho rahi hai…`);
+    try {
+      await setSecret(SECRET_FOR[prov], val);
+      input.value = "";
+      msg("keysMsg", "ok", `✓ ${prov} key saved. Ab step 3 se model chunein.`);
+      loadSetup();
+    } catch (e) {
+      msg("keysMsg", "err", `✗ ${e.message}`);
+    } finally {
+      btn.disabled = false;
     }
-    msg("provMsg", "ok", `✓ Provider: ${prov}${prov === "openai" ? ` · ${model}` : ""}. Agla task isi se chalega.`);
-    loadKeys();
-  } catch (err) {
-    msg("provMsg", "err", `✗ ${err.message} — token me Secrets/Variables write permission chahiye`);
-  }
-});
+  })
+);
 
 on("testKeys", "click", async () => {
-  const vals = [1, 2, 3, 4].map((i) => $(`k${i}`)?.value.trim() || "").filter(Boolean);
-  if (!vals.length) return msg("keysMsg", "err", "Pehle key paste karein (jo box me hai wahi test hoga).");
-  msg("keysMsg", "ok", "Test ho raha hai…");
+  const tests = [];
+  const g = $("key-gemini")?.value.trim();
+  if (g) tests.push(["gemini", g, "https://generativelanguage.googleapis.com/v1beta/models"]);
+  const gr = $("key-groq")?.value.trim();
+  if (gr) tests.push(["groq", gr, "https://api.groq.com/openai/v1/models"]);
+  const z = $("key-zen")?.value.trim();
+  if (z) tests.push(["zen", z, "https://opencode.ai/zen/v1/models"]);
+  if (!tests.length) return msg("keysMsg", "err", "Test karne ke liye box me key paste karein.");
 
+  msg("keysMsg", "ok", "Test ho raha hai…");
   const out = [];
-  for (let i = 0; i < vals.length; i++) {
+  for (const [name, key, url] of tests) {
     try {
-      const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${encodeURIComponent(vals[i])}`);
-      out.push(`key ${i + 1}: ${r.ok ? "✓ valid" : "✗ " + r.status}`);
-    } catch (e) {
-      out.push(`key ${i + 1}: ✗ network`);
+      const sep = url.includes("generativelanguage") ? "?key=" : "";
+      const r = await fetch(url + sep + encodeURIComponent(key), {
+        headers: url.includes("generativelanguage") ? {} : { Authorization: `Bearer ${key}` },
+      });
+      out.push(`${name}: ${r.ok ? "✓ valid" : "✗ " + r.status}`);
+    } catch {
+      out.push(`${name}: ✗ network`);
     }
   }
   msg("keysMsg", out.every((x) => x.includes("✓")) ? "ok" : "err", out.join(" · "));
 });
 
-on("keysForm", "submit", async (e) => {
-  e.preventDefault();
-  const vals = [1, 2, 3, 4].map((i) => $(`k${i}`)?.value.trim() || "");
-  const todo = KEY_NAMES.map((n, i) => [n, vals[i]]).filter(([, v]) => v);
-
-  if (!todo.length) return msg("keysMsg", "err", "Koi key nahi daali.");
-  msg("keysMsg", "ok", "GitHub Secrets me save ho raha hai…");
-
-  const done = [];
-  for (const [name, value] of todo) {
-    try {
-      await setSecret(name, value);
-      done.push(name);
-      $(`k${KEY_NAMES.indexOf(name) + 1}`).value = "";
-    } catch (err) {
-      return msg("keysMsg", "err", `✗ ${name}: ${err.message} — token me Secrets: Read and write permission chahiye`);
-    }
-  }
-  msg("keysMsg", "ok", `✓ Saved: ${done.join(", ")}. Agla task in keys ko use karega.`);
-  loadKeys();
-});
-
-on("varsForm", "submit", async (e) => {
-  e.preventDefault();
-  const payload = [];
-  const m = $("vModel")?.value;
-  const st = $("vSteps")?.value;
-  const fb = $("vFallback")?.value.trim();
-  if (m) payload.push(["GEMINI_MODEL", m]);
-  if (st) payload.push(["MAX_STEPS", String(st)]);
-  if (fb) payload.push(["FALLBACK_MODELS", fb]);
-
-  msg("varsMsg", "ok", "Save ho raha hai…");
+on("applyModel", "click", async () => {
+  const prov = $("activeProv").value;
+  const model = $("activeModel").value;
+  msg("modelMsg", "ok", "Apply ho raha hai…");
   try {
-    for (const [k, v] of payload) await setVariable(k, v);
-    msg("varsMsg", "ok", `✓ Saved: ${payload.map((p) => p[0]).join(", ")}`);
-    loadKeys();
-  } catch (err) {
-    msg("varsMsg", "err", `✗ ${err.message} — token me Variables: Read and write chahiye`);
+    if (prov === "gemini") {
+      await setVariable("LLM_PROVIDER", "gemini");
+      await setVariable("GEMINI_MODEL", model);
+    } else {
+      await setVariable("LLM_PROVIDER", "openai");
+      await setVariable("LLM_BASE_URL", BASE_FOR[prov]);
+      await setVariable("LLM_MODEL", model);
+    }
+    msg("modelMsg", "ok", `✓ Ab agent ${prov} · ${model} pe chalega.`);
+    loadSetup();
+    loadModelState();
+  } catch (e) {
+    msg("modelMsg", "err", `✗ ${e.message}`);
   }
 });
+
+on("saveLimits", "click", async () => {
+  msg("limitsMsg", "ok", "Save ho raha hai…");
+  try {
+    await setVariable("MAX_STEPS", String($("vSteps").value || 20));
+    await setVariable("MAX_PHASES", String($("vPhases").value || 6));
+    await setVariable("ACCURACY_TARGET", String($("vAcc").value || 90));
+    msg("limitsMsg", "ok", "✓ Limits saved.");
+    loadSetup();
+  } catch (e) {
+    msg("limitsMsg", "err", `✗ ${e.message}`);
+  }
+});
+
+on("pipeRefresh", "click", loadSetup);
 
 /* ══════════════════════ 1-SECOND LIVE ══════════════════════ */
 function tickSecond() {
@@ -1349,7 +1303,7 @@ setConfigUI();
 if (configured()) {
   loadThreads();
   loadLive();
-  loadKeys();
+  loadSetup();
   loadModelState();
   loadTasks();
   loadFiles();
