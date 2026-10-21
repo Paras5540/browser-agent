@@ -21,6 +21,7 @@ fs.mkdirSync(OUTPUTS, { recursive: true });
 const GH_TOKEN = process.env.GITHUB_TOKEN || "";
 const GH_REPO = process.env.GITHUB_REPOSITORY || "";
 const GH_API = "https://api.github.com";
+let ghRemaining = 1000;   // GitHub API quota (frames ke liye)
 const ISSUE = process.env.ISSUE_NUMBER || "";
 const REPO = process.env.GITHUB_REPOSITORY || "";
 
@@ -67,6 +68,7 @@ async function buildGoalFromIssue() {
     );
     return parts.join("\n\n");
   } catch (e) {
+    console.error("goal-build failed:", e && e.message ? e.message : e);
     return "";
   }
 }
@@ -252,7 +254,6 @@ let frameCount = 0;
 let lastFrameAt = 0;
 let frameInflight = 0;
 const MAX_INFLIGHT = 5;             // 3 frames ek saath upload (parallel)
-let ghRemaining = 1000;            // GITHUB_TOKEN: 1000 req/hour
 const MAX_FRAMES = Number(process.env.MAX_LIVE_FRAMES) || 400;
 const BASE_EVERY = Number(process.env.LIVE_FRAME_MS) || 800;
 // rate limit khatam ho raha ho to apne aap slow
