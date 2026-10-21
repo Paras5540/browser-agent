@@ -89,7 +89,10 @@ async function gh(path, opts = {}) {
   const json = await res.json().catch(() => ({}));
   if (!res.ok) {
     const msg = json.message || `HTTP ${res.status}`;
-    throw new Error(res.status === 401 ? "Token galat ya expired hai" : msg);
+    if (res.status === 401) throw new Error("Token galat ya expired hai");
+    if (res.status === 403 || res.status === 404)
+      throw new Error(`${msg} (HTTP ${res.status}) — token me Secrets/Variables: Read and write permission chahiye`);
+    throw new Error(`${msg} (HTTP ${res.status})`);
   }
   return json;
 }
