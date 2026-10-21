@@ -67,7 +67,35 @@ let lastPush = 0;
 let finalized = false;      // final result likh diya → progress update band
 let inflight = Promise.resolve();
 const timeline = [];
+const journal = [];
 const startedAt = Date.now();
+
+const REPORTS = path.resolve("./outputs/reports");
+fs.mkdirSync(REPORTS, { recursive: true });
+
+function log(text) {
+  journal.push(`${new Date().toISOString().slice(11, 19)}  ${text}`);
+  // har phase pe report file save — run beech me mare to bhi kaam bacha rahe
+  try {
+    fs.writeFileSync(path.join(REPORTS, "latest.md"), renderReport());
+  } catch {}
+}
+
+function renderReport(meta = {}) {
+  const head = [
+    "# Agent work report",
+    "",
+    `**Goal:** ${goal}`,
+    `**Started:** ${new Date(startedAt).toISOString()}`,
+    meta.phases ? `**Phases:** ${meta.phases}` : "",
+    meta.score !== undefined ? `**Accuracy:** ${meta.score}%` : "",
+    meta.status ? `**Status:** ${meta.status}` : "",
+    "",
+    "## Work log",
+    "",
+  ].filter(Boolean);
+  return head.join("\n") + "\n" + journal.map((l) => `- ${l}`).join("\n") + "\n";
+}
 
 const elapsed = () => {
   const s = Math.round((Date.now() - startedAt) / 1000);
@@ -270,8 +298,9 @@ const liveTimer = setInterval(() => {
 
 let body;
 let ok = true;
+let out = null;
 try {
-  const out = await runAgentTask({
+  out = await runAgentTask({
     goal,
     browser,
     apiKey: API_KEYS[0],
@@ -285,18 +314,22 @@ try {
         const human = (HUMAN[e.name] || (() => e.name))(a);
         timeline.push({ type: "tool", name: e.name, human, detail: String(a.query || a.url || a.text || "").slice(0, 90) });
         console.log(`  → ${human}`);
+        log(`${human}`);
         browser.page().then((pg) => pushLiveFrame(pg)).catch(() => {});
       } else if (e.type === "tool_error") {
         timeline.push({ type: "tool_error", name: e.name, human: HUMAN[e.name] ? HUMAN[e.name]({}) : e.name, detail: String(e.message).slice(0, 120) });
         console.log(`  ✗ ${e.name}: ${String(e.message).slice(0, 120)}`);
+        log(`✗ ${e.name} fail — ${String(e.message).slice(0, 80)}`);
       } else if (e.type === "say") {
         timeline.push({ type: "say", detail: e.text.slice(0, 160) });
       } else if (e.type === "phase") {
         timeline.push({ type: "tool", name: "phase", human: e.text, detail: "" });
         console.log(`  ⟳ ${e.text}`);
+        log(`--- ${e.text}`);
       } else if (e.type === "verify") {
         timeline.push({ type: "tool", name: "verify", human: e.text, detail: "" });
         console.log(`  ✓ ${e.text}`);
+        log(`✔ ${e.text}`);
       }
       pushProgress();
     },
@@ -345,7 +378,24 @@ try {
   await browser.close().catch(() => {});
 }
 
-const md = `# ${ok ? "✅" : "⚠️"} Task result\n\n**Goal:** ${goal}\n\n**Time:** ${elapsed()} · **Actions:** ${timeline.filter((t) => t.type === "tool").length}\n\n---\n\n${body}\n`;
+const score = out?.score ?? null;
+const meta = { phases: out?.phases, score, status: ok ? "complete" : "incomplete" };
+const report = renderReport(meta);
+try {
+  fs.writeFileSync(path.join(REPORTS, `report-${Date.now()}.md`), report);
+  fs.writeFileSync(path.join(REPORTS, "latest.md"), report);
+} catch {}
+
+const md =
+  `# ${ok ? "✅" : "⚠️"} Task result${score !== null ? ` — ${score}%` : ""}\n\n` +
+  `**Goal:** ${goal}\n\n` +
+  `**Time:** ${elapsed()} · **Steps:** ${timeline.filter((t) => t.type === "tool").length}` +
+  `${out?.phases ? ` · **Phases:** ${out.phases}` : ""}${score !== null ? ` · **Accuracy:** ${score}%` : ""}\n\n` +
+  `---\n\n${body}\n\n` +
+  `<details><summary>Work report (${journal.length} entries)</summary>\n\n` +
+  journal.map((l) => `- ${l}`).join("\n") +
+  `\n\n</details>\n`;
+
 fs.writeFileSync(path.resolve("./result.md"), md, "utf8");
 fs.writeFileSync(path.join(OUTPUTS, `result-${Date.now()}.md`), md, "utf8");
 
