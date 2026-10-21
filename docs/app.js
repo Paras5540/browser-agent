@@ -154,9 +154,25 @@ function showThreadView(n, title) {
   $("threadTitle").textContent = title || `#${n}`;
 }
 
-function scrollChat() {
-  chat.scrollTop = chat.scrollHeight;
+function isNearBottom() {
+  return chat.scrollHeight - chat.scrollTop - chat.clientHeight < 140;
 }
+
+let userScrolledUp = false;
+chat?.addEventListener("scroll", () => {
+  userScrolledUp = !isNearBottom();
+  $("jumpBtn")?.classList.toggle("hide", !userScrolledUp || !threadVisible());
+});
+
+function scrollChat(force = false) {
+  if (force || !userScrolledUp) {
+    chat.scrollTop = chat.scrollHeight;
+    $("jumpBtn")?.classList.add("hide");
+    userScrolledUp = false;
+  }
+}
+
+on("jumpBtn", "click", () => scrollChat(true));
 
 function addUserMsg(text) {
   const el = document.createElement("div");
@@ -205,13 +221,37 @@ function setRunning(on) {
 }
 
 let shotTick = 0;
-function refreshLiveShot() {
+let shotUrl = null;
+
+async function refreshLiveShot() {
   const wrap = $("shotWrap");
   const img = $("liveShot");
-  if (!wrap || !img || !cfg.owner) return;
-  const url = `https://raw.githubusercontent.com/${cfg.owner}/${cfg.repo}/live/outputs/live/latest.jpg?t=${Date.now()}`;
-  if (img.getAttribute("src") !== url) img.src = url;
-  $("shotOpen").href = `https://raw.githubusercontent.com/${cfg.owner}/${cfg.repo}/live/outputs/live/latest.jpg`;
+  if (!wrap || !img || !configured()) return;
+  try {
+    // raw.githubusercontent CDN cache karta hai — API se fresh blob lo
+    const res = await fetch(
+      `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/outputs/live/latest.jpg?ref=live&cb=${Date.now()}`,
+      {
+        headers: {
+          Authorization: `Bearer ${cfg.token}`,
+          Accept: "application/vnd.github.v3.raw",
+          "Cache-Control": "no-cache",
+        },
+        cache: "no-store",
+      }
+    );
+    if (!res.ok) {
+      if (res.status === 404) wrap.classList.add("hide");
+      return;
+    }
+    const blob = await res.blob();
+    if (shotUrl) URL.revokeObjectURL(shotUrl);
+    shotUrl = URL.createObjectURL(blob);
+    img.src = shotUrl;
+    wrap.classList.remove("hide");
+  } catch {
+    wrap.classList.add("hide");
+  }
 }
 
 function stopThinkTick() {
@@ -381,6 +421,138 @@ function openSetup() {
   navTo("setup");
 }
 
+/* ══════════════════ MODEL SWITCHER ══════════════════ */
+const MODEL_CATALOG = [
+  {
+    id: "gemini",
+    label: "Gemini",
+    base: "",
+    keySecret: "GEMINI_API_KEY",
+    models: ["gemini-flash-lite-latest", "gemini-2.5-flash-lite", "gemini-2.5-flash", "gemini-flash-latest"],
+  },
+  {
+    id: "groq",
+    label: "Groq",
+    base: "https://api.groq.com/openai/v1",
+    keySecret: "LLM_API_KEY",
+    models: ["llama-3.3-70b-versatile", "llama-3.1-8b-instant", "openai/gpt-oss-120b", "qwen/qwen3-32b"],
+  },
+  {
+    id: "zen",
+    label: "OpenCode Zen",
+    base: "https://opencode.ai/zen/v1",
+    keySecret: "LLM_API_KEY",
+    models: ["nemotron-3-ultra-free", "big-pickle", "ling-3.1-flash-free", "mimo-v2.5-free", "longcat-2.5-preview-free", "step-5-preview-free", "exo-free"],
+  },
+];
+
+let modelState = { provider: "gemini", base: "", model: "" };
+let secretNamesCache = [];
+
+function providerOf(base) {
+  if (!base) return "gemini";
+  if (/opencode\.ai/.test(base)) return "zen";
+  if (/groq\.com/.test(base)) return "groq";
+  return "openai";
+}
+
+async function loadModelState() {
+  if (!configured()) return;
+  try {
+    const v = await gh(`${repoPath()}/actions/variables`);
+    const vars = {};
+    for (const x of v.variables || []) vars[x.name] = x.value;
+    const isOpenAI = (vars.LLM_PROVIDER || "gemini") === "openai";
+    modelState = {
+      provider: isOpenAI ? providerOf(vars.LLM_BASE_URL) : "gemini",
+      base: vars.LLM_BASE_URL || "",
+      model: isOpenAI ? vars.LLM_MODEL || "" : vars.GEMINI_MODEL || "gemini-flash-lite-latest",
+    };
+    try {
+      const sc = await gh(`${repoPath()}/actions/secrets`);
+      secretNamesCache = (sc.secrets || []).map((x) => x.name);
+    } catch {}
+    renderModelLabel();
+  } catch {}
+}
+
+function renderModelLabel() {
+  const cat = MODEL_CATALOG.find((c) => c.id === modelState.provider) || MODEL_CATALOG[0];
+  const el = $("modelLabel");
+  if (el) el.textContent = `${cat.label} · ${modelState.model || "—"}`;
+}
+
+function renderModelList() {
+  const box = $("modelList");
+  if (!box) return;
+  box.innerHTML = MODEL_CATALOG.map((c) => {
+    const hasKey = secretNamesCache.includes(c.keySecret);
+    return (
+      `<div class="menu-label" style="padding-left:10px">${esc(c.label)}${hasKey ? "" : " · key missing"}</div>` +
+      c.models
+        .map(
+          (m) =>
+            `<button class="model-opt ${modelState.provider === c.id && modelState.model === m ? "active" : ""}" data-p="${esc(c.id)}" data-m="${esc(m)}">
+              <span>${esc(m)}${modelState.provider === c.id && modelState.model === m ? " ✓" : ""}</span>
+            </button>`
+        )
+        .join("")
+    );
+  }).join("");
+
+  box.querySelectorAll("[data-p]").forEach((b) =>
+    b.addEventListener("click", () => switchModel(b.dataset.p, b.dataset.m))
+  );
+}
+
+async function switchModel(provId, modelName) {
+  const cat = MODEL_CATALOG.find((c) => c.id === provId);
+  if (!cat) return;
+  closeModelMenu();
+  try {
+    if (provId === "gemini") {
+      await setVariable("LLM_PROVIDER", "gemini");
+      await setVariable("GEMINI_MODEL", modelName);
+    } else {
+      await setVariable("LLM_PROVIDER", "openai");
+      await setVariable("LLM_BASE_URL", cat.base);
+      await setVariable("LLM_MODEL", modelName);
+    }
+    modelState = { provider: provId, base: cat.base, model: modelName };
+    renderModelLabel();
+    toast(`✓ ${cat.label} · ${modelName} — agla task isi se chalega`);
+  } catch (e) {
+    toast(`✗ ${e.message}`, true);
+  }
+}
+
+function closeModelMenu() {
+  $("modelMenu")?.classList.add("hide");
+}
+
+on("modelBtn", "click", (e) => {
+  e.stopPropagation();
+  const menu = $("modelMenu");
+  const btn = $("modelBtn");
+  if (!menu || !btn) return;
+  if (!menu.classList.contains("hide")) return closeModelMenu();
+  renderModelList();
+  menu.classList.remove("hide");
+  const r = btn.getBoundingClientRect();
+  const w = menu.offsetWidth || 250;
+  menu.style.top = `${Math.round(r.top - menu.offsetHeight - 6)}px`;
+  menu.style.left = `${Math.round(Math.min(r.left, window.innerWidth - w - 10))}px`;
+});
+
+on("modelMore", "click", () => {
+  closeModelMenu();
+  navTo("keys");
+});
+
+document.addEventListener("click", (e) => {
+  if (!e.target.closest("#modelMenu") && !e.target.closest("#modelBtn")) closeModelMenu();
+});
+
 /* ── panel menu (⋮) ── */
 function closeMenu() {
   $("panelMenu")?.classList.add("hide");
@@ -454,6 +626,11 @@ function setReply(n) {
 
 on("replyCancel", "click", () => setReply(null));
 on("backBtn", "click", () => { closeMenu(); showList(); });
+
+on("pageBack", "click", () => {
+  document.body.classList.remove("page-mode");
+  closeMenu();
+});
 on("clearChat", "click", () => {
   closeMenu();
   if (threadVisible()) showList();
@@ -766,6 +943,7 @@ function switchTab(name, manual = false) {
 function navTo(name) {
   switchTab(name, true);
   document.body.classList.add("show-panel");
+  document.body.classList.add("page-mode");
   const b = $("panelBtn");
   if (b) b.textContent = "▦";
   closeMenu();
@@ -846,6 +1024,7 @@ on("setupForm", "submit", async (e) => {
     setConfigUI();
     loadLive();
     loadKeys();
+    loadModelState();
     loadTasks();
     loadFiles();
     loadThreads();
@@ -1157,7 +1336,7 @@ async function fastPoll() {
 
 on("liveShot", "error", () => $("shotWrap")?.classList.add("hide"));
 on("liveShot", "click", () => {
-  const u = $("liveShot")?.src;
+  const u = shotUrl || $("liveShot")?.src;
   if (u) window.open(u, "_blank", "noopener");
 });
 
@@ -1168,6 +1347,7 @@ if (configured()) {
   loadThreads();
   loadLive();
   loadKeys();
+  loadModelState();
   loadTasks();
   loadFiles();
   setInterval(tickSecond, 1000);      // har second timer update (0 API calls)
