@@ -16,7 +16,7 @@ on:
         type: string
 
   issues:
-    types: [opened, reopened]
+    types: [opened]
 
   # Same issue me naya instruction → wahi issue continue
   issue_comment:
