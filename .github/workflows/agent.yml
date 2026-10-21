@@ -47,7 +47,7 @@ jobs:
         contains(github.event.issue.labels.*.name, 'agent-task') &&
         contains(github.event.comment.body, 'agent-continue'))
     runs-on: ubuntu-latest
-    timeout-minutes: 350   # GitHub max 6h — task poora hone tak chalta rahe
+    timeout-minutes: 350   # GitHub max ~6h per job
 
     steps:
       - uses: actions/checkout@v4
@@ -104,9 +104,9 @@ jobs:
           LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
           ZEN_API_KEY: ${{ secrets.ZEN_API_KEY }}
-          MAX_STEPS: ${{ vars.MAX_STEPS || '15' }}
-          MAX_PHASES: ${{ vars.MAX_PHASES || '6' }}
-          MAX_RUNTIME_MIN: ${{ vars.MAX_RUNTIME_MIN || '300' }}
+          MAX_STEPS: ${{ vars.MAX_STEPS || '25' }}
+          MAX_PHASES: ${{ vars.MAX_PHASES || '10' }}
+          MAX_RUNTIME_MIN: ${{ vars.MAX_RUNTIME_MIN || '320' }}
           ACCURACY_TARGET: ${{ vars.ACCURACY_TARGET || '90' }}
           TASK_GOAL: ${{ github.event.inputs.goal || '' }}
           EVENT_NAME: ${{ github.event_name }}
