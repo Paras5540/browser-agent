@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="theme-color" content="#f5f4ee" />
 <title>Browser Agent</title>
-<link rel="stylesheet" href="style.css?v=19" />
+<link rel="stylesheet" href="style.css?v=20" />
 <script src="https://cdn.jsdelivr.net/npm/libsodium-wrappers@0.7.15/dist/bundles/libsodium-wrappers.min.js"></script>
 </head>
 <body>
@@ -128,7 +128,9 @@
         <label>LLM Provider</label>
         <select id="pProvider">
           <option value="gemini">Gemini (Google)</option>
-          <option value="openai">Groq / OpenAI-compatible</option>
+          <option value="groq">Groq (llama-3.3-70b-versatile)</option>
+          <option value="zen">OpenCode Zen (free models)</option>
+          <option value="openai">Custom OpenAI-compatible</option>
         </select>
 
         <label>Base URL</label>
@@ -142,11 +144,22 @@
           <option value="openai/gpt-oss-120b"></option>
           <option value="qwen/qwen3-32b"></option>
           <option value="moonshotai/kimi-k2-instruct"></option>
+          <option value="nemotron-3-ultra-free"></option>
+          <option value="big-pickle"></option>
+          <option value="ling-3.1-flash-free"></option>
+          <option value="mimo-v2.5-free"></option>
+          <option value="longcat-2.5-preview-free"></option>
+          <option value="step-5-preview-free"></option>
+          <option value="exo-free"></option>
+          <option value="space-bunny-free"></option>
         </datalist>
 
-        <label>Groq API key</label>
-        <input id="pKey" type="password" placeholder="gsk_… (console.groq.com se)" autocomplete="off" spellcheck="false" />
-        <p class="hint">GitHub Secrets me <code>LLM_API_KEY</code> ke naam se save hoti hai. Gemini key ki jagah ye use hogi.</p>
+        <label>API key</label>
+        <input id="pKey" type="password" placeholder="gsk_… (Groq) / Zen key (opencode.ai/auth)" autocomplete="off" spellcheck="false" />
+        <p class="hint">
+          GitHub Secrets me <code>LLM_API_KEY</code> ke naam se save hoti hai.<br>
+          <b>Groq:</b> console.groq.com · <b>OpenCode Zen:</b> opencode.ai/auth (free models milte hain)
+        </p>
 
         <div class="row" style="margin-top:8px">
           <button class="btn wide" type="button" id="testProv">Test Groq</button>
@@ -223,6 +236,6 @@
   </section>
 </main>
 
-<script src="app.js?v=19"></script>
+<script src="app.js?v=20"></script>
 </body>
 </html>
