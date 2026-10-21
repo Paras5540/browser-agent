@@ -864,3 +864,32 @@ body {
 .model-opt:hover { background: var(--panel-2); }
 .model-opt.active { background: var(--panel-2); font-weight: 600; }
 .model-opt .mo-sub { display: block; font-size: 10.5px; color: var(--faint); font-weight: 400; }
+
+/* ══════════════════ SETUP PAGE (sections, keys) ══════════════════ */
+.sec {
+  border: 1px solid var(--line); border-radius: 12px;
+  padding: 12px; margin-bottom: 10px; background: var(--panel);
+}
+.sec-head {
+  display: flex; align-items: center; gap: 9px;
+  font-size: 13px; font-weight: 600; margin-bottom: 10px;
+}
+.sec-n {
+  width: 20px; height: 20px; flex: 0 0 20px;
+  display: grid; place-items: center; border-radius: 50%;
+  background: var(--accent); color: var(--accent-fg);
+  font-size: 11px; font-weight: 700;
+}
+.key-card {
+  border: 1px solid var(--line); border-radius: 10px;
+  padding: 10px; margin-bottom: 8px; background: var(--panel-2);
+}
+.kc-head { display: flex; align-items: center; justify-content: space-between; font-size: 12.5px; }
+.kc-sub { font-size: 11px; color: var(--faint); margin: 3px 0 7px; }
+.chip {
+  font-size: 10px; padding: 2px 8px; border-radius: 999px;
+  background: var(--panel); border: 1px solid var(--line); color: var(--faint);
+}
+.chip.ok { background: var(--accent); color: var(--accent-fg); border-color: var(--accent); }
+.key-row { display: flex; gap: 6px; }
+.key-row input { flex: 1; min-width: 0; }
