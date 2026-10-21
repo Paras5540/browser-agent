@@ -89,7 +89,7 @@ if (!goal) {
 }
 const PROVIDER = (process.env.LLM_PROVIDER || "gemini").toLowerCase();
 const LLM_BASE = (process.env.LLM_BASE_URL || "").toLowerCase();
-const LLM_KEY = (
+const LLM_KEY = ((
   /opencode\.ai/.test(LLM_BASE)
     ? process.env.ZEN_API_KEY
     : /groq\.com/.test(LLM_BASE)
