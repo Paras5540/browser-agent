@@ -2,7 +2,7 @@
 
 **Goal:** Hacker News pe aaj ke top 10 posts ka title aur link nikaalo. CSV file banao.
 
-**Time:** 59s · **Steps:** 1
+**Time:** 52s · **Steps:** 2
 
 ---
 
@@ -17,10 +17,11 @@
    Repo → Settings → Secrets → `GEMINI_API_KEY` update
 3. Free tier ka daily quota reset hota hai **~12:30 PM IST** ke aas paas
 
-<sub>raw: QUOTA: gemini-2.5-flash-lite</sub>
+<sub>raw: QUOTA: gemini-flash-lite-latest</sub>
 
-<details><summary>Work report (1 entries)</summary>
+<details><summary>Work report (2 entries)</summary>
 
-- 05:52:21  web pe dhoondh raha hoon — "Hacker News"
+- 05:53:59  web pe dhoondh raha hoon — "Hacker News top posts today"
+- 05:54:03  khol raha hoon — news.ycombinator.com/
 
 </details>
