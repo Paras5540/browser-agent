@@ -494,11 +494,28 @@ form?.addEventListener("submit", async (e) => {
   try {
     let issue;
     if (replyTo) {
-      const prev = issueResults.get(replyTo) || "";
+      // pichhle issue se root goal + work log nikaalo (memory)
+      let rootGoal = "";
+      let workLog = "";
+      try {
+        const parent = await gh(`${repoPath()}/issues/${replyTo}`);
+        const pb = parent.body || "";
+        const rm = pb.match(/ROOT GOAL:\s*([\s\S]*?)(?:\n\s*PREVIOUS RESULT:|$)/i);
+        rootGoal = (rm ? rm[1] : pb).trim().slice(0, 1500);
+        const wm = pb.match(/PREVIOUS WORK LOG:\s*([\s\S]*?)(?:\n\s*NEW INSTRUCTION:|$)/i);
+        workLog = wm ? wm[1].trim().slice(0, 1500) : "";
+      } catch {}
+
+      const prev = (issueResults.get(replyTo) || "").slice(0, 2500);
+      // result ke andar wala work report bhi memory me daalo
+      const repLines = (prev.match(/^- \d{2}:\d{2}:\d{2}.*$/gm) || []).slice(-25).join("\n");
+
       const body =
-        `Continuing task #${replyTo} (same website/work).\n\n` +
-        (prev ? `Previous result:\n${prev.slice(0, 3000)}\n\n` : "") +
-        `New instruction:\n${goal}`;
+        `ROOT GOAL:\n${rootGoal || goal}\n\n` +
+        (prev ? `PREVIOUS RESULT:\n${prev}\n\n` : "") +
+        (workLog || repLines ? `PREVIOUS WORK LOG:\n${workLog || repLines}\n\n` : "") +
+        `NEW INSTRUCTION:\n${goal}\n\n` +
+        `NOTE: same task continue ho raha hai. Jo ho chuka hai dobara mat karo — sirf naya hissa karo.`;
       issue = await createTask(body, `Follow-up #${replyTo}: ${goal}`);
       setReply(null);
     } else {
@@ -836,14 +853,24 @@ on("setupForm", "submit", async (e) => {
 const KEY_NAMES = ["GEMINI_API_KEY", "GEMINI_KEY_2", "GEMINI_KEY_3", "GEMINI_KEY_4"];
 const GROQ_BASE = "https://api.groq.com/openai/v1";
 const GROQ_DEFAULT_MODEL = "llama-3.3-70b-versatile";
+const ZEN_BASE = "https://opencode.ai/zen/v1";
+const ZEN_DEFAULT_MODEL = "nemotron-3-ultra-free";
 
 /** provider select badalne pe sensible defaults */
 function applyProviderDefaults() {
   const p = $("pProvider")?.value;
   if (!p) return;
-  if (p === "openai") {
-    if (!$("pBase").value) $("pBase").value = GROQ_BASE;
-    if (!$("pModel").value) $("pModel").value = GROQ_DEFAULT_MODEL;
+  if (p === "groq" || p === "zen" || p === "openai") {
+    if (p === "zen") {
+      $("pBase").value = ZEN_BASE;
+      if (!$("pModel").value || /llama-3\.3/.test($("pModel").value)) $("pModel").value = ZEN_DEFAULT_MODEL;
+    } else if (p === "groq") {
+      $("pBase").value = GROQ_BASE;
+      if (!$("pModel").value || /-free$/.test($("pModel").value)) $("pModel").value = GROQ_DEFAULT_MODEL;
+    } else if (!$("pBase").value) {
+      $("pBase").value = GROQ_BASE;
+      if (!$("pModel").value) $("pModel").value = GROQ_DEFAULT_MODEL;
+    }
   } else {
     if ($("pBase").value === GROQ_BASE || !$("pBase").value) $("pBase").value = "";
     if ($("pModel").value === GROQ_DEFAULT_MODEL) $("pModel").value = "";
@@ -948,7 +975,10 @@ async function loadKeys() {
           : `Provider: <b>${esc(prov)}</b> · <code>${esc(vars.LLM_MODEL || "—")}</code> ${hasLlmKey ? "· key ✓" : "· <b style=\"color:var(--danger)\">key missing</b>"}`,
     });
 
-    if ($("pProvider")) $("pProvider").value = prov === "openai" ? "openai" : "gemini";
+    if ($("pProvider")) {
+      const base = vars.LLM_BASE_URL || "";
+      $("pProvider").value = prov !== "openai" ? "gemini" : /opencode\.ai/.test(base) ? "zen" : /groq\.com/.test(base) ? "groq" : "openai";
+    }
     if ($("pBase") && vars.LLM_BASE_URL) $("pBase").value = vars.LLM_BASE_URL;
     if ($("pModel") && vars.LLM_MODEL) $("pModel").value = vars.LLM_MODEL;
   } catch {
@@ -976,6 +1006,14 @@ async function loadKeys() {
 on("pipeRefresh", "click", loadKeys);
 on("pProvider", "change", applyProviderDefaults);
 
+on("pBase", "change", () => {
+  const v = $("pBase").value.trim();
+  if (/opencode\.ai/.test(v)) {
+    $("pBase").value = ZEN_BASE;
+    if (!$("pModel").value) $("pModel").value = ZEN_DEFAULT_MODEL;
+  }
+});
+
 on("testProv", "click", async () => {
   const base = ($("pBase")?.value || GROQ_BASE).replace(/\/+$/, "");
   const key = $("pKey")?.value.trim();
@@ -994,7 +1032,8 @@ on("testProv", "click", async () => {
 
 on("provForm", "submit", async (e) => {
   e.preventDefault();
-  const prov = $("pProvider").value;
+  const provSel = $("pProvider").value;
+  const prov = provSel === "gemini" ? "gemini" : "openai";
   const base = prov === "openai" ? ($("pBase")?.value.trim() || GROQ_BASE) : "";
   const model = $("pModel")?.value.trim() || (prov === "openai" ? GROQ_DEFAULT_MODEL : "");
   const key = $("pKey")?.value.trim();
