@@ -300,13 +300,23 @@ async function openThread(n, opts = {}) {
   showThreadView(n, iss.title);
   if (!opts.skipUser) addUserMsg(iss.body || iss.title);
 
+  // same issue me diye gaye purane instructions bhi chat me dikhao
+  let allComments = [];
+  try {
+    allComments = (await gh(`${repoPath()}/issues/${n}/comments?per_page=100`)) || [];
+  } catch {}
+  for (const c of allComments) {
+    const m = (c.body || "").match(/<!--\s*agent-continue\s*-->[\s\S]*?NEW INSTRUCTION:\s*([\s\S]*)/i);
+    if (m) addUserMsg(m[1].replace(/<!--[\s\S]*?-->/g, "").replace(/<sub>[\s\S]*?<\/sub>/g, "").trim());
+  }
+
   const ui = addAgentMsg(n);
   const labels = (iss.labels || []).map((l) => l.name);
   const done = labels.includes("agent-done") || labels.includes("agent-failed") || iss.state === "closed";
 
   if (done) {
-    const cs = await gh(`${repoPath()}/issues/${n}/comments?per_page=1&sort=created&direction=desc`).catch(() => []);
-    const body = cs?.[0]?.body || "";
+    const resultComments = allComments.filter((c) => /#\s*(✅|⚠️)\s*Task result/i.test(c.body || ""));
+    const body = (resultComments.at(-1)?.body) || (allComments.at(-1)?.body || "");
     const failed = labels.includes("agent-failed");
     ui.bubble.innerHTML = body ? mdToHtml(body) : `<span class="muted">Koi output nahi</span>`;
     if (body) issueResults.set(n, body);
@@ -494,30 +504,25 @@ form?.addEventListener("submit", async (e) => {
   try {
     let issue;
     if (replyTo) {
-      // pichhle issue se root goal + work log nikaalo (memory)
-      let rootGoal = "";
-      let workLog = "";
+      // SAME issue me continue — naya issue nahi banega (memory ek jagah)
+      const n = replyTo;
+      await gh(`${repoPath()}/issues/${n}/comments`, {
+        method: "POST",
+        body: JSON.stringify({
+          body: `<!-- agent-continue -->\n**NEW INSTRUCTION:** ${goal}\n\n<sub>same task continue · ${new Date().toLocaleString()}</sub>`,
+        }),
+      });
+      // closed tha to kholo
       try {
-        const parent = await gh(`${repoPath()}/issues/${replyTo}`);
-        const pb = parent.body || "";
-        const rm = pb.match(/ROOT GOAL:\s*([\s\S]*?)(?:\n\s*PREVIOUS RESULT:|$)/i);
-        rootGoal = (rm ? rm[1] : pb).trim().slice(0, 1500);
-        const wm = pb.match(/PREVIOUS WORK LOG:\s*([\s\S]*?)(?:\n\s*NEW INSTRUCTION:|$)/i);
-        workLog = wm ? wm[1].trim().slice(0, 1500) : "";
+        await gh(`${repoPath()}/issues/${n}`, { method: "PATCH", body: JSON.stringify({ state: "open" }) });
       } catch {}
-
-      const prev = (issueResults.get(replyTo) || "").slice(0, 2500);
-      // result ke andar wala work report bhi memory me daalo
-      const repLines = (prev.match(/^- \d{2}:\d{2}:\d{2}.*$/gm) || []).slice(-25).join("\n");
-
-      const body =
-        `ROOT GOAL:\n${rootGoal || goal}\n\n` +
-        (prev ? `PREVIOUS RESULT:\n${prev}\n\n` : "") +
-        (workLog || repLines ? `PREVIOUS WORK LOG:\n${workLog || repLines}\n\n` : "") +
-        `NEW INSTRUCTION:\n${goal}\n\n` +
-        `NOTE: same task continue ho raha hai. Jo ho chuka hai dobara mat karo — sirf naya hissa karo.`;
-      issue = await createTask(body, `Follow-up #${replyTo}: ${goal}`);
       setReply(null);
+
+      // usi thread me stream karo
+      ui.root.remove();
+      await openThread(n, { skipUser: false });
+      loadTasks();
+      return;
     } else {
       issue = await createTask(goal);
     }
