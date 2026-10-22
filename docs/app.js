@@ -1168,10 +1168,18 @@ async function loadSetup() {
 function renderModelOptions(prov) {
   const sel = $("activeModel");
   if (!sel) return;
+  if (prov === "custom") {
+    sel.innerHTML = `<option value="">(custom — niche model likhein)</option>`;
+    return;
+  }
   sel.innerHTML = (MODEL_LIST[prov] || []).map((m) => `<option value="${m}">${m}</option>`).join("");
 }
 
-on("activeProv", "change", () => renderModelOptions($("activeProv").value));
+on("activeProv", "change", () => {
+  const v = $("activeProv").value;
+  $("customBox")?.classList.toggle("hide", v !== "custom");
+  renderModelOptions(v);
+});
 
 document.querySelectorAll("[data-save]").forEach((btn) =>
   btn.addEventListener("click", async () => {
@@ -1222,6 +1230,22 @@ on("testKeys", "click", async () => {
 
 on("applyModel", "click", async () => {
   const prov = $("activeProv").value;
+  if (prov === "custom") {
+    const base = $("customBase").value.trim();
+    const model = $("customModel").value.trim();
+    if (!base || !model) return msg("modelMsg", "err", "Custom ke liye base URL aur model dono chahiye.");
+    msg("modelMsg", "ok", "Apply ho raha hai…");
+    try {
+      await setVariable("LLM_PROVIDER", "openai");
+      await setVariable("LLM_BASE_URL", base);
+      await setVariable("LLM_MODEL", model);
+      msg("modelMsg", "ok", `✓ Custom provider set: ${model}`);
+      loadSetup();
+    } catch (e) {
+      msg("modelMsg", "err", `✗ ${e.message}`);
+    }
+    return;
+  }
   const model = $("activeModel").value;
   msg("modelMsg", "ok", "Apply ho raha hai…");
   try {
