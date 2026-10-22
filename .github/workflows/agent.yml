@@ -104,6 +104,9 @@ jobs:
           LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
           ZEN_API_KEY: ${{ secrets.ZEN_API_KEY }}
+          NVIDIA_API_KEY: ${{ secrets.NVIDIA_API_KEY }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          FALLBACK_PROVIDERS: ${{ vars.FALLBACK_PROVIDERS || 'groq,nvidia,gemini' }}
           MAX_STEPS: ${{ vars.MAX_STEPS || '25' }}
           MAX_PHASES: ${{ vars.MAX_PHASES || '10' }}
           MAX_RUNTIME_MIN: ${{ vars.MAX_RUNTIME_MIN || '320' }}
