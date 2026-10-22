@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="theme-color" content="#f5f4ee" />
 <title>Browser Agent</title>
-<link rel="stylesheet" href="style.css?v=23" />
+<link rel="stylesheet" href="style.css?v=24" />
 <script src="https://cdn.jsdelivr.net/npm/libsodium-wrappers@0.7.15/dist/bundles/libsodium-wrappers.min.js"></script>
 </head>
 <body>
@@ -202,9 +202,18 @@
             <option value="gemini">Google Gemini</option>
             <option value="groq">Groq</option>
             <option value="zen">OpenCode Zen</option>
+            <option value="custom">Custom (OpenAI-compatible)</option>
           </select>
           <label>Model</label>
           <select id="activeModel"></select>
+          <div id="customBox" class="hide">
+            <label>Base URL</label>
+            <input id="customBase" placeholder="https://integrate.api.nvidia.com/v1" autocomplete="off" spellcheck="false" />
+            <label>Model id</label>
+            <input id="customModel" placeholder="meta/llama-3.3-70b-instruct" autocomplete="off" spellcheck="false" />
+            <label>API key (secret name)</label>
+            <input id="customKeyName" placeholder="CUSTOM_API_KEY" value="CUSTOM_API_KEY" autocomplete="off" spellcheck="false" />
+          </div>
           <button class="btn primary wide" type="button" id="applyModel" style="margin-top:8px">Apply model</button>
           <div id="modelMsg" class="settings-msg hide"></div>
         </div>
@@ -235,6 +244,6 @@
   </section>
 </main>
 
-<script src="app.js?v=23"></script>
+<script src="app.js?v=24"></script>
 </body>
 </html>
