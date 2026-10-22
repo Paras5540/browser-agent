@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="theme-color" content="#f5f4ee" />
 <title>Browser Agent</title>
-<link rel="stylesheet" href="style.css?v=24" />
+<link rel="stylesheet" href="style.css?v=25" />
 <script src="https://cdn.jsdelivr.net/npm/libsodium-wrappers@0.7.15/dist/bundles/libsodium-wrappers.min.js"></script>
 </head>
 <body>
@@ -179,11 +179,20 @@
         </div>
 
         <div class="key-card">
-          <div class="kc-head"><b>OpenCode Zen</b><span class="chip" id="chip-zen">—</span></div>
-          <div class="kc-sub">opencode.ai/auth se key — ⚠️ free models sirf OpenCode app me chalte hain, agent ke liye paid credits chahiye</div>
+          <div class="kc-head"><b>NVIDIA NIM</b><span class="chip" id="chip-nvidia">—</span></div>
+          <div class="kc-sub">build.nvidia.com → free key (no card) · bade models</div>
           <div class="key-row">
-            <input id="key-zen" type="password" placeholder="Zen API key" autocomplete="off" spellcheck="false" />
-            <button class="btn tiny" data-save="zen">Save</button>
+            <input id="key-nvidia" type="password" placeholder="nvapi-…" autocomplete="off" spellcheck="false" />
+            <button class="btn tiny" data-save="nvidia">Save</button>
+          </div>
+        </div>
+
+        <div class="key-card">
+          <div class="kc-head"><b>OpenRouter</b><span class="chip" id="chip-openrouter">—</span></div>
+          <div class="kc-sub">openrouter.ai/keys → 19 free models (:free) · 50 req/day</div>
+          <div class="key-row">
+            <input id="key-openrouter" type="password" placeholder="sk-or-v1-…" autocomplete="off" spellcheck="false" />
+            <button class="btn tiny" data-save="openrouter">Save</button>
           </div>
         </div>
 
@@ -201,7 +210,8 @@
           <select id="activeProv">
             <option value="gemini">Google Gemini</option>
             <option value="groq">Groq</option>
-            <option value="zen">OpenCode Zen</option>
+            <option value="openrouter">OpenRouter (free models)</option>
+            <option value="nvidia">NVIDIA NIM</option>
             <option value="custom">Custom (OpenAI-compatible)</option>
           </select>
           <label>Model</label>
@@ -244,6 +254,6 @@
   </section>
 </main>
 
-<script src="app.js?v=24"></script>
+<script src="app.js?v=25"></script>
 </body>
 </html>
