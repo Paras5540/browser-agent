@@ -442,10 +442,17 @@ const MODEL_CATALOG = [
   },
   {
     id: "zen",
-    label: "OpenCode Zen",
-    base: "https://opencode.ai/zen/v1",
-    keySecret: "LLM_API_KEY",
+    label: "OpenRouter",
+    base: "https://openrouter.ai/api/v1",
+    keySecret: "OPENROUTER_API_KEY",
     models: ["minimax/minimax-m3.1-flash:free", "nvidia/nemotron-3-ultra-550b-a55b:free", "google/gemma-4-31b-it:free"],
+  },
+  {
+    id: "nvidia",
+    label: "NVIDIA NIM",
+    base: "https://integrate.api.nvidia.com/v1",
+    keySecret: "NVIDIA_API_KEY",
+    models: ["meta/llama-3.3-70b-instruct", "qwen/qwen2.5-72b-instruct"],
   },
 ];
 
@@ -454,9 +461,10 @@ let secretNamesCache = [];
 
 function providerOf(base) {
   if (!base) return "gemini";
-  if (/opencode\.ai/.test(base)) return "zen";
+  if (/openrouter\.ai/.test(base)) return "openrouter";
+  if (/nvidia/.test(base)) return "nvidia";
   if (/groq\.com/.test(base)) return "groq";
-  return "openai";
+  return "openrouter";
 }
 
 async function loadModelState() {
