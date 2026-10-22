@@ -445,7 +445,7 @@ const MODEL_CATALOG = [
     label: "OpenCode Zen",
     base: "https://opencode.ai/zen/v1",
     keySecret: "LLM_API_KEY",
-    models: ["nemotron-3-ultra-free", "big-pickle", "ling-3.1-flash-free", "mimo-v2.5-free", "longcat-2.5-preview-free", "step-5-preview-free", "exo-free"],
+    models: ["minimax/minimax-m3.1-flash:free", "nvidia/nemotron-3-ultra-550b-a55b:free", "google/gemma-4-31b-it:free"],
   },
 ];
 
@@ -1034,12 +1034,29 @@ on("setupForm", "submit", async (e) => {
 });
 
 /* ══════════════════════ SETUP (connection + keys + model + limits) ══════════════════════ */
-const SECRET_FOR = { gemini: "GEMINI_API_KEY", groq: "GROQ_API_KEY", zen: "ZEN_API_KEY" };
-const BASE_FOR = { groq: "https://api.groq.com/openai/v1", zen: "https://opencode.ai/zen/v1" };
+const SECRET_FOR = {
+  gemini: "GEMINI_API_KEY",
+  groq: "GROQ_API_KEY",
+  nvidia: "NVIDIA_API_KEY",
+  openrouter: "OPENROUTER_API_KEY",
+};
+const BASE_FOR = {
+  groq: "https://api.groq.com/openai/v1",
+  nvidia: "https://integrate.api.nvidia.com/v1",
+  openrouter: "https://openrouter.ai/api/v1",
+};
 const MODEL_LIST = {
   gemini: ["gemini-flash-lite-latest", "gemini-2.5-flash-lite", "gemini-2.5-flash", "gemini-flash-latest"],
   groq: ["openai/gpt-oss-20b", "openai/gpt-oss-120b", "qwen/qwen3.8-27b", "allam-2-7b"],
-  zen: ["nemotron-3-ultra-free", "big-pickle", "ling-3.1-flash-free", "mimo-v2.5-free", "longcat-2.5-preview-free", "step-5-preview-free", "exo-free"],
+  nvidia: ["meta/llama-3.3-70b-instruct", "nvidia/llama-3.3-nemotron-super-49b-v1", "qwen/qwen2.5-72b-instruct", "deepseek-ai/deepseek-r1"],
+  openrouter: [
+    "minimax/minimax-m3.1-flash:free",
+    "nvidia/nemotron-3-ultra-550b-a55b:free",
+    "nvidia/nemotron-3.5-super-vl:free",
+    "google/gemma-4-31b-it:free",
+    "thinkingmachines/inkling:free",
+    "openrouter/free",
+  ],
 };
 
 let secretsCache = [];
@@ -1089,7 +1106,10 @@ function providerFromVars() {
   const isOpenAI = (varsCache.LLM_PROVIDER || "gemini") === "openai";
   if (!isOpenAI) return "gemini";
   const base = varsCache.LLM_BASE_URL || "";
-  return /opencode\.ai/.test(base) ? "zen" : /groq\.com/.test(base) ? "groq" : "groq";
+  if (/openrouter\.ai/.test(base)) return "openrouter";
+  if (/nvidia/.test(base)) return "nvidia";
+  if (/groq\.com/.test(base)) return "groq";
+  return "groq";
 }
 
 async function loadSetup() {
@@ -1208,8 +1228,10 @@ on("testKeys", "click", async () => {
   if (g) tests.push(["gemini", g, "https://generativelanguage.googleapis.com/v1beta/models"]);
   const gr = $("key-groq")?.value.trim();
   if (gr) tests.push(["groq", gr, "https://api.groq.com/openai/v1/models"]);
-  const z = $("key-zen")?.value.trim();
-  if (z) tests.push(["zen", z, "https://opencode.ai/zen/v1/models"]);
+  const nv = $("key-nvidia")?.value.trim();
+  if (nv) tests.push(["nvidia", nv, "https://integrate.api.nvidia.com/v1/models"]);
+  const ork = $("key-openrouter")?.value.trim();
+  if (ork) tests.push(["openrouter", ork, "https://openrouter.ai/api/v1/models"]);
   if (!tests.length) return msg("keysMsg", "err", "Test karne ke liye box me key paste karein.");
 
   msg("keysMsg", "ok", "Test ho raha hai…");
