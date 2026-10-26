@@ -1,34 +1,40 @@
 # ✅ Task result
 
 **Goal:** ROOT GOAL:
-https://en.wikipedia.org/wiki/Web_scraping kholo aur page ka pehla paragraph 2 line me batao.
+https://example.com aur https://www.iana.org dono kholo, dono ka title save_field me daalo, phir ek CSV file banao.
 
 NOTE: ye wahi task hai jo pehle chal chuka hai. Jo ho chuka hai DOBARA MAT KARO. Pichhle result ko improve/complete karo aur ROOT GOAL ke hisaab se hi jawab do.
 
-**Time:** 22s · **Steps:** 6 · **Phases:** 1
+**Time:** 41s · **Steps:** 7 · **Phases:** 1
 
 ---
 
-Wikipedia page https://en.wikipedia.org/wiki/Web_scraping khola aur pehla paragraph extract kiya:
+✅ Task complete!
 
-**Pehla Paragraph (2 lines me):**
-"Web scraping, web harvesting, or web data extraction is data scraping used for extracting data from websites. Web scraping software may directly access the World Wide Web using the Hypertext Transfer Protocol or a web browser. While web scraping can be done manually by a software user, the term typically refers to automated processes."
+- example.com ka title: "Example Domain" → save_field me daala
+- www.iana.org ka title: "Internet Assigned Numbers Authority" → save_field me daala
+- Dono ka data CSV me save: outputs/sites.csv
 
-Ye paragraph data board me save kar diya gaya hai (key: web_scraping_first_paragraph).
+CSV content:
+URL,Title
+https://example.com,Example Domain
+https://www.iana.org,Internet Assigned Numbers Authority
 
 <details><summary>Data board (saved fields)</summary>
 
-- web_scraping_first_paragraph = Web scraping, web harvesting, or web data extraction is data scraping used for extracting data from websites. Web scraping software may directly access the World Wide Web using the Hypertext Transfer 
+- example_com_title = Example Domain
+- iana_org_title = Internet Assigned Numbers Authority
 
 </details>
 
-<details><summary>Work report (6 entries)</summary>
+<details><summary>Work report (7 entries)</summary>
 
-- 07:33:33  khol raha hoon — en.wikipedia.org/wiki/Web_scraping
-- 07:33:35  scroll kar raha hoon neeche
-- 07:33:38  data nikaal raha hoon — #mw-content-text p
-- 07:33:44  save_field
-- 07:33:46  kaam khatam kar raha hoon
-- 07:33:46  ✔ Verify: undefined% ✓ poora
+- 07:45:59  khol raha hoon — example.com
+- 07:46:03  save_field
+- 07:46:03  khol raha hoon — www.iana.org
+- 07:46:09  save_field
+- 07:46:09  file bana raha hoon — sites.csv
+- 07:46:14  kaam khatam kar raha hoon
+- 07:46:14  ✔ Verify: undefined% ✓ poora
 
 </details>
