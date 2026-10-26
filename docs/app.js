@@ -310,11 +310,21 @@ async function streamThread(n, ui) {
     const failed = labels.includes("agent-failed");
     const done = labels.includes("agent-done") || failed || iss.state === "closed";
 
-    // queue me hai? user ko batao
+    // queue me hai? kis run ke peeche — saaf batao
     const waited = Math.round((Date.now() - t0) / 1000);
-    if (!body && waited > 25 && !ui._queuedNoted) {
+    if (!body && waited > 18 && (!ui._queuedNoted || waited - (ui._qAt || 0) > 20)) {
       ui._queuedNoted = true;
-      ui.bubble.innerHTML = `<div class="srow active"><span class="si">◐</span><span>Queue me hai — ek time pe ek run chalta hai. Pehla run khatam hote hi shuru hoga.</span></div>`;
+      ui._qAt = waited;
+      let ahead = "";
+      try {
+        const runs = await gh(`${repoPath()}/actions/runs?per_page=6`);
+        const running = (runs.workflow_runs || []).find((r) => r.status === "in_progress");
+        if (running) {
+          const m = /issue #(\d+)/.exec(running.name || "");
+          ahead = ` Aage chal raha hai: <b>${esc(running.name)}</b>${m ? ` (issue <a class="issue-link" href="https://github.com/${cfg.owner}/${cfg.repo}/issues/${m[1]}" target="_blank" rel="noopener">#${m[1]}</a>)` : ""} — ${fmtElapsed(running.created_at)} se.`;
+        }
+      } catch {}
+      ui.bubble.innerHTML = `<div class="srow active"><span class="si">◐</span><span>Queue me hai (${waited}s).${ahead || " Ek time pe ek run chalta hai."}<br>Iska matlab agent atka nahi hai — bas pehla run khatam hone ka intezaar hai.</span></div>`;
       ui.badge.textContent = "queued";
     }
 
