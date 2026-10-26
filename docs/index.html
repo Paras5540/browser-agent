@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="theme-color" content="#f5f4ee" />
 <title>Browser Agent</title>
-<link rel="stylesheet" href="style.css?v=25" />
+<link rel="stylesheet" href="style.css?v=26" />
 <script src="https://cdn.jsdelivr.net/npm/libsodium-wrappers@0.7.15/dist/bundles/libsodium-wrappers.min.js"></script>
 </head>
 <body>
@@ -188,6 +188,15 @@
         </div>
 
         <div class="key-card">
+          <div class="kc-head"><b>Dahl Inference</b><span class="chip" id="chip-dahl">—</span></div>
+          <div class="kc-sub">inference.dahl.global — <b>100M tokens free</b> at signup (browser only) · phir $0.03/1M</div>
+          <div class="key-row">
+            <input id="key-dahl" type="password" placeholder="dahl_…" autocomplete="off" spellcheck="false" />
+            <button class="btn tiny" data-save="dahl">Save</button>
+          </div>
+        </div>
+
+        <div class="key-card">
           <div class="kc-head"><b>OpenRouter</b><span class="chip" id="chip-openrouter">—</span></div>
           <div class="kc-sub">openrouter.ai/keys → 19 free models (:free) · 50 req/day</div>
           <div class="key-row">
@@ -210,6 +219,7 @@
           <select id="activeProv">
             <option value="gemini">Google Gemini</option>
             <option value="groq">Groq</option>
+            <option value="dahl">Dahl Inference (100M free tokens)</option>
             <option value="openrouter">OpenRouter (free models)</option>
             <option value="nvidia">NVIDIA NIM</option>
             <option value="custom">Custom (OpenAI-compatible)</option>
@@ -254,6 +264,6 @@
   </section>
 </main>
 
-<script src="app.js?v=25"></script>
+<script src="app.js?v=26"></script>
 </body>
 </html>
