@@ -127,6 +127,7 @@ let finalized = false;      // final result likh diya → progress update band
 let inflight = Promise.resolve();
 const timeline = [];
 const journal = [];
+let boardCache = "";
 const startedAt = Date.now();
 
 const REPORTS = path.resolve("./outputs/reports");
@@ -198,6 +199,7 @@ function renderProgress() {
     `**Elapsed:** ${elapsed()} · **Steps:** ${timeline.filter((t) => t.type === "tool").length}`,
     "",
     lines.length ? lines.join("\n") : "_shuru ho raha hai…_",
+    boardCache ? `\n**Board (yaad rakha):**\n${boardCache}` : "",
     "",
     `<sub>live update · ${new Date().toISOString()}</sub>`,
   ].join("\n");
@@ -370,6 +372,7 @@ try {
         const a = e.args || {};
         const human = (HUMAN[e.name] || (() => e.name))(a);
         timeline.push({ type: "tool", name: e.name, human, detail: String(a.query || a.url || a.text || "").slice(0, 90) });
+        try { boardCache = browser.boardSnapshot(12); } catch {}
         console.log(`  → ${human}`);
         log(`${human}`);
         browser.page().then((pg) => pushLiveFrame(pg)).catch(() => {});
@@ -446,12 +449,22 @@ try {
   fs.writeFileSync(path.join(REPORTS, "latest.md"), report);
 } catch {}
 
+// board ko file me save — agla run/follow-up bhi padh sakta hai
+try {
+  const stDir = path.resolve("./outputs/state");
+  fs.mkdirSync(stDir, { recursive: true });
+  const boardObj = Object.fromEntries(browser.board || []);
+  fs.writeFileSync(path.join(stDir, "latest.json"), JSON.stringify(boardObj, null, 2));
+  fs.writeFileSync(path.join(stDir, `board-${Date.now()}.json`), JSON.stringify(boardObj, null, 2));
+} catch {}
+
 const md =
   `# ${ok ? "✅" : "⚠️"} Task result${score !== null ? ` — ${score}%` : ""}\n\n` +
   `**Goal:** ${goal}\n\n` +
   `**Time:** ${elapsed()} · **Steps:** ${timeline.filter((t) => t.type === "tool").length}` +
   `${out?.phases ? ` · **Phases:** ${out.phases}` : ""}${score !== null ? ` · **Accuracy:** ${score}%` : ""}\n\n` +
   `---\n\n${body}\n\n` +
+  (boardCache ? `<details><summary>Data board (saved fields)</summary>\n\n${boardCache}\n\n</details>\n\n` : "") +
   `<details><summary>Work report (${journal.length} entries)</summary>\n\n` +
   journal.map((l) => `- ${l}`).join("\n") +
   `\n\n</details>\n`;
