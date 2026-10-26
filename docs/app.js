@@ -463,6 +463,13 @@ const MODEL_CATALOG = [
     models: ["MiniMaxAI/MiniMax-M2.7", "deepseek-ai/DeepSeek-V4-Flash-0731", "zai-org/GLM-5.3-Flash"],
   },
   {
+    id: "dahl",
+    label: "Dahl Inference",
+    base: "https://inference.dahl.global/v1",
+    keySecret: "DAHL_API_KEY",
+    models: ["MiniMaxAI/MiniMax-M2.7", "deepseek-ai/DeepSeek-V4-Flash-0731", "zai-org/GLM-5.3-Flash"],
+  },
+  {
     id: "nvidia",
     label: "NVIDIA NIM",
     base: "https://integrate.api.nvidia.com/v1",
@@ -476,6 +483,7 @@ let secretNamesCache = [];
 
 function providerOf(base) {
   if (!base) return "gemini";
+  if (/dahl\.global/.test(base)) return "dahl";
   if (/dahl\.global/.test(base)) return "dahl";
   if (/openrouter\.ai/.test(base)) return "openrouter";
   if (/nvidia/.test(base)) return "nvidia";
@@ -1133,6 +1141,7 @@ function providerFromVars() {
   const isOpenAI = (varsCache.LLM_PROVIDER || "gemini") === "openai";
   if (!isOpenAI) return "gemini";
   const base = varsCache.LLM_BASE_URL || "";
+  if (/dahl\.global/.test(base)) return "dahl";
   if (/dahl\.global/.test(base)) return "dahl";
   if (/openrouter\.ai/.test(base)) return "openrouter";
   if (/nvidia/.test(base)) return "nvidia";
