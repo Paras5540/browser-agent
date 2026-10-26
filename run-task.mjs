@@ -89,24 +89,31 @@ if (!goal) {
 }
 const PROVIDER = (process.env.LLM_PROVIDER || "gemini").toLowerCase();
 const LLM_BASE = (process.env.LLM_BASE_URL || "").toLowerCase();
-const LLM_KEY = ((
-  /opencode\.ai/.test(LLM_BASE)
-    ? process.env.ZEN_API_KEY
-    : /groq\.com/.test(LLM_BASE)
-      ? process.env.GROQ_API_KEY
-      : process.env.LLM_API_KEY
-) || process.env.LLM_API_KEY || "").trim();
+
+// base URL se sahi secret chuno
+const KEY_BY_HOST = [
+  [/dahl\.global/, "DAHL_API_KEY"],
+  [/openrouter\.ai/, "OPENROUTER_API_KEY"],
+  [/opencode\.ai/, "ZEN_API_KEY"],
+  [/groq\.com/, "GROQ_API_KEY"],
+  [/nvidia/, "NVIDIA_API_KEY"],
+];
+const matchedEnv = (KEY_BY_HOST.find(([re]) => re.test(LLM_BASE)) || [])[1];
+const LLM_KEY = (
+  matchedEnv ? process.env[matchedEnv] : process.env.LLM_API_KEY
+) || process.env.LLM_API_KEY || process.env.DAHL_API_KEY || process.env.GROQ_API_KEY || process.env.OPENROUTER_API_KEY || process.env.NVIDIA_API_KEY || "";
+const LLM_KEY_TRIMMED = LLM_KEY.trim();
 const GEMINI_KEYS = [process.env.GEMINI_API_KEY, process.env.GEMINI_KEY_2, process.env.GEMINI_KEY_3, process.env.GEMINI_KEY_4]
   .map((k) => (k || "").trim())
   .filter(Boolean);
 
-const API_KEYS = PROVIDER === "openai" ? (LLM_KEY ? [LLM_KEY] : []) : GEMINI_KEYS;
+const API_KEYS = PROVIDER === "openai" ? (LLM_KEY_TRIMMED ? [LLM_KEY_TRIMMED] : []) : GEMINI_KEYS;
 const API_KEY_MAIN = API_KEYS[0];
 
 if (!API_KEYS.length) {
   console.error(
     PROVIDER === "openai"
-      ? "✗ LLM_API_KEY set nahi hai (Groq key) — Repo → Settings → Secrets → LLM_API_KEY"
+      ? `✗ LLM_API_KEY set nahi hai (${matchedEnv || "LLM_API_KEY"}) — Repo → Settings → Secrets → ${matchedEnv || "LLM_API_KEY"}`
       : "✗ GEMINI_API_KEY set nahi hai — Repo → Settings → Secrets → GEMINI_API_KEY"
   );
   process.exit(1);
