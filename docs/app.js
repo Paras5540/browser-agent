@@ -310,6 +310,14 @@ async function streamThread(n, ui) {
     const failed = labels.includes("agent-failed");
     const done = labels.includes("agent-done") || failed || iss.state === "closed";
 
+    // queue me hai? user ko batao
+    const waited = Math.round((Date.now() - t0) / 1000);
+    if (!body && waited > 25 && !ui._queuedNoted) {
+      ui._queuedNoted = true;
+      ui.bubble.innerHTML = `<div class="srow active"><span class="si">◐</span><span>Queue me hai — ek time pe ek run chalta hai. Pehla run khatam hote hi shuru hoga.</span></div>`;
+      ui.badge.textContent = "queued";
+    }
+
     if (body && body !== lastBody) {
       lastBody = body;
       if (done) {
