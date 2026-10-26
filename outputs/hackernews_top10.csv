@@ -1,11 +1,11 @@
-Title,Link
-"Local Wikipedia: Wikipedia, but only for things a half hour walk from you","https://edjefferson.com"
-"Docker is weird","https://codeandcake.dev"
-"The same AI request emits 8.5 times more CO2 in Texas than in Sweden","https://berget.ai"
-"How does Fable 5.1 hide messages in images?","https://lesswrong.com"
-"LLMs are making formal software verification feasible at a much larger scale","https://anthropic.com"
-"The HTML-in-Canvas API origin trial","https://chrome.com"
-"The foolishness of \"natural language programming\" (1978)","https://utexas.edu"
-"The alien space of science: Coherent but cognitively unavailable directions","https://arxiv.org"
-"OpenShell – A safe, private runtime for fleets of autonomous AI agents","https://github.com/nvidia"
-"This I Believe (1952)","https://awakin.org"
+rank,title,url
+1,Show HN: TitleArt – Make text like it's 1997,https://titleart.dvy.io/
+2,PaperPilot – Zero-Cloud, Pure-Rust PDF Engine with WASM and MCP,https://github.com/KrushnaVardhanReddy/PaperPilot
+3,The result of the C++26 DIS ballot,https://train-it.eu/blog/cpp26-contracts-the-ballot-result/
+4,Behind the scenes at the NeXT Computer office,https://exhibits.stanford.edu/menuez/browse/next-computer-inc?per_page=96&sort=pub_year_isi+asc%2C+title_sort+asc&view=masonry
+5,Growing Trees,https://brashandplucky.com/2026/10/15/growing-trees.html
+6,Dolly Parton's Imagination Library,https://imaginationlibrary.com/
+7,Show HN: A Truly Modular Keyboard,https://github.com/notaroomba/keybytes
+8,Overgrown, when plants invade your abandoned tabs,https://charliegerard.dev/blog/overgrown-extension/
+9,Attention Is Not What You Need (2025),https://arxiv.org/abs/2512.19428
+10,Microsoft Decision-1: 9B Qwen Model Launch Explained,https://shattered.io/microsoft-decision-1-qwen3-5-9b-model-2026/
