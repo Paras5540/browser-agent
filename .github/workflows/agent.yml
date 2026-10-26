@@ -112,6 +112,9 @@ jobs:
           MAX_PHASES: ${{ vars.MAX_PHASES || '10' }}
           MAX_RUNTIME_MIN: ${{ vars.MAX_RUNTIME_MIN || '320' }}
           ACCURACY_TARGET: ${{ vars.ACCURACY_TARGET || '90' }}
+          LIVE_FRAME_MS: ${{ vars.LIVE_FRAME_MS || '800' }}
+          MAX_LIVE_FRAMES: ${{ vars.MAX_LIVE_FRAMES || '400' }}
+          USER_DATA_DIR: ${{ vars.USER_DATA_DIR || './data/browser-profile' }}
           TASK_GOAL: ${{ github.event.inputs.goal || '' }}
           EVENT_NAME: ${{ github.event_name }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
