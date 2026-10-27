@@ -15,6 +15,7 @@ import path from "node:path";
 import { BrowserManager } from "./lib/browser.js";
 import { saveCheckpoint, loadCheckpoint, appendFindings, recallFindings } from "./lib/memory.js";
 import { saveSkill } from "./lib/skills.js";
+import { saveReplay } from "./lib/replay.js";
 import { runAgentTask } from "./lib/agent.js";
 
 const OUTPUTS = path.resolve("./outputs");
@@ -128,6 +129,7 @@ let lastPush = 0;
 let finalized = false;      // final result likh diya → progress update band
 let inflight = Promise.resolve();
 const timeline = [];
+const rawActions = [];
 const journal = [];
 let boardCache = "";
 const startedAt = Date.now();
@@ -396,6 +398,7 @@ try {
         const a = e.args || {};
         const human = (HUMAN[e.name] || (() => e.name))(a);
         timeline.push({ type: "tool", name: e.name, human, detail: String(a.query || a.url || a.text || "").slice(0, 90) });
+        rawActions.push({ tool: e.name, args: a });
         try { boardCache = browser.boardSnapshot(12); } catch {}
         console.log(`  → ${human}`);
         log(`${human}`);
@@ -529,6 +532,17 @@ try {
     if (hostGuess) {
       const usedTools = [...new Set(timeline.filter((t) => t.type === "tool").map((t) => (t.human || "").split(" ")[0]))].join(", ");
       saveSkill(hostGuess, `task ok — ${goal.split("\n")[0].slice(0, 100)} | tools: ${usedTools}`);
+    }
+  }
+} catch {}
+
+// workflow replay: successful run ke actions save karo (agli baar LLM ke bina chalenge)
+try {
+  if (ok && rawActions.length > 2) {
+    const firstUrl = rawActions.find((a) => a.tool === "navigate")?.args?.url;
+    if (firstUrl) {
+      const saved = saveReplay(firstUrl, rawActions);
+      if (saved) console.log("  REPLAY saved — agli baar bina LLM chalega");
     }
   }
 } catch {}
