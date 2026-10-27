@@ -132,6 +132,10 @@ let boardCache = "";
 const startedAt = Date.now();
 
 const REPORTS = path.resolve("./outputs/reports");
+const TRACES = path.resolve("./outputs/traces");
+try { fs.mkdirSync(TRACES, { recursive: true }); } catch {}
+const TRACE_FILE = path.join(TRACES, `${ISSUE || "run"}-${Date.now()}.jsonl`);
+const trace = (e) => { try { fs.appendFileSync(TRACE_FILE, JSON.stringify({ t: Date.now(), ...e }) + "\n"); } catch {} };
 fs.mkdirSync(REPORTS, { recursive: true });
 
 function log(text) {
@@ -386,6 +390,7 @@ try {
     maxPhases,
     deadline,
     onEvent: (e) => {
+      trace(e);
       if (e.type === "tool") {
         const a = e.args || {};
         const human = (HUMAN[e.name] || (() => e.name))(a);
