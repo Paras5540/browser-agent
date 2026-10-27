@@ -1,3 +1,5 @@
+/* NETRA UI strings — English default, Hindi optional. (IIFE: global scope clean) */
+(() => {
 /* NETRA UI strings — English default, Hindi optional. */
 const STR = {
   en: {
@@ -170,3 +172,5 @@ function applyI18n() {
 }
 
 window.NETRA_I18N = { t, setLang, applyI18n, get lang() { return LANG; } };
+
+})();
