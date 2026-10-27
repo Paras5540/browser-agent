@@ -656,9 +656,10 @@ document.addEventListener("click", (e) => {
 });
 
 /* ── panel menu (⋮) ── */
+// ⋮ menu hata diya gaya hai — ye no-op backwards compatibility ke liye hai
 function closeMenu() {
-  $("panelMenu")?.classList.add("hide");
-  $("menuBtn")?.setAttribute("aria-expanded", "false");
+  $("modelMenu")?.classList.add("hide");
+  $("plusMenu")?.classList.add("hide");
 }
 
 document.addEventListener("keydown", (e) => {
