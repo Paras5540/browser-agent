@@ -12,5 +12,9 @@ outputs/*
 !outputs/*.csv
 !outputs/*.json
 !outputs/*.txt
+!outputs/*.jpg
+!outputs/*.jpeg
+!outputs/*.png
+!outputs/*.webp
 
 .github/workflows/*.local.yml
