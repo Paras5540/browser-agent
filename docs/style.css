@@ -1013,7 +1013,8 @@ body {
 .brand h1 { letter-spacing: -0.3px; }
 .dot { display: none; }
 
-.topnav { display: flex; gap: 2px; margin-left: 8px; }
+.topnav { display: flex; gap: 2px; margin-left: 8px; overflow-x: auto; scrollbar-width: none; }
+.topnav::-webkit-scrollbar { display: none; }
 .navbtn {
   padding: 7px 13px; border-radius: 9px; border: 0;
   background: transparent; color: var(--muted);
@@ -1030,7 +1031,11 @@ body.page-panel .side-panel { display: flex; }
 body.page-panel #pageBack { display: inline-flex; }
 
 @media (max-width: 1080px) {
-  .topnav { display: none; }
+  /* nav mobile pe bhi rahe — sirf scroll hoti hai */
+  .topnav { overflow-x: auto; scrollbar-width: none; flex: 1 1 auto; margin-left: 4px; }
+  .topnav::-webkit-scrollbar { display: none; }
+  .navbtn { padding: 6px 10px; font-size: 12.5px; white-space: nowrap; }
+  .brand h1 { font-size: 15px; }
   body.page-panel .side-panel { position: fixed; inset: 0; z-index: 40; border-radius: 0; border: 0; }
   body.page-panel .topbar { display: none; }
 }
