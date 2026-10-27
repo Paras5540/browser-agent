@@ -901,3 +901,64 @@ body {
   max-height: 220px; object-fit: cover; object-position: top;
   cursor: zoom-in;
 }
+
+/* ══════════════ CLAUDE-STYLE COMPOSER ══════════════ */
+.composer-wrap { padding: 8px 12px 12px; background: var(--panel); }
+.composer-box {
+  border: 1px solid var(--line-2);
+  border-radius: 24px;
+  background: var(--panel-2);
+  padding: 12px 14px 10px;
+  transition: border-color .15s, background .15s;
+}
+[data-theme="dark"] .composer-box { background: #232220; border-color: #3a3733; }
+.composer-box:focus-within { border-color: var(--line-2); background: var(--focus-bg, var(--panel)); }
+
+.composer-box textarea {
+  width: 100%; border: 0; outline: none; resize: none;
+  background: transparent; color: var(--text);
+  font: inherit; font-size: 16px; line-height: 1.45;
+  min-height: 24px; max-height: 120px;
+  padding: 2px 0 10px;
+}
+.composer-box textarea::placeholder { color: var(--faint); font-size: 15.5px; }
+
+.composer-row { display: flex; align-items: center; gap: 8px; }
+
+.cbtn {
+  width: 36px; height: 36px; flex: 0 0 36px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--panel); border: 1px solid var(--line);
+  color: var(--muted); font-size: 17px; line-height: 1; cursor: pointer;
+  transition: background .15s, color .15s, transform .1s;
+}
+[data-theme="dark"] .cbtn { background: #2b2926; border-color: #3a3733; }
+.cbtn:hover { color: var(--text); }
+.cbtn:active { transform: scale(.94); }
+.cbtn.send {
+  margin-left: auto; background: var(--accent); color: var(--accent-fg);
+  border-color: var(--accent); width: 40px; height: 40px; flex-basis: 40px;
+}
+.cbtn.send:disabled { opacity: .45; cursor: not-allowed; }
+.cbtn.rec { background: var(--danger); color: #fff; border-color: var(--danger); animation: recpulse 1.2s infinite; }
+@keyframes recpulse { 50% { opacity: .55; } }
+
+.model-chip {
+  display: inline-flex; align-items: center; gap: 7px;
+  height: 36px; padding: 0 14px; border-radius: 999px;
+  background: var(--panel); border: 1px solid var(--line);
+  color: var(--text); font: inherit; font-size: 13px; cursor: pointer;
+  max-width: 52vw; overflow: hidden;
+}
+[data-theme="dark"] .model-chip { background: #2b2926; border-color: #3a3733; }
+.model-chip:hover { border-color: var(--line-2); }
+#modelLabel { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.chip-warn { color: #d99a2b; font-size: 12px; }
+
+@media (max-width: 520px) {
+  .composer-wrap { padding: 6px 10px 10px; }
+  .composer-box { padding: 10px 12px 8px; border-radius: 22px; }
+  .cbtn { width: 34px; height: 34px; flex-basis: 34px; font-size: 16px; }
+  .cbtn.send { width: 38px; height: 38px; flex-basis: 38px; }
+  .model-chip { height: 34px; font-size: 12.5px; padding: 0 12px; }
+}
