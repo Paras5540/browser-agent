@@ -13,6 +13,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { BrowserManager } from "./lib/browser.js";
+import { saveCheckpoint, loadCheckpoint, appendFindings, recallFindings } from "./lib/memory.js";
 import { runAgentTask } from "./lib/agent.js";
 
 const OUTPUTS = path.resolve("./outputs");
@@ -261,6 +262,23 @@ console.log(`▶ Task: ${goal.slice(0, 200)}`);
 const MODEL_LABEL = PROVIDER === "openai" ? (process.env.LLM_MODEL || "groq-default") : (process.env.GEMINI_MODEL || "gemini-2.5-flash");
 console.log(`  provider: ${PROVIDER} · model: ${MODEL_LABEL} · steps/phase: ${maxSteps} · phases: ${maxPhases} · keys: ${API_KEYS.length}`);
 
+// ── pichhle run ka checkpoint + relevant findings (memory) ──
+{
+  const ck = ISSUE ? loadCheckpoint(ISSUE) : null;
+  if (ck && (ck.actions?.length || ck.lastResult)) {
+    goal +=
+      `\n\nPREVIOUS RUN CHECKPOINT (${ck.updatedAt || "?"}, ${ck.runs || 0} runs):\n` +
+      (ck.lastResult ? `Last result:\n${String(ck.lastResult).slice(0, 1200)}\n\n` : "") +
+      (ck.actions?.length ? `Actions already done (repeat mat karo):\n${ck.actions.slice(-20).map((a) => `- ${a}`).join("\n")}\n` : "");
+    console.log(`  ↺ checkpoint mila — resume kar raha hoon (${ck.runs || 0} pichhle runs)`);
+  }
+  const recall = recallFindings(goal, 2500);
+  if (recall) {
+    goal += `\n\nPURANI FINDINGS (memory se, use kar sakte ho):\n${recall}`;
+    console.log("  🧠 purani findings mili — context me daali");
+  }
+}
+
 await pushProgress(true);
 
 // ── LIVE SCREEN → repo ke `live` branch me (Manus jaisa) ──────────────────
@@ -385,10 +403,21 @@ try {
       } else if (e.type === "phase") {
         timeline.push({ type: "tool", name: "phase", human: e.text, detail: "" });
         console.log(`  ⟳ ${e.text}`);
+        try {
+          saveCheckpoint(ISSUE, {
+            goal: goal.slice(0, 500),
+            actions: timeline.filter((t) => t.type === "tool").map((t) => t.human).slice(-30),
+            lastResult: null,
+            phase: e.text,
+          });
+        } catch {}
         log(`--- ${e.text}`);
       } else if (e.type === "verify") {
         timeline.push({ type: "tool", name: "verify", human: e.text, detail: "" });
         console.log(`  ✓ ${e.text}`);
+        try {
+          saveCheckpoint(ISSUE, { lastResult: e.text, phase: `verify: ${e.text}` });
+        } catch {}
         log(`✔ ${e.text}`);
       }
       pushProgress();
@@ -480,6 +509,21 @@ try {
       "**📸 Captures (Files tab me download):**\n" +
       files.slice(-8).map((f) => `- [${f}](https://raw.githubusercontent.com/${repo}/${ref}/outputs/${encodeURIComponent(f)})`).join("\n") + "\n\n";
   }
+} catch {}
+
+// checkpoint final + long-term findings
+try {
+  saveCheckpoint(ISSUE, {
+    goal: goal.slice(0, 500),
+    actions: timeline.filter((t) => t.type === "tool").map((t) => t.human).slice(-30),
+    lastResult: String(body).slice(0, 2000),
+    final: true,
+    status: ok ? "done" : "incomplete",
+  });
+  appendFindings({
+    issue: ISSUE,
+    summary: `**${ok ? "✅" : "⚠️"} ${goal.split("\n")[0].slice(0, 120)}**\n${String(body).slice(0, 600)}`,
+  });
 } catch {}
 
 const md =
