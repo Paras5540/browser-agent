@@ -5,16 +5,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="theme-color" content="#171614" />
 <title>NETRA — Browser Agent</title>
-<link rel="stylesheet" href="style.css?v=31" />
+<link rel="stylesheet" href="style.css?v=32" />
 </head>
 <body>
 <header class="topbar">
   <div class="brand">
-    <span class="dot"></span>
     <h1>NETRA</h1>
     <span class="pill hide" id="repoPill">—</span>
     <span class="pill warn hide" id="cfgWarn">setup needed</span>
   </div>
+  <nav class="topnav" id="topnav">
+    <button class="navbtn active" data-nav="chat" data-i18n="newTask">New task</button>
+    <button class="navbtn" data-nav="live" data-i18n="live">Live</button>
+    <button class="navbtn" data-nav="tasks" data-i18n="tasks">Tasks</button>
+    <button class="navbtn" data-nav="files" data-i18n="files">Files</button>
+    <button class="navbtn" data-nav="setup" data-i18n="setup">Setup</button>
+  </nav>
   <div class="topright">
     <button class="btn icon" id="langBtn" title="Language" aria-label="Language">EN</button>
     <button class="btn icon" id="themeBtn" title="Theme" aria-label="Theme">◐</button>
@@ -64,8 +70,6 @@
       <span>Continuing <b id="replyTo">#—</b></span>
       <button class="btn tiny ghost" id="replyCancel" type="button">Cancel</button>
     </div>
-
-    <button class="jump-btn hide" id="jumpBtn">↓ new</button>
 
     <div class="live-strip hide" id="liveStrip">
       <span class="ls-spin">◐</span>
@@ -259,6 +263,6 @@
 </main>
 
 <script src="i18n.js?v=2"></script>
-<script src="app.js?v=31"></script>
+<script src="app.js?v=32"></script>
 </body>
 </html>
