@@ -708,19 +708,48 @@ on("pageBack", "click", () => {
   document.body.classList.remove("page-panel");
   syncNav("chat");
   closeMenu();
-  setTimeout(() => input?.focus(), 30);
+  syncNav("chat");
+  if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
 });
 
-/** top nav ka active state */
+/** drawer me active item */
 function syncNav(name) {
-  document.querySelectorAll("#topnav .navbtn").forEach((b) =>
+  document.querySelectorAll("#drawerNav .dnav").forEach((b) =>
     b.classList.toggle("active", b.dataset.nav === name)
   );
 }
 
-document.querySelectorAll("#topnav .navbtn").forEach((b) =>
+/* ── side drawer ── */
+function openDrawer() {
+  $("drawer")?.classList.add("open");
+  $("drawer")?.setAttribute("aria-hidden", "false");
+  $("drawerBackdrop")?.classList.remove("hide");
+  requestAnimationFrame(() => $("drawerBackdrop")?.classList.add("show"));
+  $("drawerBtn")?.setAttribute("aria-expanded", "true");
+}
+function closeDrawer() {
+  $("drawer")?.classList.remove("open");
+  $("drawer")?.setAttribute("aria-hidden", "true");
+  $("drawerBackdrop")?.classList.remove("show");
+  setTimeout(() => $("drawerBackdrop")?.classList.add("hide"), 180);
+  $("drawerBtn")?.setAttribute("aria-expanded", "false");
+}
+on("drawerBtn", "click", openDrawer);
+on("drawerClose", "click", closeDrawer);
+on("drawerBackdrop", "click", closeDrawer);
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") closeDrawer();
+});
+on("langBtn2", "click", () => setLang(window.NETRA_I18N.lang === "en" ? "hi" : "en"));
+on("themeBtn2", "click", () => {
+  const cur = document.documentElement.getAttribute("data-theme");
+  applyTheme(cur === "dark" ? "light" : "dark");
+});
+
+document.querySelectorAll("#drawerNav .dnav").forEach((b) =>
   b.addEventListener("click", () => {
     const n = b.dataset.nav;
+    closeDrawer();
     if (n === "chat") {
       document.body.classList.remove("page-panel");
       syncNav("chat");
@@ -1603,6 +1632,7 @@ on("liveShot", "click", () => {
 /* ══════════════════════ BOOT ══════════════════════ */
 autoDetect();
 I18N.applyI18n();
+closeDrawer?.();
 setConfigUI();
 if (configured()) {
   showNewTask();
