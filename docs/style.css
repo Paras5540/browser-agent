@@ -672,7 +672,7 @@ body {
 
 /* ── toast ── */
 .toast {
-  position: fixed; left: 50%; bottom: 22px; transform: translate(-50%, 14px);
+  position: fixed; left: 50%; top: 64px; transform: translate(-50%, -8px);
   background: var(--accent); color: var(--accent-fg);
   padding: 10px 16px; border-radius: 11px; font-size: 13px;
   opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s;
@@ -1007,4 +1007,35 @@ body {
 .mi-ico svg { display: block; }
 .chip-warn {
   width: 6px; height: 6px; border-radius: 50%; background: #d99a2b; display: none;
+}
+
+/* ══════════════ TOP NAV + SEPARATE PAGES ══════════════ */
+.brand h1 { letter-spacing: -0.3px; }
+.dot { display: none; }
+
+.topnav { display: flex; gap: 2px; margin-left: 8px; }
+.navbtn {
+  padding: 7px 13px; border-radius: 9px; border: 0;
+  background: transparent; color: var(--muted);
+  font: inherit; font-size: 13px; font-weight: 500; cursor: pointer;
+  transition: background .15s, color .15s;
+}
+.navbtn:hover { background: var(--panel-2); color: var(--text); }
+.navbtn.active { background: var(--accent); color: var(--accent-fg); }
+
+/* jab koi section page khula ho: wo poora screen le */
+body.page-panel .layout { grid-template-columns: minmax(0, 1fr); }
+body.page-panel .chat-panel { display: none; }
+body.page-panel .side-panel { display: flex; }
+body.page-panel #pageBack { display: inline-flex; }
+
+@media (max-width: 1080px) {
+  .topnav { display: none; }
+  body.page-panel .side-panel { position: fixed; inset: 0; z-index: 40; border-radius: 0; border: 0; }
+  body.page-panel .topbar { display: none; }
+}
+
+@media (min-width: 1081px) {
+  #pageBack { display: inline-flex; }
+  .only-mobile { display: none !important; }
 }
