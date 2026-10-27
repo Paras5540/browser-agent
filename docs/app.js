@@ -10,7 +10,12 @@ const cfg = {
 
 const $ = (id) => document.getElementById(id);
 
-/* ── inline SVG icons (koi emoji nahi) ── */
+/* ── i18n (English default) ── */
+const I18N = window.NETRA_I18N || { t: (k) => k, setLang: () => {}, applyI18n: () => {}, lang: "en" };
+const t = (k) => I18N.t(k);
+const setLang = (l) => I18N.setLang(l);
+
+/* ── inline SVG icons (no emoji) ── */
 const ICONS = {
   live:   '<circle cx="12" cy="12" r="7" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="2.5" fill="currentColor"/>',
   tasks:  '<path d="M4 6h16M4 12h16M4 18h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
@@ -166,12 +171,37 @@ let liveStartedAt = null;
 const threadVisible = () => !$("chat").classList.contains("hide");
 
 function showList() {
+  showNewTask();
+}
+
+/** Ghar ki screen: naya task (task list nahi) */
+function showNewTask() {
   currentThread = null;
-  $("threadList").classList.remove("hide");
-  $("chat").classList.add("hide");
+  chat.innerHTML = `
+    <div class="empty" id="chatEmpty">
+      <h3 data-i18n="emptyTitle">${t("emptyTitle")}</h3>
+      <p data-i18n="emptyBody">${t("emptyBody")}</p>
+      <div class="suggestions">
+        <button class="sug" data-i18n="sug1">${t("sug1")}</button>
+        <button class="sug" data-i18n="sug2">${t("sug2")}</button>
+        <button class="sug" data-i18n="sug3">${t("sug3")}</button>
+      </div>
+    </div>`;
+  chat.querySelectorAll(".sug").forEach((b) =>
+    b.addEventListener("click", () => {
+      input.value = b.textContent.trim();
+      autoGrow();
+      input.focus();
+    })
+  );
+  $("threadList").classList.add("hide");
+  $("chat").classList.remove("hide");
   $("backBtn").classList.add("hide");
-  $("threadTitle").textContent = "Tasks";
-  loadThreads();
+  $("stopRun")?.classList.add("hide");
+  $("clearChat")?.classList.add("hide");
+  $("threadTitle").textContent = t("newTask");
+  setRunning(false);
+  hydrateIcons(chat);
 }
 
 function showThreadView(n, title) {
@@ -179,6 +209,8 @@ function showThreadView(n, title) {
   $("threadList").classList.add("hide");
   $("chat").classList.remove("hide");
   $("backBtn").classList.remove("hide");
+  $("stopRun")?.classList.remove("hide");
+  $("clearChat")?.classList.remove("hide");
   $("threadTitle").textContent = title || `#${n}`;
 }
 
@@ -692,7 +724,7 @@ function setReply(n) {
 }
 
 on("replyCancel", "click", () => setReply(null));
-on("backBtn", "click", () => { closeMenu(); showList(); });
+on("backBtn", "click", () => { closeMenu(); showNewTask(); });
 
 on("pageBack", "click", () => {
   document.body.classList.remove("page-mode");
@@ -718,8 +750,7 @@ on("stopRun", "click", async () => {
 
 on("clearChat", "click", () => {
   closeMenu();
-  if (threadVisible()) showList();
-  else loadThreads();
+  showNewTask();
 });
 
 chat.addEventListener("click", (e) => {
@@ -767,7 +798,7 @@ document.querySelectorAll("[data-tpl]").forEach((b) =>
   })
 );
 
-on("plusMore", "click", () => {
+on("plusStop", "click", () => {
   $("plusMenu")?.classList.add("hide");
   $("stopRun")?.click();
 });
@@ -1023,11 +1054,13 @@ async function loadLive() {
 /* ══════════════════════ TASKS / FILES ══════════════════════ */
 const statusOf = (issue) => {
   const l = (issue.labels || []).map((x) => x.name);
-  if (l.includes("agent-failed")) return { cls: "error", text: "failed" };
-  if (l.includes("agent-done")) return { cls: "done", text: "done" };
-  if (l.includes("agent-running")) return { cls: "running", text: "running" };
-  return { cls: "running", text: issue.state === "closed" ? "closed" : "queued" };
+  if (l.includes("agent-failed")) return { cls: "error", text: t("failed") };
+  if (l.includes("agent-done")) return { cls: "done", text: t("done") };
+  if (l.includes("agent-running")) return { cls: "running", text: t("running") };
+  return { cls: "running", text: t("queued") };
 };
+
+const TAB_LABEL_KEY = { Live: "live", Tasks: "tasks", Files: "files", Setup: "setup" };
 
 let allIssues = [];
 let taskFilter = "all";
@@ -1146,8 +1179,8 @@ function switchTab(name, manual = false) {
   if (manual) lastManualTabAt = Date.now();
   TABS.forEach((k) => $("tab-" + k)?.classList.toggle("hide", k !== name));
   document.querySelectorAll("[data-nav]").forEach((b) => b.classList.toggle("active", b.dataset.nav === name));
-  const t = $("sideTitle");
-  if (t) t.textContent = TAB_LABEL[name] || name;
+  const titleEl = $("sideTitle");
+  if (titleEl) titleEl.textContent = t(name);
 }
 
 /** Menu se panel ka section kholo (mobile pe panel bhi khule) */
@@ -1192,6 +1225,21 @@ on("panelBtn", "click", () => {
   const open = document.body.classList.toggle("show-panel");
   const b = $("panelBtn");
   if (b) b.textContent = open ? "▦" : "▤";
+});
+
+on("langBtn", "click", () => {
+  setLang(window.NETRA_I18N.lang === "en" ? "hi" : "en");
+});
+
+document.addEventListener("netra:lang", () => {
+  if (!currentThread) showNewTask();
+  else if ($("threadTitle") && currentThread) $("threadTitle").textContent = `#${currentThread}`;
+  const map = { "tab-live": "live", "tab-tasks": "tasks", "tab-files": "files", "tab-setup": "setup" };
+  for (const [id, key] of Object.entries(map)) {
+    if ($(id) && !$(id).classList.contains("hide") && $("sideTitle")) $("sideTitle").textContent = t(key);
+  }
+  renderTaskPage();
+  hydrateIcons();
 });
 
 on("themeBtn", "click", () => {
@@ -1524,11 +1572,11 @@ function tickSecond() {
   if (!liveActive) return;
   if (++shotTick % 2 === 0) refreshLiveShot();
   if (!liveStartedAt) return;
-  const t = fmtElapsed(liveStartedAt);
+  const elapsedTxt = fmtElapsed(liveStartedAt);
   const a = $("lsTime");
-  if (a) a.textContent = t;
+  if (a) a.textContent = elapsedTxt;
   const b = $("liveElapsed");
-  if (b) b.textContent = t;
+  if (b) b.textContent = elapsedTxt;
 }
 
 /** Sirf 1 halka request — progress comment. Isliye har second chal sakta hai. */
@@ -1562,9 +1610,10 @@ on("liveShot", "click", () => {
 
 /* ══════════════════════ BOOT ══════════════════════ */
 autoDetect();
+I18N.applyI18n();
 setConfigUI();
 if (configured()) {
-  loadThreads();
+  showNewTask();
   loadLive();
   loadSetup();
   loadModelState();
