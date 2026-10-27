@@ -16,5 +16,8 @@ outputs/*
 !outputs/*.jpeg
 !outputs/*.png
 !outputs/*.webp
+!outputs/memory/
+!outputs/memory/**
+!outputs/state/
 
 .github/workflows/*.local.yml
