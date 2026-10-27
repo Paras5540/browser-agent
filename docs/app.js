@@ -513,10 +513,18 @@ async function loadModelState() {
   } catch {}
 }
 
+function updateChipWarn() {
+  const cat = MODEL_CATALOG.find((c) => c.id === modelState.provider);
+  const ok = !cat || secretNamesCache.includes(cat.keySecret);
+  const w = $("chipWarn");
+  if (w) w.style.display = ok ? "none" : "inline";
+}
+
 function renderModelLabel() {
   const cat = MODEL_CATALOG.find((c) => c.id === modelState.provider) || MODEL_CATALOG[0];
   const el = $("modelLabel");
-  if (el) el.textContent = `${cat.label} · ${modelState.model || "—"}`;
+  if (el) el.textContent = modelState.model || cat.label;
+  updateChipWarn();
 }
 
 function renderModelList() {
@@ -707,9 +715,76 @@ const form = $("composer");
 const input = $("input");
 
 function autoGrow() {
+  if (!input) return;
   input.style.height = "auto";
-  input.style.height = Math.min(input.scrollHeight, 72) + "px";
+  input.style.height = Math.min(input.scrollHeight, 120) + "px";
 }
+
+// + menu (quick actions)
+on("plusBtn", "click", (e) => {
+  e.stopPropagation();
+  const m = $("plusMenu");
+  if (!m) return;
+  if (!m.classList.contains("hide")) return m.classList.add("hide");
+  m.classList.remove("hide");
+  const r = $("plusBtn").getBoundingClientRect();
+  const w = m.offsetWidth || 220;
+  m.style.top = `${Math.round(r.top - m.offsetHeight - 8)}px`;
+  m.style.left = `${Math.round(Math.min(r.left, window.innerWidth - w - 10))}px`;
+});
+
+document.querySelectorAll("[data-tpl]").forEach((b) =>
+  b.addEventListener("click", () => {
+    $("plusMenu")?.classList.add("hide");
+    input.value = b.dataset.tpl;
+    autoGrow();
+    input.focus();
+  })
+);
+
+on("plusMore", "click", () => {
+  $("plusMenu")?.classList.add("hide");
+  $("stopRun")?.click();
+});
+
+document.addEventListener("click", (e) => {
+  if (!e.target.closest("#plusMenu") && !e.target.closest("#plusBtn")) $("plusMenu")?.classList.add("hide");
+});
+
+// mic — browser speech-to-text (Chrome/Android)
+let recog = null;
+let listening = false;
+on("micBtn", "click", () => {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) return toast("Is browser me voice input support nahi hai", true);
+  if (listening) {
+    recog?.stop();
+    return;
+  }
+  recog = new SR();
+  recog.lang = "hi-IN";
+  recog.interimResults = true;
+  recog.continuous = false;
+  let base = input.value ? input.value + " " : "";
+  recog.onstart = () => {
+    listening = true;
+    $("micBtn").classList.add("rec");
+    toast("🎙 Sun raha hoon…");
+  };
+  recog.onresult = (ev) => {
+    let txt = "";
+    for (let i = ev.resultIndex; i < ev.results.length; i++) txt += ev.results[i][0].transcript;
+    input.value = base + txt;
+    autoGrow();
+  };
+  recog.onerror = () => toast("Voice input fail hui", true);
+  recog.onend = () => {
+    listening = false;
+    $("micBtn").classList.remove("rec");
+    input.focus();
+  };
+  try { recog.start(); } catch { listening = false; }
+});
 input?.addEventListener("input", autoGrow);
 
 form?.addEventListener("submit", async (e) => {
