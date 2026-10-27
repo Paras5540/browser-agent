@@ -191,9 +191,9 @@ const HUMAN = {
 
 function renderProgress() {
   const lines = timeline.slice(-22).map((e) => {
-    if (e.type === "tool") return `- ✓ ${e.human || e.name}`;
-    if (e.type === "tool_error") return `- ✗ ${e.human || e.name} — ${e.detail}`;
-    return `- 💬 ${e.detail}`;
+    if (e.type === "tool") return `- done · ${e.human || e.name}`;
+    if (e.type === "tool_error") return `- fail · ${e.human || e.name} — ${e.detail}`;
+    return `- ${e.detail}`;
   });
   const lastTool = [...timeline].reverse().find((t) => t.type === "tool" || t.type === "tool_error");
   const current = lastTool?.human || "shuru kar raha hoon…";
@@ -403,7 +403,7 @@ try {
       } else if (e.type === "tool_error") {
         timeline.push({ type: "tool_error", name: e.name, human: HUMAN[e.name] ? HUMAN[e.name]({}) : e.name, detail: String(e.message).slice(0, 120) });
         console.log(`  ✗ ${e.name}: ${String(e.message).slice(0, 120)}`);
-        log(`✗ ${e.name} fail — ${String(e.message).slice(0, 80)}`);
+        log(`FAIL ${e.name} — ${String(e.message).slice(0, 80)}`);
       } else if (e.type === "say") {
         timeline.push({ type: "say", detail: e.text.slice(0, 160) });
       } else if (e.type === "phase") {
@@ -428,7 +428,7 @@ try {
         try {
           saveCheckpoint(ISSUE, { lastResult: e.text, phase: `verify: ${e.text}` });
         } catch {}
-        log(`✔ ${e.text}`);
+        log(`VERIFY ${e.text}`);
       }
       pushProgress();
     },
@@ -544,7 +544,7 @@ try {
   });
   appendFindings({
     issue: ISSUE,
-    summary: `**${ok ? "✅" : "⚠️"} ${goal.split("\n")[0].slice(0, 120)}**\n${String(body).slice(0, 600)}`,
+    summary: `**${ok ? "DONE" : "INCOMPLETE"}** ${goal.split("\n")[0].slice(0, 120)}\n${String(body).slice(0, 600)}`,
   });
 } catch {}
 
@@ -566,7 +566,7 @@ try {
 } catch {}
 
 const md =
-  `# ${ok ? "✅" : "⚠️"} Task result${score !== null ? ` — ${score}%` : ""}\n\n` +
+  `# Task result — ${ok ? "SUCCESS" : "INCOMPLETE"}${score !== null ? ` · ${score}%` : ""}\n\n` +
   `**Goal:** ${goal}\n\n` +
   `**Time:** ${elapsed()} · **Steps:** ${timeline.filter((t) => t.type === "tool").length}` +
   `${out?.phases ? ` · **Phases:** ${out.phases}` : ""}${score !== null ? ` · **Accuracy:** ${score}%` : ""}\n\n` +
