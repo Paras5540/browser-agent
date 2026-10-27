@@ -9,6 +9,31 @@ const cfg = {
 };
 
 const $ = (id) => document.getElementById(id);
+
+/* ── inline SVG icons (koi emoji nahi) ── */
+const ICONS = {
+  live:   '<circle cx="12" cy="12" r="7" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="2.5" fill="currentColor"/>',
+  tasks:  '<path d="M4 6h16M4 12h16M4 18h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
+  files:  '<rect x="4" y="3" width="16" height="18" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 8h8M8 12h8M8 16h5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
+  setup:  '<circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
+  back:   '<path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
+  play:   '<path d="M7 4l13 8-13 8z" fill="currentColor"/>',
+  stop:   '<rect x="6" y="6" width="12" height="12" rx="2" fill="currentColor"/>',
+  clear:  '<path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
+  data:   '<rect x="3" y="4" width="18" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3 10h18M9 10v10" stroke="currentColor" stroke-width="2"/>',
+  camera: '<path d="M4 8h3l2-2h6l2 2h3v11H4z" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="13" r="3.2" fill="none" stroke="currentColor" stroke-width="2"/>',
+  text:   '<path d="M5 6h14M5 12h14M5 18h9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
+};
+
+function hydrateIcons(root = document) {
+  root.querySelectorAll("[data-icon]").forEach((el) => {
+    const name = el.dataset.icon;
+    if (!ICONS[name] || el.dataset.done) return;
+    el.innerHTML = `<svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">${ICONS[name]}</svg>`;
+    el.dataset.done = "1";
+  });
+}
+hydrateIcons();
 const esc = (s) =>
   String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -1004,31 +1029,88 @@ const statusOf = (issue) => {
   return { cls: "running", text: issue.state === "closed" ? "closed" : "queued" };
 };
 
+let allIssues = [];
+let taskFilter = "all";
+let taskQuery = "";
+
 async function loadTasks() {
   if (!configured()) return;
   const el = $("taskList");
   try {
-    const issues = await gh(`${repoPath()}/issues?labels=agent-task&state=all&per_page=15&sort=created&direction=desc`);
-    if (!issues.length) {
-      el.innerHTML = `<p class="hint">Abhi koi task nahi.</p>`;
-      return;
-    }
-    el.innerHTML = issues
-      .map((i) => {
-        const st = statusOf(i);
-        return `<div class="card clickable" data-open="${i.number}">
-          <div class="title">${esc(i.title)}<span class="badge ${st.cls}">${st.text}</span></div>
-          <div class="meta"><span>#${i.number}</span><span>· ${new Date(i.created_at).toLocaleString()}</span></div>
-        </div>`;
-      })
-      .join("");
-    el.querySelectorAll("[data-open]").forEach((c) =>
-      c.addEventListener("click", () => focusIssue(Number(c.dataset.open)))
-    );
+    const issues = await gh(`${repoPath()}/issues?labels=agent-task&state=all&per_page=60&sort=created&direction=desc`);
+    allIssues = issues || [];
+    renderTaskPage();
   } catch (err) {
     el.innerHTML = `<p class="hint" style="color:var(--danger)">${esc(err.message)}</p>`;
   }
 }
+
+function taskBucket(issue) {
+  const st = statusOf(issue);
+  if (st.cls === "error") return "failed";
+  if (st.text === "done" || st.text === "closed") return "done";
+  return "running";
+}
+
+function renderTaskPage() {
+  const el = $("taskList");
+  if (!el) return;
+
+  const counts = { all: allIssues.length, running: 0, done: 0, failed: 0 };
+  for (const i of allIssues) counts[taskBucket(i)]++;
+  if ($("cAll")) $("cAll").textContent = counts.all;
+  if ($("cRun")) $("cRun").textContent = counts.running;
+  if ($("cDone")) $("cDone").textContent = counts.done;
+  if ($("cFail")) $("cFail").textContent = counts.failed;
+
+  const q = taskQuery.toLowerCase();
+  const list = allIssues.filter((i) => {
+    if (taskFilter !== "all" && taskBucket(i) !== taskFilter) return false;
+    if (q && !`${i.title} ${i.number}`.toLowerCase().includes(q)) return false;
+    return true;
+  });
+
+  if (!list.length) {
+    el.innerHTML = `<div class="empty-small"><span class="es-ico" data-icon="tasks"></span>
+      <p>${allIssues.length ? "Is filter me kuch nahi mila." : "Abhi koi task nahi — neeche likh kar shuru karein."}</p></div>`;
+    hydrateIcons(el);
+    return;
+  }
+
+  el.innerHTML = list
+    .map((i) => {
+      const st = statusOf(i);
+      const mins = Math.round((Date.now() - new Date(i.created_at).getTime()) / 60000);
+      const ago = mins < 60 ? `${mins}m` : mins < 1440 ? `${Math.round(mins / 60)}h` : `${Math.round(mins / 1440)}d`;
+      const dot = st.cls === "error" ? "bad" : st.text === "done" || st.text === "closed" ? "ok" : "busy";
+      return `<div class="task-card" data-open="${i.number}">
+        <span class="tc-dot ${dot}"></span>
+        <div class="tc-body">
+          <div class="tc-title">${esc(i.title)}</div>
+          <div class="tc-meta"><span>#${i.number}</span><span>${ago} pehle</span><span class="tc-state">${esc(st.text)}</span></div>
+        </div>
+        <span class="tc-go">›</span>
+      </div>`;
+    })
+    .join("");
+
+  el.querySelectorAll("[data-open]").forEach((c) =>
+    c.addEventListener("click", () => focusIssue(Number(c.dataset.open)))
+  );
+}
+
+on("taskSearch", "input", (e) => {
+  taskQuery = e.target.value.trim();
+  renderTaskPage();
+});
+
+document.querySelectorAll("#taskFilters .fchip").forEach((b) =>
+  b.addEventListener("click", () => {
+    taskFilter = b.dataset.filter;
+    document.querySelectorAll("#taskFilters .fchip").forEach((x) => x.classList.toggle("active", x === b));
+    renderTaskPage();
+  })
+);
 
 async function loadFiles() {
   if (!configured()) return;
