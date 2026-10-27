@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="theme-color" content="#f5f4ee" />
 <title>Browser Agent</title>
-<link rel="stylesheet" href="style.css?v=27" />
+<link rel="stylesheet" href="style.css?v=28" />
 <script src="https://cdn.jsdelivr.net/npm/libsodium-wrappers@0.7.15/dist/bundles/libsodium-wrappers.min.js"></script>
 </head>
 <body>
@@ -83,25 +83,44 @@
       <button class="btn tiny ghost" id="replyCancel" type="button">Cancel</button>
     </div>
 
-    <div class="model-bar">
-      <button class="model-btn" id="modelBtn">
-        <span class="mb-dot"></span>
-        <span id="modelLabel">model</span>
-        <span class="mb-chev">▾</span>
-      </button>
+    <div class="composer-wrap">
+      <div class="composer-box">
+        <textarea id="input" rows="1" placeholder="Reply to NETRA or hold to talk"></textarea>
+        <div class="composer-row">
+          <button class="cbtn" id="plusBtn" type="button" title="Quick actions">+</button>
+          <button class="model-chip" id="modelBtn" type="button">
+            <span id="modelLabel">model</span>
+            <span class="chip-warn" id="chipWarn" title="Free tier — limits lag sakti hain">⚠</span>
+          </button>
+          <button class="cbtn" id="micBtn" type="button" title="Bol kar likhein">🎙</button>
+          <button class="cbtn send" id="sendBtn" type="submit" form="composer" title="Bhejo">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+              <path d="M4 12h9M4 6h13M4 18h6" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+              <path d="M14 9.5v5M17 7.5v9M20 5.5v13" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+            </svg>
+          </button>
+        </div>
+      </div>
     </div>
 
-    <div class="menu model-menu hide" id="modelMenu" role="menu">
+    <form class="hide" id="composer"></form>
+
+    <div class="menu hide" id="modelMenu" role="menu">
       <div class="menu-label">Model chunein</div>
       <div id="modelList"></div>
       <div class="menu-sep"></div>
       <button class="menu-item" id="modelMore" role="menuitem"><span class="mi-ico">⚙</span> Keys &amp; custom model</button>
     </div>
 
-    <form class="composer" id="composer">
-      <textarea id="input" rows="3" placeholder="Task likhein… (Ctrl+Enter to send)"></textarea>
-      <button class="btn primary" id="sendBtn" type="submit">Run</button>
-    </form>
+    <div class="menu hide" id="plusMenu" role="menu">
+      <div class="menu-label">Quick actions</div>
+      <button class="menu-item" data-tpl="Kisi site se data nikaal kar table banao" role="menuitem"><span class="mi-ico">▤</span> Data nikaalo</button>
+      <button class="menu-item" data-tpl="Is page ka poora screenshot capture karo" role="menuitem"><span class="mi-ico">📸</span> Capture karo</button>
+      <button class="menu-item" data-tpl="Is page ko padho aur summary do" role="menuitem"><span class="mi-ico">≡</span> Summarize</button>
+      <div class="menu-sep"></div>
+      <button class="menu-item" id="plusMore" role="menuitem"><span class="mi-ico">⏹</span> Stop running task</button>
+    </div>
+
   </section>
 
   <section class="panel side-panel">
@@ -265,6 +284,6 @@
   </section>
 </main>
 
-<script src="app.js?v=27"></script>
+<script src="app.js?v=28"></script>
 </body>
 </html>
