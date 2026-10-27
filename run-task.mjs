@@ -412,6 +412,10 @@ try {
           });
         } catch {}
         log(`--- ${e.text}`);
+      } else if (e.type === "plan") {
+        timeline.push({ type: "tool", name: "plan", human: "plan banaya", detail: "" });
+        log(`🧠 plan:\n${String(e.text).slice(0, 700)}`);
+        console.log(`  🧠 plan: ${String(e.text).split("\n")[0]}`);
       } else if (e.type === "verify") {
         timeline.push({ type: "tool", name: "verify", human: e.text, detail: "" });
         console.log(`  ✓ ${e.text}`);
