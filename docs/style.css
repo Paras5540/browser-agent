@@ -962,3 +962,49 @@ body {
   .cbtn.send { width: 38px; height: 38px; flex-basis: 38px; }
   .model-chip { height: 34px; font-size: 12.5px; padding: 0 12px; }
 }
+
+/* ══════════════ TASKS PAGE ══════════════ */
+.task-tools { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
+.task-search {
+  width: 100%; padding: 8px 11px; font: inherit; font-size: 13px;
+  background: var(--panel-2); color: var(--text);
+  border: 1px solid var(--line); border-radius: 9px; outline: none;
+}
+.task-search:focus { border-color: var(--line-2); background: var(--focus-bg, #fff); }
+
+.filter-row { display: flex; gap: 5px; flex-wrap: wrap; }
+.fchip {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 5px 10px; border-radius: 999px;
+  border: 1px solid var(--line); background: var(--panel);
+  color: var(--muted); font: inherit; font-size: 11.5px; cursor: pointer;
+}
+.fchip span { color: var(--faint); font-size: 10.5px; }
+.fchip.active { background: var(--accent); border-color: var(--accent); color: var(--accent-fg); }
+.fchip.active span { color: var(--accent-fg); opacity: .7; }
+
+.task-card {
+  display: flex; align-items: center; gap: 10px;
+  padding: 11px 12px; border: 1px solid var(--line); border-radius: 11px;
+  background: var(--panel); cursor: pointer;
+  transition: border-color .15s, background .15s, transform .1s;
+}
+.task-card:hover { border-color: var(--line-2); background: var(--panel-2); }
+.task-card:active { transform: scale(.995); }
+.tc-dot { width: 8px; height: 8px; border-radius: 50%; flex: 0 0 8px; }
+.tc-dot.ok { background: #3f7a3a; }
+.tc-dot.bad { background: var(--danger); }
+.tc-dot.busy { background: #d99a2b; animation: recpulse 1.4s infinite; }
+.tc-body { flex: 1; min-width: 0; }
+.tc-title { font-size: 13px; font-weight: 550; line-height: 1.4; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.tc-meta { display: flex; gap: 8px; font-size: 10.5px; color: var(--faint); margin-top: 3px; }
+.tc-state { text-transform: capitalize; }
+.tc-go { color: var(--faint); font-size: 16px; }
+
+.empty-small { text-align: center; padding: 28px 12px; color: var(--faint); }
+.empty-small .es-ico { display: inline-flex; opacity: .5; margin-bottom: 8px; }
+.empty-small p { margin: 0; font-size: 12.5px; }
+.mi-ico svg { display: block; }
+.chip-warn {
+  width: 6px; height: 6px; border-radius: 50%; background: #d99a2b; display: none;
+}
