@@ -432,6 +432,17 @@ try {
   }
 } finally {
   clearInterval(liveTimer);
+
+  // har task ka final proof screenshot — automatically
+  try {
+    if (frameCount > 0 || true) {
+      const pg = await browser.page();
+      const name = `final-${ISSUE || "task"}-${Date.now().toString().slice(-6)}`;
+      const cap = await browser.runTool("capture", { name });
+      console.log("  📸", cap.text.split("\n")[0]);
+    }
+  } catch {}
+
   // aakhri frame hamesha
   try {
     const pg = await browser.page();
