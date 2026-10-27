@@ -458,12 +458,25 @@ try {
   fs.writeFileSync(path.join(stDir, `board-${Date.now()}.json`), JSON.stringify(boardObj, null, 2));
 } catch {}
 
+// captures list (result me link ke saath)
+let captureList = "";
+try {
+  const files = fs.readdirSync(OUTPUTS).filter((f) => /\.(jpe?g|png|webp)$/i.test(f));
+  if (files.length) {
+    const repo = process.env.GITHUB_REPOSITORY || "";
+    const ref = process.env.GITHUB_SHA || "main";
+    captureList =
+      "**📸 Captures (Files tab me download):**\n" +
+      files.slice(-8).map((f) => `- [${f}](https://raw.githubusercontent.com/${repo}/${ref}/outputs/${encodeURIComponent(f)})`).join("\n") + "\n\n";
+  }
+} catch {}
+
 const md =
   `# ${ok ? "✅" : "⚠️"} Task result${score !== null ? ` — ${score}%` : ""}\n\n` +
   `**Goal:** ${goal}\n\n` +
   `**Time:** ${elapsed()} · **Steps:** ${timeline.filter((t) => t.type === "tool").length}` +
   `${out?.phases ? ` · **Phases:** ${out.phases}` : ""}${score !== null ? ` · **Accuracy:** ${score}%` : ""}\n\n` +
-  `---\n\n${body}\n\n` +
+  `---\n\n${captureList}${body}\n\n` +
   (boardCache ? `<details><summary>Data board (saved fields)</summary>\n\n${boardCache}\n\n</details>\n\n` : "") +
   `<details><summary>Work report (${journal.length} entries)</summary>\n\n` +
   journal.map((l) => `- ${l}`).join("\n") +
