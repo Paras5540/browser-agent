@@ -280,7 +280,7 @@ console.log(`  provider: ${PROVIDER} · model: ${MODEL_LABEL} · steps/phase: ${
   const recall = recallFindings(goal, 2500);
   if (recall) {
     goal += `\n\nPURANI FINDINGS (memory se, use kar sakte ho):\n${recall}`;
-    console.log("  🧠 purani findings mili — context me daali");
+    console.log("  MEMORY: purani findings mili — context me daali");
   }
 }
 
@@ -420,8 +420,8 @@ try {
         log(`--- ${e.text}`);
       } else if (e.type === "plan") {
         timeline.push({ type: "tool", name: "plan", human: "plan banaya", detail: "" });
-        log(`🧠 plan:\n${String(e.text).slice(0, 700)}`);
-        console.log(`  🧠 plan: ${String(e.text).split("\n")[0]}`);
+        log(`Plan:\n${String(e.text).slice(0, 700)}`);
+        console.log(`  PLAN: ${String(e.text).split("\n")[0]}`);
       } else if (e.type === "verify") {
         timeline.push({ type: "tool", name: "verify", human: e.text, detail: "" });
         console.log(`  ✓ ${e.text}`);
@@ -478,7 +478,7 @@ try {
       const pg = await browser.page();
       const name = `final-${ISSUE || "task"}-${Date.now().toString().slice(-6)}`;
       const cap = await browser.runTool("capture", { name });
-      console.log("  📸", cap.text.split("\n")[0]);
+      console.log("  CAPTURE:", cap.text.split("\n")[0]);
     }
   } catch {}
 
@@ -516,7 +516,7 @@ try {
     const repo = process.env.GITHUB_REPOSITORY || "";
     const ref = process.env.GITHUB_SHA || "main";
     captureList =
-      "**📸 Captures (Files tab me download):**\n" +
+      "**Captures** (Files tab me download):\n" +
       files.slice(-8).map((f) => `- [${f}](https://raw.githubusercontent.com/${repo}/${ref}/outputs/${encodeURIComponent(f)})`).join("\n") + "\n\n";
   }
 } catch {}
