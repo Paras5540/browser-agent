@@ -68,7 +68,7 @@ function initTheme() {
   try {
     t = localStorage.getItem(THEME_KEY);
   } catch {}
-  if (!t) t = window.matchMedia?.("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  if (!t) t = "dark"; // default: dark mode
   applyTheme(t);
 }
 initTheme();
