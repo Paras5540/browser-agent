@@ -52,3 +52,15 @@ ROOT GOAL complete: https://example.com ka title **"Example Domain"** hai.
 - Page type: Simple placeholder page with 1 link ("Learn more" → iana.org)
 
 Ye task pehle se complete tha, purani findings use kar li hain.
+
+## 2026-10-27 08:49 — issue #?
+**DONE** Hacker News pe aaj ke top 10 posts ka title aur link nikaalo. CSV file banao.
+Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka data extract kar liya.
+
+**CSV file:** `outputs/hn_top10_posts.csv`
+
+| Rank | Title | Link |
+|------|-------|------|
+| 1 | Three new discoveries in mathematics, computer science, and physics | https://openai.com/index/building-scientific-understanding-with-academic-communities/ |
+| 2 | The Exponential Time Hypothesis Is False [pdf] | https://github.com/openai/math/blob/main/preprints/The-Exponential-Time-Hypothesis-is-False-October-25-2026/paper.pdf |
+| 3 | There are now 5 inference providers for abliterated DeepSeek | https:/
