@@ -893,3 +893,11 @@ body {
 .chip.ok { background: var(--accent); color: var(--accent-fg); border-color: var(--accent); }
 .key-row { display: flex; gap: 6px; }
 .key-row input { flex: 1; min-width: 0; }
+
+/* Files tab: capture preview */
+.file-thumb {
+  display: block; width: 100%; border-radius: 8px;
+  border: 1px solid var(--line); margin-top: 8px;
+  max-height: 220px; object-fit: cover; object-position: top;
+  cursor: zoom-in;
+}
