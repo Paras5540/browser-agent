@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="theme-color" content="#171614" />
 <title>NETRA — Browser Agent</title>
-<link rel="stylesheet" href="style.css?v=34" />
+<link rel="stylesheet" href="style.css?v=35" />
 </head>
 <body>
 <header class="topbar">
@@ -180,6 +180,8 @@
     </div>
 
     <div class="tab-body hide" id="tab-setup">
+      <button class="btn wide" id="rerunWizard" style="margin-bottom:12px">Open setup wizard</button>
+
       <section class="sec">
         <div class="sec-head"><span class="sec-n">1</span> <span data-i18n="connection">GitHub connection</span></div>
         <form id="setupForm" class="sched-form">
@@ -282,7 +284,70 @@
   </section>
 </main>
 
+<div class="wizard hide" id="wizard">
+  <div class="wz-card">
+    <div class="wz-head">
+      <div class="wz-title">Setup <span id="wzStepNo">1</span>/4</div>
+      <button class="wz-x" id="wzClose" aria-label="Close">×</button>
+    </div>
+    <div class="wz-dots"><i class="on"></i><i></i><i></i><i></i></div>
+
+    <!-- step 1: github -->
+    <div class="wz-body" data-wz="1">
+      <h3>Connect GitHub</h3>
+      <p class="wz-sub">The agent runs on GitHub Actions and saves every result to your repository.</p>
+      <label>Username or organisation</label>
+      <input id="wzOwner" placeholder="your-username" autocomplete="off" />
+      <label>Repository</label>
+      <input id="wzRepo" placeholder="browser-agent" autocomplete="off" />
+      <label>Personal access token</label>
+      <input id="wzToken" type="password" placeholder="github_pat_…" autocomplete="off" />
+      <p class="wz-hint">Permissions: Issues RW · Contents R · Actions RW · Secrets RW · Variables RW</p>
+      <div class="wz-msg hide" id="wzMsg1"></div>
+    </div>
+
+    <!-- step 2: keys -->
+    <div class="wz-body hide" data-wz="2">
+      <h3>Add an API key</h3>
+      <p class="wz-sub">Any one is enough to start. You can add more later.</p>
+      <label>Provider</label>
+      <select id="wzProv">
+        <option value="dahl">Dahl Inference — 100M free tokens</option>
+        <option value="groq">Groq — free, fast</option>
+        <option value="gemini">Google Gemini — free tier</option>
+        <option value="nvidia">NVIDIA NIM — free</option>
+        <option value="openrouter">OpenRouter — free models</option>
+      </select>
+      <label>API key</label>
+      <input id="wzKey" type="password" placeholder="paste the key" autocomplete="off" spellcheck="false" />
+      <p class="wz-hint">Keys are stored as encrypted GitHub secrets. They never leave your repository.</p>
+      <div class="wz-msg hide" id="wzMsg2"></div>
+    </div>
+
+    <!-- step 3: model -->
+    <div class="wz-body hide" data-wz="3">
+      <h3>Choose a model</h3>
+      <p class="wz-sub">This is the brain the agent will use for your tasks.</p>
+      <label>Model</label>
+      <select id="wzModel"></select>
+      <div class="wz-msg hide" id="wzMsg3"></div>
+    </div>
+
+    <!-- step 4: done -->
+    <div class="wz-body hide" data-wz="4">
+      <h3>Ready</h3>
+      <p class="wz-sub">Everything is connected. Write a task and the agent will run it on GitHub Actions.</p>
+      <ul class="wz-list" id="wzSummary"></ul>
+    </div>
+
+    <div class="wz-foot">
+      <button class="btn ghost" id="wzBack">Back</button>
+      <button class="btn primary" id="wzNext">Continue</button>
+    </div>
+  </div>
+</div>
+
 <script src="i18n.js?v=2"></script>
-<script src="app.js?v=34"></script>
+<script src="app.js?v=35"></script>
 </body>
 </html>
