@@ -4,44 +4,35 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="theme-color" content="#f5f4ee" />
-<title>Browser Agent</title>
-<link rel="stylesheet" href="style.css?v=29" />
-<script src="https://cdn.jsdelivr.net/npm/libsodium-wrappers@0.7.15/dist/bundles/libsodium-wrappers.min.js"></script>
+<title>NETRA — Browser Agent</title>
+<link rel="stylesheet" href="style.css?v=30" />
 </head>
 <body>
 <header class="topbar">
   <div class="brand">
     <span class="dot"></span>
-    <h1>Browser Agent</h1>
-    <span class="pill" id="repoPill">—</span>
+    <h1>NETRA</h1>
+    <span class="pill hide" id="repoPill">—</span>
+    <span class="pill warn hide" id="cfgWarn">setup needed</span>
   </div>
   <div class="topright">
-    <span class="pill warn hide" id="cfgWarn">setup needed</span>
-    <button class="btn icon only-mobile" id="panelBtn" title="Live panel">▤</button>
-    <button class="btn icon" id="themeBtn" title="Dark / Light mode" aria-label="Toggle theme">◐</button>
-    <button class="btn icon" id="menuBtn" aria-haspopup="menu" aria-expanded="false" title="Menu">⋮</button>
+    <button class="btn icon" id="langBtn" title="Language" aria-label="Language">EN</button>
+    <button class="btn icon" id="themeBtn" title="Theme" aria-label="Theme">◐</button>
+    <button class="btn icon only-mobile" id="panelBtn" title="Panel" aria-label="Panel">▤</button>
   </div>
 </header>
 
-<div class="menu hide" id="panelMenu" role="menu">
-  <div class="menu-label">Panel</div>
-  <button class="menu-item" data-nav="live" role="menuitem"><span class="mi-ico" data-icon="live"></span> Live</button>
-  <button class="menu-item" data-nav="tasks" role="menuitem"><span class="mi-ico" data-icon="tasks"></span> Tasks</button>
-  <button class="menu-item" data-nav="files" role="menuitem"><span class="mi-ico" data-icon="files"></span> Files</button>
-  <button class="menu-item" data-nav="setup" role="menuitem"><span class="mi-ico" data-icon="setup"></span> Setup</button>
-  <div class="menu-sep"></div>
-  <div class="menu-label">Actions</div>
-  <button class="menu-item hide" id="backBtn" role="menuitem"><span class="mi-ico" data-icon="back"></span> Back to tasks</button>
-  <button class="menu-item" id="runNow" role="menuitem"><span class="mi-ico" data-icon="play"></span> Run scheduled task</button>
-  <button class="menu-item" id="stopRun" role="menuitem"><span class="mi-ico" data-icon="stop"></span> Stop running task</button>
-  <button class="menu-item danger" id="clearChat" role="menuitem"><span class="mi-ico" data-icon="clear"></span> Clear</button>
-</div>
-
 <main class="layout">
+  <!-- ── CHAT ─────────────────────────────────────────────────── -->
   <section class="panel chat-panel">
     <div class="panel-head">
       <div class="head-title">
-        <h2 id="threadTitle">Tasks</h2>
+        <button class="btn tiny ghost hide" id="backBtn" data-i18n-title="back" aria-label="Back">‹</button>
+        <h2 id="threadTitle" data-i18n="newTask">New task</h2>
+      </div>
+      <div class="head-actions">
+        <button class="btn tiny ghost hide" id="stopRun" data-i18n="stop">Stop</button>
+        <button class="btn tiny ghost hide" id="clearChat" data-i18n="clear">Clear</button>
       </div>
     </div>
 
@@ -49,53 +40,53 @@
 
     <div class="setup-banner hide" id="setupBanner">
       <div class="sb-text">
-        <b>Dashboard configure karein</b>
-        <span>GitHub repo + token chahiye — 2 minute ka kaam.</span>
+        <b>Connect your GitHub repository</b>
+        <span>Two minutes: repo, token and API keys.</span>
       </div>
-      <button class="btn primary tiny" id="goSetup">Setup</button>
+      <button class="btn primary tiny" id="goSetup" data-i18n="setup">Setup</button>
     </div>
 
-    <div class="thread-list" id="threadList"></div>
+    <div class="thread-list hide" id="threadList"></div>
 
-    <div class="chat-scroll hide" id="chat">
+    <div class="chat-scroll" id="chat">
       <div class="empty" id="chatEmpty">
-        <h3>Kya karna hai batayein</h3>
-        <p>Agent cloud me khud browser chalayega — search, click, form fill, data collection.</p>
+        <h3 data-i18n="emptyTitle">What should I do?</h3>
+        <p data-i18n="emptyBody">Describe a task — I will open a real browser, complete it and give you a verified result.</p>
         <div class="suggestions">
-          <button class="sug">Hacker News pe aaj ke top 10 posts ka title aur link CSV me nikaalo</button>
-          <button class="sug">Amazon pe top 5 noise cancelling headphones ke naam, price, rating nikaalo</button>
-          <button class="sug">Google pe "best CRM for small business 2025" search karke top 5 results ka summary do</button>
+          <button class="sug" data-i18n="sug1">Collect the top 10 Hacker News posts and save them as CSV</button>
+          <button class="sug" data-i18n="sug2">Find the top 5 noise-cancelling headphones with prices</button>
+          <button class="sug" data-i18n="sug3">Summarise the first paragraph of the Wikipedia article on web scraping</button>
         </div>
       </div>
+    </div>
+
+    <div class="reply-chip hide" id="replyChip">
+      <span>Continuing <b id="replyTo">#—</b></span>
+      <button class="btn tiny ghost" id="replyCancel" type="button">Cancel</button>
     </div>
 
     <button class="jump-btn hide" id="jumpBtn">↓ new</button>
 
     <div class="live-strip hide" id="liveStrip">
       <span class="ls-spin">◐</span>
-      <span class="ls-text" id="lsText">Agent chal raha hai…</span>
+      <span class="ls-text" id="lsText">Running…</span>
       <span class="ls-time" id="lsTime"></span>
       <button class="btn tiny ghost" id="lsOpen">Live</button>
     </div>
 
-    <div class="reply-chip hide" id="replyChip">
-      <span>Replying to <b id="replyTo">#—</b></span>
-      <button class="btn tiny ghost" id="replyCancel" type="button">Cancel</button>
-    </div>
-
     <div class="composer-wrap">
       <div class="composer-box">
-        <textarea id="input" rows="1" placeholder="Reply to NETRA or hold to talk"></textarea>
+        <textarea id="input" rows="1" data-i18n-ph="placeholder" placeholder="Reply to NETRA or hold to talk"></textarea>
         <div class="composer-row">
-          <button class="cbtn" id="plusBtn" type="button" title="Quick actions">+</button>
+          <button class="cbtn" id="plusBtn" type="button" title="Quick actions" aria-label="Quick actions">+</button>
           <button class="model-chip" id="modelBtn" type="button">
             <span id="modelLabel">model</span>
-            <span class="chip-warn" id="chipWarn" title="Is provider ki key missing hai"></span>
+            <span class="chip-warn" id="chipWarn" title="API key missing for this provider"></span>
           </button>
-          <button class="cbtn" id="micBtn" type="button" title="Bol kar likhein" aria-label="Voice input">
+          <button class="cbtn" id="micBtn" type="button" title="Voice input" aria-label="Voice input">
             <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
           </button>
-          <button class="cbtn send" id="sendBtn" type="submit" form="composer" title="Bhejo">
+          <button class="cbtn send" id="sendBtn" type="submit" form="composer" data-i18n-title="send" aria-label="Send">
             <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
               <path d="M4 12h9M4 6h13M4 18h6" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
               <path d="M14 9.5v5M17 7.5v9M20 5.5v13" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
@@ -108,40 +99,39 @@
     <form class="hide" id="composer"></form>
 
     <div class="menu hide" id="modelMenu" role="menu">
-      <div class="menu-label">Model chunein</div>
+      <div class="menu-label" data-i18n="model">Model</div>
       <div id="modelList"></div>
       <div class="menu-sep"></div>
       <button class="menu-item" id="modelMore" role="menuitem"><span class="mi-ico" data-icon="setup"></span> Keys &amp; custom model</button>
     </div>
 
     <div class="menu hide" id="plusMenu" role="menu">
-      <div class="menu-label">Quick actions</div>
-      <button class="menu-item" data-tpl="Kisi site se data nikaal kar table banao" role="menuitem"><span class="mi-ico" data-icon="data"></span> Data nikaalo</button>
-      <button class="menu-item" data-tpl="Is page ka poora screenshot capture karo" role="menuitem"><span class="mi-ico" data-icon="camera"></span> Capture karo</button>
-      <button class="menu-item" data-tpl="Is page ko padho aur summary do" role="menuitem"><span class="mi-ico" data-icon="text"></span> Summarize</button>
+      <div class="menu-label" data-i18n="quickActions">Quick actions</div>
+      <button class="menu-item" data-tpl="Extract the data from this page into a table" role="menuitem"><span class="mi-ico" data-icon="data"></span> <span data-i18n="dataExtract">Extract data</span></button>
+      <button class="menu-item" data-tpl="Take a full page screenshot of this page" role="menuitem"><span class="mi-ico" data-icon="camera"></span> <span data-i18n="capturePage">Capture page</span></button>
+      <button class="menu-item" data-tpl="Read this page and summarise it" role="menuitem"><span class="mi-ico" data-icon="text"></span> <span data-i18n="summarise">Summarise page</span></button>
       <div class="menu-sep"></div>
-      <button class="menu-item" id="plusMore" role="menuitem"><span class="mi-ico" data-icon="stop"></span> Stop running task</button>
+      <button class="menu-item danger" id="plusStop" role="menuitem"><span class="mi-ico" data-icon="stop"></span> <span data-i18n="stopTask">Stop running task</span></button>
     </div>
-
   </section>
 
+  <!-- ── SIDE PANEL ───────────────────────────────────────────── -->
   <section class="panel side-panel">
     <div class="panel-head">
-      <button class="btn tiny ghost" id="pageBack">←</button>
+      <button class="btn tiny ghost" id="pageBack" aria-label="Back">‹</button>
       <h2 id="sideTitle">Live</h2>
     </div>
 
     <div class="tab-body" id="tab-live">
       <div class="shot-wrap hide" id="shotWrap">
-        <img id="liveShot" alt="Agent ka live screen" />
-        <span class="shot-badge">● LIVE</span>
+        <img id="liveShot" alt="Live browser view" />
+        <span class="shot-badge">LIVE</span>
         <a class="shot-open" id="shotOpen" target="_blank" rel="noopener">⤢</a>
       </div>
-
       <div id="liveHeader" class="card" style="display:none">
         <div class="title" id="liveTitle">—</div>
         <div class="meta" id="liveMeta">—</div>
-        <div class="actions"><a class="btn tiny" id="liveLink" href="#" target="_blank" rel="noopener">Actions me dekhein</a></div>
+        <div class="actions"><a class="btn tiny" id="liveLink" href="#" target="_blank" rel="noopener">Open in Actions</a></div>
       </div>
       <div id="liveSteps" class="steps-live"></div>
       <div id="liveLog" class="live-log"></div>
@@ -149,151 +139,126 @@
 
     <div class="tab-body hide" id="tab-tasks">
       <div class="task-tools">
-        <input id="taskSearch" class="task-search" placeholder="Task dhundo…" autocomplete="off" />
+        <input id="taskSearch" class="task-search" data-i18n-ph="searchTasks" placeholder="Search tasks…" autocomplete="off" />
         <div class="filter-row" id="taskFilters">
-          <button class="fchip active" data-filter="all">All <span id="cAll">0</span></button>
-          <button class="fchip" data-filter="running">Running <span id="cRun">0</span></button>
-          <button class="fchip" data-filter="done">Done <span id="cDone">0</span></button>
-          <button class="fchip" data-filter="failed">Failed <span id="cFail">0</span></button>
+          <button class="fchip active" data-filter="all"><span data-i18n="filterAll">All</span> <span id="cAll">0</span></button>
+          <button class="fchip" data-filter="running"><span data-i18n="filterRunning">Running</span> <span id="cRun">0</span></button>
+          <button class="fchip" data-filter="done"><span data-i18n="filterDone">Done</span> <span id="cDone">0</span></button>
+          <button class="fchip" data-filter="failed"><span data-i18n="filterFailed">Failed</span> <span id="cFail">0</span></button>
         </div>
       </div>
       <div id="taskList" class="list"><p class="hint">—</p></div>
     </div>
 
     <div class="tab-body hide" id="tab-files">
-      <p class="hint">Agent ne jo files banayi (repo ke <code>outputs/</code> me)</p>
+      <p class="hint">Files created by the agent (repository <code>outputs/</code>)</p>
       <div id="fileList" class="list"><p class="hint">—</p></div>
     </div>
 
     <div class="tab-body hide" id="tab-setup">
-
-      <!-- ── 1. GitHub connection ── -->
       <section class="sec">
-        <div class="sec-head"><span class="sec-n">1</span> GitHub connection</div>
+        <div class="sec-head"><span class="sec-n">1</span> <span data-i18n="connection">GitHub connection</span></div>
         <form id="setupForm" class="sched-form">
-          <label>Username / org</label>
-          <input id="fOwner" placeholder="parasgupta" autocomplete="off" />
-          <label>Repository</label>
+          <label data-i18n="owner">Username or organisation</label>
+          <input id="fOwner" placeholder="your-username" autocomplete="off" />
+          <label data-i18n="repo">Repository</label>
           <input id="fRepo" placeholder="browser-agent" autocomplete="off" />
-          <label>Branch</label>
+          <label data-i18n="branch">Branch</label>
           <input id="fBranch" value="main" autocomplete="off" />
-          <label>Personal Access Token</label>
+          <label data-i18n="token">Personal access token</label>
           <input id="fToken" type="password" placeholder="github_pat_…" autocomplete="off" />
-          <p class="hint">Token sirf aapke browser me rehta hai. Permissions: <b>Issues</b> RW · <b>Contents</b> R · <b>Actions</b> RW · <b>Secrets</b> RW · <b>Variables</b> RW</p>
-          <button class="btn primary wide" type="submit" style="margin-top:8px">Save + Test</button>
+          <p class="hint" data-i18n="tokenHint">Token stays in your browser. Permissions: Issues RW · Contents R · Actions RW · Secrets RW · Variables RW</p>
+          <button class="btn primary wide" type="submit" data-i18n="saveTest" style="margin-top:8px">Save and test</button>
           <div id="setupMsg" class="settings-msg hide"></div>
         </form>
       </section>
 
-      <!-- ── 2. API keys ── -->
       <section class="sec">
-        <div class="sec-head"><span class="sec-n">2</span> API keys</div>
-        <p class="hint" style="margin-bottom:8px">Jis provider se chalana hai uski key daalein. Teeno rakh sakte hain — switch kabhi bhi kar sakte hain.</p>
+        <div class="sec-head"><span class="sec-n">2</span> <span data-i18n="apiKeys">API keys</span></div>
+        <p class="hint" style="margin-bottom:8px">Add the key for each provider you want to use. You can keep all of them and switch at any time.</p>
 
         <div class="key-card">
           <div class="kc-head"><b>Google Gemini</b><span class="chip" id="chip-gemini">—</span></div>
           <div class="kc-sub">Free key: aistudio.google.com/apikey</div>
-          <div class="key-row">
-            <input id="key-gemini" type="password" placeholder="AIza… ya AQ…" autocomplete="off" spellcheck="false" />
-            <button class="btn tiny" data-save="gemini">Save</button>
-          </div>
+          <div class="key-row"><input id="key-gemini" type="password" placeholder="AIza… or AQ…" autocomplete="off" spellcheck="false" /><button class="btn tiny" data-save="gemini" data-i18n="save">Save</button></div>
         </div>
 
         <div class="key-card">
           <div class="kc-head"><b>Groq</b><span class="chip" id="chip-groq">—</span></div>
-          <div class="kc-sub">Free key: console.groq.com → API Keys (gsk_…)</div>
-          <div class="key-row">
-            <input id="key-groq" type="password" placeholder="gsk_…" autocomplete="off" spellcheck="false" />
-            <button class="btn tiny" data-save="groq">Save</button>
-          </div>
-        </div>
-
-        <div class="key-card">
-          <div class="kc-head"><b>NVIDIA NIM</b><span class="chip" id="chip-nvidia">—</span></div>
-          <div class="kc-sub">build.nvidia.com → free key (no card) · bade models</div>
-          <div class="key-row">
-            <input id="key-nvidia" type="password" placeholder="nvapi-…" autocomplete="off" spellcheck="false" />
-            <button class="btn tiny" data-save="nvidia">Save</button>
-          </div>
+          <div class="kc-sub">Free key: console.groq.com → API Keys</div>
+          <div class="key-row"><input id="key-groq" type="password" placeholder="gsk_…" autocomplete="off" spellcheck="false" /><button class="btn tiny" data-save="groq" data-i18n="save">Save</button></div>
         </div>
 
         <div class="key-card">
           <div class="kc-head"><b>Dahl Inference</b><span class="chip" id="chip-dahl">—</span></div>
-          <div class="kc-sub">inference.dahl.global — <b>100M tokens free</b> at signup (browser only) · phir $0.03/1M</div>
-          <div class="key-row">
-            <input id="key-dahl" type="password" placeholder="dahl_…" autocomplete="off" spellcheck="false" />
-            <button class="btn tiny" data-save="dahl">Save</button>
-          </div>
+          <div class="kc-sub">inference.dahl.global — 100M free tokens at signup</div>
+          <div class="key-row"><input id="key-dahl" type="password" placeholder="dahl_…" autocomplete="off" spellcheck="false" /><button class="btn tiny" data-save="dahl" data-i18n="save">Save</button></div>
+        </div>
+
+        <div class="key-card">
+          <div class="kc-head"><b>NVIDIA NIM</b><span class="chip" id="chip-nvidia">—</span></div>
+          <div class="kc-sub">build.nvidia.com — free key, no card</div>
+          <div class="key-row"><input id="key-nvidia" type="password" placeholder="nvapi-…" autocomplete="off" spellcheck="false" /><button class="btn tiny" data-save="nvidia" data-i18n="save">Save</button></div>
         </div>
 
         <div class="key-card">
           <div class="kc-head"><b>OpenRouter</b><span class="chip" id="chip-openrouter">—</span></div>
-          <div class="kc-sub">openrouter.ai/keys → 19 free models (:free) · 50 req/day</div>
-          <div class="key-row">
-            <input id="key-openrouter" type="password" placeholder="sk-or-v1-…" autocomplete="off" spellcheck="false" />
-            <button class="btn tiny" data-save="openrouter">Save</button>
-          </div>
+          <div class="kc-sub">openrouter.ai/keys — free models (:free)</div>
+          <div class="key-row"><input id="key-openrouter" type="password" placeholder="sk-or-v1-…" autocomplete="off" spellcheck="false" /><button class="btn tiny" data-save="openrouter" data-i18n="save">Save</button></div>
         </div>
 
-        <div class="row" style="margin-top:8px">
-          <button class="btn wide" type="button" id="testKeys">Test keys</button>
-        </div>
+        <div class="row" style="margin-top:8px"><button class="btn wide" type="button" id="testKeys">Test keys</button></div>
         <div id="keysMsg" class="settings-msg hide"></div>
       </section>
 
-      <!-- ── 3. Active model ── -->
       <section class="sec">
-        <div class="sec-head"><span class="sec-n">3</span> Kaun sa model chalega</div>
+        <div class="sec-head"><span class="sec-n">3</span> <span data-i18n="activeModel">Active model</span></div>
         <div class="sched-form">
           <label>Provider</label>
           <select id="activeProv">
             <option value="gemini">Google Gemini</option>
             <option value="groq">Groq</option>
-            <option value="dahl">Dahl Inference (100M free tokens)</option>
-            <option value="openrouter">OpenRouter (free models)</option>
+            <option value="dahl">Dahl Inference</option>
             <option value="nvidia">NVIDIA NIM</option>
+            <option value="openrouter">OpenRouter</option>
             <option value="custom">Custom (OpenAI-compatible)</option>
           </select>
-          <label>Model</label>
+          <label data-i18n="model">Model</label>
           <select id="activeModel"></select>
           <div id="customBox" class="hide">
             <label>Base URL</label>
             <input id="customBase" placeholder="https://integrate.api.nvidia.com/v1" autocomplete="off" spellcheck="false" />
-            <label>Model id</label>
+            <label>Model ID</label>
             <input id="customModel" placeholder="meta/llama-3.3-70b-instruct" autocomplete="off" spellcheck="false" />
-            <label>API key (secret name)</label>
-            <input id="customKeyName" placeholder="CUSTOM_API_KEY" value="CUSTOM_API_KEY" autocomplete="off" spellcheck="false" />
           </div>
-          <button class="btn primary wide" type="button" id="applyModel" style="margin-top:8px">Apply model</button>
+          <button class="btn primary wide" type="button" id="applyModel" data-i18n="apply" style="margin-top:8px">Apply</button>
           <div id="modelMsg" class="settings-msg hide"></div>
         </div>
       </section>
 
-      <!-- ── 4. Limits ── -->
       <section class="sec">
-        <div class="sec-head"><span class="sec-n">4</span> Task limits</div>
+        <div class="sec-head"><span class="sec-n">4</span> <span data-i18n="limits">Task limits</span></div>
         <div class="sched-form">
-          <label>Steps per phase</label>
+          <label data-i18n="steps">Steps per phase</label>
           <input id="vSteps" type="number" min="5" max="60" />
-          <label>Max phases (task continue karega)</label>
-          <input id="vPhases" type="number" min="1" max="12" />
-          <label>Accuracy target (%)</label>
+          <label data-i18n="phases">Max phases</label>
+          <input id="vPhases" type="number" min="1" max="20" />
+          <label data-i18n="accuracy">Accuracy target (%)</label>
           <input id="vAcc" type="number" min="50" max="100" />
-          <button class="btn wide" type="button" id="saveLimits" style="margin-top:8px">Save limits</button>
+          <button class="btn wide" type="button" id="saveLimits" data-i18n="save" style="margin-top:8px">Save</button>
           <div id="limitsMsg" class="settings-msg hide"></div>
         </div>
       </section>
 
-      <!-- ── 5. Status ── -->
       <section class="sec">
-        <div class="sec-head"><span class="sec-n">5</span> Pipeline status <button class="btn tiny ghost" id="pipeRefresh" style="margin-left:auto">↻</button></div>
+        <div class="sec-head"><span class="sec-n">5</span> <span data-i18n="pipeline">Pipeline status</span><button class="btn tiny ghost" id="pipeRefresh" style="margin-left:auto">↻</button></div>
         <div id="pipeList" class="pipe-list"><p class="hint">—</p></div>
       </section>
     </div>
-
   </section>
 </main>
 
-<script src="app.js?v=29"></script>
+<script src="i18n.js?v=1"></script>
+<script src="app.js?v=30"></script>
 </body>
 </html>
