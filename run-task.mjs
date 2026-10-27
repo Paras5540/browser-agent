@@ -14,6 +14,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { BrowserManager } from "./lib/browser.js";
 import { saveCheckpoint, loadCheckpoint, appendFindings, recallFindings } from "./lib/memory.js";
+import { saveSkill } from "./lib/skills.js";
 import { runAgentTask } from "./lib/agent.js";
 
 const OUTPUTS = path.resolve("./outputs");
@@ -520,6 +521,18 @@ try {
   }
 } catch {}
 
+// site skill: is run me kaun se URL/selectors kaam kiye — agli baar ke liye
+try {
+  const urls = [...new Set(timeline.filter((t) => t.type === "tool" && /khol raha hoon/.test(t.human || "")).map((t) => t.human))];
+  if (urls.length && ok) {
+    const hostGuess = (urls[0].match(/([a-z0-9.-]+\.[a-z]{2,})/i) || [])[1];
+    if (hostGuess) {
+      const usedTools = [...new Set(timeline.filter((t) => t.type === "tool").map((t) => (t.human || "").split(" ")[0]))].join(", ");
+      saveSkill(hostGuess, `task ok — ${goal.split("\n")[0].slice(0, 100)} | tools: ${usedTools}`);
+    }
+  }
+} catch {}
+
 // checkpoint final + long-term findings
 try {
   saveCheckpoint(ISSUE, {
@@ -535,12 +548,29 @@ try {
   });
 } catch {}
 
+// structured JSON result (machine-readable)
+let jsonBlock = "";
+try {
+  const payload = {
+    status: ok ? "success" : out?.stopReason ? "failed" : "incomplete",
+    goal: goal.split("\n")[0].slice(0, 200),
+    answer: String(body).slice(0, 2000),
+    data: Object.fromEntries(browser.board || []),
+    captures: (fs.readdirSync(OUTPUTS).filter((f) => /\.(jpe?g|png)$/i.test(f)) || []).slice(-5),
+    files: (fs.readdirSync(OUTPUTS).filter((f) => /\.(csv|json|md|txt)$/i.test(f)) || []).slice(-5),
+    steps: timeline.filter((t) => t.type === "tool").length,
+    score: out?.score ?? null,
+    phases: out?.phases ?? null,
+  };
+  jsonBlock = "```json\n" + JSON.stringify(payload, null, 2) + "\n```\n\n";
+} catch {}
+
 const md =
   `# ${ok ? "✅" : "⚠️"} Task result${score !== null ? ` — ${score}%` : ""}\n\n` +
   `**Goal:** ${goal}\n\n` +
   `**Time:** ${elapsed()} · **Steps:** ${timeline.filter((t) => t.type === "tool").length}` +
   `${out?.phases ? ` · **Phases:** ${out.phases}` : ""}${score !== null ? ` · **Accuracy:** ${score}%` : ""}\n\n` +
-  `---\n\n${captureList}${body}\n\n` +
+  `---\n\n${captureList}${body}\n\n` + jsonBlock +
   (boardCache ? `<details><summary>Data board (saved fields)</summary>\n\n${boardCache}\n\n</details>\n\n` : "") +
   `<details><summary>Work report (${journal.length} entries)</summary>\n\n` +
   journal.map((l) => `- ${l}`).join("\n") +
