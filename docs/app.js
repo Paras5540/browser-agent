@@ -665,6 +665,24 @@ on("pageBack", "click", () => {
   document.body.classList.remove("page-mode");
   closeMenu();
 });
+on("stopRun", "click", async () => {
+  closeMenu();
+  try {
+    const runs = await gh(`${repoPath()}/actions/runs?per_page=10`);
+    const active = (runs.workflow_runs || []).filter((r) => ["in_progress", "queued", "pending"].includes(r.status));
+    if (!active.length) return toast("Koi run nahi chal raha");
+    // is issue ka run pehle, warna latest
+    const mine = currentThread ? active.find((r) => (r.name || "").includes(`issue #${currentThread}`)) : null;
+    const target = mine || active[0];
+    await gh(`${repoPath()}/actions/runs/${target.id}/cancel`, { method: "POST" });
+    toast(`⏹ Run #${target.run_number} cancel kar diya`);
+    loadTasks();
+    loadLive();
+  } catch (e) {
+    toast(`✗ ${e.message}`, true);
+  }
+});
+
 on("clearChat", "click", () => {
   closeMenu();
   if (threadVisible()) showList();
