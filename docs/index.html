@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="theme-color" content="#f5f4ee" />
 <title>Browser Agent</title>
-<link rel="stylesheet" href="style.css?v=28" />
+<link rel="stylesheet" href="style.css?v=29" />
 <script src="https://cdn.jsdelivr.net/npm/libsodium-wrappers@0.7.15/dist/bundles/libsodium-wrappers.min.js"></script>
 </head>
 <body>
@@ -25,16 +25,16 @@
 
 <div class="menu hide" id="panelMenu" role="menu">
   <div class="menu-label">Panel</div>
-  <button class="menu-item" data-nav="live" role="menuitem"><span class="mi-ico">◉</span> Live</button>
-  <button class="menu-item" data-nav="tasks" role="menuitem"><span class="mi-ico">☰</span> Tasks</button>
-  <button class="menu-item" data-nav="files" role="menuitem"><span class="mi-ico">▣</span> Files</button>
-  <button class="menu-item" data-nav="setup" role="menuitem"><span class="mi-ico">⚙</span> Setup</button>
+  <button class="menu-item" data-nav="live" role="menuitem"><span class="mi-ico" data-icon="live"></span> Live</button>
+  <button class="menu-item" data-nav="tasks" role="menuitem"><span class="mi-ico" data-icon="tasks"></span> Tasks</button>
+  <button class="menu-item" data-nav="files" role="menuitem"><span class="mi-ico" data-icon="files"></span> Files</button>
+  <button class="menu-item" data-nav="setup" role="menuitem"><span class="mi-ico" data-icon="setup"></span> Setup</button>
   <div class="menu-sep"></div>
   <div class="menu-label">Actions</div>
-  <button class="menu-item hide" id="backBtn" role="menuitem"><span class="mi-ico">←</span> Back to tasks</button>
-  <button class="menu-item" id="runNow" role="menuitem"><span class="mi-ico">▶</span> Run scheduled task</button>
-  <button class="menu-item" id="stopRun" role="menuitem"><span class="mi-ico">⏹</span> Stop running task</button>
-  <button class="menu-item danger" id="clearChat" role="menuitem"><span class="mi-ico">✕</span> Clear</button>
+  <button class="menu-item hide" id="backBtn" role="menuitem"><span class="mi-ico" data-icon="back"></span> Back to tasks</button>
+  <button class="menu-item" id="runNow" role="menuitem"><span class="mi-ico" data-icon="play"></span> Run scheduled task</button>
+  <button class="menu-item" id="stopRun" role="menuitem"><span class="mi-ico" data-icon="stop"></span> Stop running task</button>
+  <button class="menu-item danger" id="clearChat" role="menuitem"><span class="mi-ico" data-icon="clear"></span> Clear</button>
 </div>
 
 <main class="layout">
@@ -90,9 +90,11 @@
           <button class="cbtn" id="plusBtn" type="button" title="Quick actions">+</button>
           <button class="model-chip" id="modelBtn" type="button">
             <span id="modelLabel">model</span>
-            <span class="chip-warn" id="chipWarn" title="Free tier — limits lag sakti hain">⚠</span>
+            <span class="chip-warn" id="chipWarn" title="Is provider ki key missing hai"></span>
           </button>
-          <button class="cbtn" id="micBtn" type="button" title="Bol kar likhein">🎙</button>
+          <button class="cbtn" id="micBtn" type="button" title="Bol kar likhein" aria-label="Voice input">
+            <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </button>
           <button class="cbtn send" id="sendBtn" type="submit" form="composer" title="Bhejo">
             <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
               <path d="M4 12h9M4 6h13M4 18h6" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
@@ -109,16 +111,16 @@
       <div class="menu-label">Model chunein</div>
       <div id="modelList"></div>
       <div class="menu-sep"></div>
-      <button class="menu-item" id="modelMore" role="menuitem"><span class="mi-ico">⚙</span> Keys &amp; custom model</button>
+      <button class="menu-item" id="modelMore" role="menuitem"><span class="mi-ico" data-icon="setup"></span> Keys &amp; custom model</button>
     </div>
 
     <div class="menu hide" id="plusMenu" role="menu">
       <div class="menu-label">Quick actions</div>
-      <button class="menu-item" data-tpl="Kisi site se data nikaal kar table banao" role="menuitem"><span class="mi-ico">▤</span> Data nikaalo</button>
-      <button class="menu-item" data-tpl="Is page ka poora screenshot capture karo" role="menuitem"><span class="mi-ico">📸</span> Capture karo</button>
-      <button class="menu-item" data-tpl="Is page ko padho aur summary do" role="menuitem"><span class="mi-ico">≡</span> Summarize</button>
+      <button class="menu-item" data-tpl="Kisi site se data nikaal kar table banao" role="menuitem"><span class="mi-ico" data-icon="data"></span> Data nikaalo</button>
+      <button class="menu-item" data-tpl="Is page ka poora screenshot capture karo" role="menuitem"><span class="mi-ico" data-icon="camera"></span> Capture karo</button>
+      <button class="menu-item" data-tpl="Is page ko padho aur summary do" role="menuitem"><span class="mi-ico" data-icon="text"></span> Summarize</button>
       <div class="menu-sep"></div>
-      <button class="menu-item" id="plusMore" role="menuitem"><span class="mi-ico">⏹</span> Stop running task</button>
+      <button class="menu-item" id="plusMore" role="menuitem"><span class="mi-ico" data-icon="stop"></span> Stop running task</button>
     </div>
 
   </section>
@@ -146,7 +148,15 @@
     </div>
 
     <div class="tab-body hide" id="tab-tasks">
-      <p class="hint">Saare tasks — har 5 second refresh</p>
+      <div class="task-tools">
+        <input id="taskSearch" class="task-search" placeholder="Task dhundo…" autocomplete="off" />
+        <div class="filter-row" id="taskFilters">
+          <button class="fchip active" data-filter="all">All <span id="cAll">0</span></button>
+          <button class="fchip" data-filter="running">Running <span id="cRun">0</span></button>
+          <button class="fchip" data-filter="done">Done <span id="cDone">0</span></button>
+          <button class="fchip" data-filter="failed">Failed <span id="cFail">0</span></button>
+        </div>
+      </div>
       <div id="taskList" class="list"><p class="hint">—</p></div>
     </div>
 
@@ -284,6 +294,6 @@
   </section>
 </main>
 
-<script src="app.js?v=28"></script>
+<script src="app.js?v=29"></script>
 </body>
 </html>
