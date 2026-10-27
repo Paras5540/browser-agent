@@ -19,5 +19,7 @@ outputs/*
 !outputs/memory/
 !outputs/memory/**
 !outputs/state/
+!outputs/traces/
+!outputs/traces/**
 
 .github/workflows/*.local.yml
