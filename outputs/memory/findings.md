@@ -33,3 +33,12 @@ Hacker News (https://news.ycombinator.com) se top 3 posts ka data extract kiya:
 Structured JSON file: `outputs/hn_top3_posts.json`
 
 Note: Post #3 ka points (620) actually #1 se zyada hai, lekin Hacker News ranking position ke hisaab se hoti hai — points sort nahi karte, sirf list order dekhte hain.
+
+## 2026-10-27 04:52 — issue #76
+**✅ ROOT GOAL:**
+https://example.com ka title **"Example Domain"** hai.
+
+Page par sirf **1 link** mila:
+1. **Learn more** → https://iana.org/help/example-domains
+
+Teen links nahi mil sakte kyunki example.com ek simple placeholder page hai jisme sirf ek hi link hai. Jo mila wo yahi hai.
