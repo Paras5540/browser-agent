@@ -1188,8 +1188,6 @@ function navTo(name) {
   switchTab(name, true);
   document.body.classList.add("page-panel");
   syncNav(name);
-  const b = $("panelBtn");
-  if (b) b.textContent = "▦";
   closeMenu();
   if (name === "live") loadLive();
   if (name === "tasks") loadTasks();
@@ -1219,12 +1217,6 @@ on("cfgBtn", "click", () => openSetup());
 on("lsOpen", "click", () => {
   switchTab("live", true);
   loadLive();
-});
-
-on("panelBtn", "click", () => {
-  const open = document.body.classList.toggle("show-panel");
-  const b = $("panelBtn");
-  if (b) b.textContent = open ? "▦" : "▤";
 });
 
 on("langBtn", "click", () => {
