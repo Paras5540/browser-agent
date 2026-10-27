@@ -950,11 +950,13 @@ async function loadFiles() {
     el.innerHTML = files
       .sort((a, b) => (a.name < b.name ? 1 : -1))
       .slice(0, 40)
-      .map(
-        (f) => `<div class="card"><div class="title">${esc(f.name)}</div>
+      .map((f) => {
+        const isImg = /\.(jpe?g|png|webp|gif)$/i.test(f.name);
+        return `<div class="card"><div class="title">${esc(f.name)}</div>
         <div class="meta"><span>${(f.size / 1024).toFixed(1)} KB</span></div>
-        <div class="actions"><a class="btn tiny" href="${f.download_url}" target="_blank" rel="noopener" download>Download</a></div></div>`
-      )
+        ${isImg ? `<img class="file-thumb" src="${f.download_url}" alt="${esc(f.name)}" loading="lazy" onerror="this.style.display='none'" />` : ""}
+        <div class="actions"><a class="btn tiny" href="${f.download_url}" target="_blank" rel="noopener" download>Download</a></div></div>`;
+      })
       .join("");
   } catch (err) {
     el.innerHTML = `<p class="hint" style="color:var(--danger)">${esc(err.message)}</p>`;
