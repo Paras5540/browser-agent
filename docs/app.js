@@ -10,6 +10,143 @@ const cfg = {
 
 const $ = (id) => document.getElementById(id);
 
+/* ══════════════ SETUP WIZARD ══════════════ */
+const WZ_PROV = {
+  dahl: { base: "https://inference.dahl.global/v1", model: "MiniMaxAI/MiniMax-M2.7", secret: "DAHL_API_KEY" },
+  groq: { base: "https://api.groq.com/openai/v1", model: "openai/gpt-oss-20b", secret: "GROQ_API_KEY" },
+  nvidia: { base: "https://integrate.api.nvidia.com/v1", model: "meta/llama-3.3-70b-instruct", secret: "NVIDIA_API_KEY" },
+  openrouter: { base: "https://openrouter.ai/api/v1", model: "minimax/minimax-m3.1-flash:free", secret: "OPENROUTER_API_KEY" },
+  gemini: { base: "", model: "gemini-flash-lite-latest", secret: "GEMINI_API_KEY" },
+};
+let wzStep = 1;
+
+function wzShow(step) {
+  wzStep = step;
+  document.querySelectorAll("[data-wz]").forEach((el) => el.classList.toggle("hide", Number(el.dataset.wz) !== step));
+  document.querySelectorAll(".wz-dots i").forEach((d, i) => d.classList.toggle("on", i < step));
+  if ($("wzStepNo")) $("wzStepNo").textContent = step;
+  if ($("wzBack")) $("wzBack").style.visibility = step === 1 ? "hidden" : "visible";
+  if ($("wzNext")) $("wzNext").textContent = step === 4 ? "Start" : "Continue";
+  if (step === 3) fillWzModels();
+  if (step === 4) {
+    const p = $("wzProv")?.value || "dahl";
+    $("wzSummary").innerHTML = [
+      `Repository: ${cfg.owner}/${cfg.repo}`,
+      `Provider: ${p}`,
+      `Model: ${$("wzModel")?.value || WZ_PROV[p].model}`,
+      "Runs on GitHub Actions — nothing to install",
+    ].map((x) => `<li>${esc(x)}</li>`).join("");
+  }
+}
+
+function openWizard() {
+  $("wizard")?.classList.remove("hide");
+  $("wzOwner").value = cfg.owner || "";
+  $("wzRepo").value = cfg.repo || "";
+  wzShow(cfg.token ? 2 : 1);
+}
+function closeWizard() {
+  $("wizard")?.classList.add("hide");
+}
+
+function wzMsg(n, kind, text) {
+  const el = $(`wzMsg${n}`);
+  if (!el) return;
+  el.className = `wz-msg ${kind}`;
+  el.textContent = text;
+  el.classList.remove("hide");
+}
+
+function fillWzModels() {
+  const p = $("wzProv")?.value || "dahl";
+  const sel = $("wzModel");
+  if (!sel) return;
+  sel.innerHTML = (MODEL_LIST[p] || [WZ_PROV[p].model]).map((m) => `<option value="${m}">${m}</option>`).join("");
+}
+
+on("wzClose", "click", closeWizard);
+on("rerunWizard", "click", openWizard);
+on("wzProv", "change", fillWzModels);
+on("wzBack", "click", () => wzShow(Math.max(1, wzStep - 1)));
+
+on("wzNext", "click", async () => {
+  const btn = $("wzNext");
+  if (wzStep === 1) {
+    const owner = $("wzOwner").value.trim();
+    const repo = $("wzRepo").value.trim();
+    const token = $("wzToken").value.trim();
+    if (!owner || !repo || !token) return wzMsg(1, "err", "All three fields are required.");
+    btn.disabled = true;
+    wzMsg(1, "ok", "Connecting…");
+    cfg.owner = owner;
+    cfg.repo = repo;
+    cfg.token = token;
+    cfg.branch = cfg.branch || "main";
+    try {
+      const r = await gh(repoPath());
+      localStorage.setItem(LS.owner, owner);
+      localStorage.setItem(LS.repo, repo);
+      localStorage.setItem(LS.token, token);
+      localStorage.setItem(LS.branch, cfg.branch);
+      setConfigUI();
+      wzMsg(1, "ok", `Connected to ${r.full_name}.`);
+      setTimeout(() => wzShow(2), 500);
+    } catch (e) {
+      wzMsg(1, "err", e.message);
+    } finally {
+      btn.disabled = false;
+    }
+    return;
+  }
+
+  if (wzStep === 2) {
+    const p = $("wzProv").value;
+    const key = $("wzKey").value.trim();
+    if (!key) return wzMsg(2, "err", "Paste an API key first.");
+    btn.disabled = true;
+    wzMsg(2, "ok", "Saving…");
+    try {
+      await setSecret(WZ_PROV[p].secret, key);
+      wzMsg(2, "ok", "Key saved to GitHub Secrets.");
+      setTimeout(() => wzShow(3), 500);
+    } catch (e) {
+      wzMsg(2, "err", e.message);
+    } finally {
+      btn.disabled = false;
+    }
+    return;
+  }
+
+  if (wzStep === 3) {
+    const p = $("wzProv").value;
+    const model = $("wzModel")?.value || WZ_PROV[p].model;
+    btn.disabled = true;
+    wzMsg(3, "ok", "Applying…");
+    try {
+      if (p === "gemini") {
+        await setVariable("LLM_PROVIDER", "gemini");
+        await setVariable("GEMINI_MODEL", model);
+      } else {
+        await setVariable("LLM_PROVIDER", "openai");
+        await setVariable("LLM_BASE_URL", WZ_PROV[p].base);
+        await setVariable("LLM_MODEL", model);
+      }
+      wzMsg(3, "ok", "Model applied.");
+      setTimeout(() => wzShow(4), 400);
+    } catch (e) {
+      wzMsg(3, "err", e.message);
+    } finally {
+      btn.disabled = false;
+    }
+    return;
+  }
+
+  closeWizard();
+  showNewTask();
+  refreshState?.();
+  loadSetup?.();
+});
+
 /* ── i18n (English default) ── */
 const I18N = window.NETRA_I18N || { t: (k) => k, setLang: () => {}, applyI18n: () => {}, lang: "en" };
 const t = (k) => I18N.t(k);
@@ -991,7 +1128,8 @@ async function loadLive() {
 
     if (!agentRuns.length) {
       header.style.display = "none";
-      stepsEl.innerHTML = `<p class="hint">Abhi koi run nahi hua.</p>`;
+      stepsEl.innerHTML = `<div class="empty-small"><span class="es-ico" data-icon="live"></span><p>${t("noLive")}</p></div>`;
+      hydrateIcons(stepsEl);
       logEl.innerHTML = "";
       $("liveStrip").classList.add("hide");
       return;
@@ -1181,7 +1319,8 @@ async function loadFiles() {
     const items = await gh(`${repoPath()}/contents/outputs?ref=${encodeURIComponent(cfg.branch)}`);
     const files = (Array.isArray(items) ? items : []).filter((f) => f.type === "file" && f.name !== ".gitkeep");
     if (!files.length) {
-      el.innerHTML = `<p class="hint">Abhi koi file nahi bani.</p>`;
+      el.innerHTML = `<div class="empty-small"><span class="es-ico" data-icon="files"></span><p>${t("noFiles")}</p></div>`;
+      hydrateIcons(el);
       return;
     }
     el.innerHTML = files
@@ -1634,6 +1773,9 @@ autoDetect();
 I18N.applyI18n();
 closeDrawer?.();
 setConfigUI();
+if (!configured()) {
+  setTimeout(() => openWizard(), 400);
+}
 if (configured()) {
   showNewTask();
   loadLive();
