@@ -200,6 +200,8 @@ function showNewTask() {
   $("stopRun")?.classList.add("hide");
   $("clearChat")?.classList.add("hide");
   $("threadTitle").textContent = t("newTask");
+  document.body.classList.remove("page-panel");
+  syncNav("chat");
   setRunning(false);
   hydrateIcons(chat);
 }
@@ -212,6 +214,8 @@ function showThreadView(n, title) {
   $("stopRun")?.classList.remove("hide");
   $("clearChat")?.classList.remove("hide");
   $("threadTitle").textContent = title || `#${n}`;
+  document.body.classList.remove("page-panel");
+  syncNav("chat");
 }
 
 function isNearBottom() {
@@ -221,18 +225,18 @@ function isNearBottom() {
 let userScrolledUp = false;
 chat?.addEventListener("scroll", () => {
   userScrolledUp = !isNearBottom();
-  $("jumpBtn")?.classList.toggle("hide", !userScrolledUp || !threadVisible());
+
 });
 
 function scrollChat(force = false) {
   if (force || !userScrolledUp) {
     chat.scrollTop = chat.scrollHeight;
-    $("jumpBtn")?.classList.add("hide");
+
     userScrolledUp = false;
   }
 }
 
-on("jumpBtn", "click", () => scrollChat(true));
+
 
 function addUserMsg(text) {
   const el = document.createElement("div");
@@ -701,9 +705,31 @@ on("replyCancel", "click", () => setReply(null));
 on("backBtn", "click", () => { closeMenu(); showNewTask(); });
 
 on("pageBack", "click", () => {
-  document.body.classList.remove("page-mode");
+  document.body.classList.remove("page-panel");
+  syncNav("chat");
   closeMenu();
+  setTimeout(() => input?.focus(), 30);
 });
+
+/** top nav ka active state */
+function syncNav(name) {
+  document.querySelectorAll("#topnav .navbtn").forEach((b) =>
+    b.classList.toggle("active", b.dataset.nav === name)
+  );
+}
+
+document.querySelectorAll("#topnav .navbtn").forEach((b) =>
+  b.addEventListener("click", () => {
+    const n = b.dataset.nav;
+    if (n === "chat") {
+      document.body.classList.remove("page-panel");
+      syncNav("chat");
+      showNewTask();
+    } else {
+      navTo(n);
+    }
+  })
+);
 on("stopRun", "click", async () => {
   closeMenu();
   try {
@@ -1160,8 +1186,8 @@ function switchTab(name, manual = false) {
 /** Menu se panel ka section kholo (mobile pe panel bhi khule) */
 function navTo(name) {
   switchTab(name, true);
-  document.body.classList.add("show-panel");
-  document.body.classList.add("page-mode");
+  document.body.classList.add("page-panel");
+  syncNav(name);
   const b = $("panelBtn");
   if (b) b.textContent = "▦";
   closeMenu();
