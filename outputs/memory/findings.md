@@ -64,3 +64,16 @@ Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka data extrac
 | 1 | Three new discoveries in mathematics, computer science, and physics | https://openai.com/index/building-scientific-understanding-with-academic-communities/ |
 | 2 | The Exponential Time Hypothesis Is False [pdf] | https://github.com/openai/math/blob/main/preprints/The-Exponential-Time-Hypothesis-is-False-October-25-2026/paper.pdf |
 | 3 | There are now 5 inference providers for abliterated DeepSeek | https:/
+
+## 2026-10-28 09:30 — issue #?
+**DONE** Hacker News pe aaj ke top 10 posts ka title aur link nikaalo. CSV file banao.
+Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur link extract kar liya.
+
+**CSV file:** `outputs/hn_top10_posts.csv`
+
+| Rank | Title | Link |
+|------|-------|------|
+| 1 | Git for the US Code | https://lexifina.com/blog/git-for-the-us-code |
+| 2 | Genie 4 | https://deepmind.google/blog/genie-4-a-new-generation-of-world-simulation/ |
+| 3 | Ghostty 1.4 | https://ghostty.org/docs/install/release-notes/1-4-0 |
+| 4 | Ink droplets in motion snag top prize in Nikon Small World contest | https://arstechnica.com/science/2026/10/meet-the-2026-winner-of-nikons-small-world-pho
