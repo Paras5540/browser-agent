@@ -77,3 +77,16 @@ Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur l
 | 2 | Genie 4 | https://deepmind.google/blog/genie-4-a-new-generation-of-world-simulation/ |
 | 3 | Ghostty 1.4 | https://ghostty.org/docs/install/release-notes/1-4-0 |
 | 4 | Ink droplets in motion snag top prize in Nikon Small World contest | https://arstechnica.com/science/2026/10/meet-the-2026-winner-of-nikons-small-world-pho
+
+## 2026-10-29 09:45 — issue #?
+**DONE** Hacker News pe aaj ke top 10 posts ka title aur link nikaalo. CSV file banao.
+Hacker News (hn.algolia.com API) se aaj ke top 10 posts ka data extract kar liya.
+
+**CSV file:** `outputs/hn_top10_posts.csv`
+
+| Rank | Title | Link |
+|------|-------|------|
+| 1 | Why is this fingerprinting script creating bioweapons? | https://nullpt.rs/fingerprinting-bioweapons |
+| 2 | Apple's git still trusts the compromised eMudhra certificates | https://emudhra.we-have-a-problem.com/apple.html |
+| 3 | Gemini 4 Carbon | https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-carbon/ |
+| 4 | MacBook Pro with PROLED XDR Display and Touch | https://www.ap
