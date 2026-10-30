@@ -90,3 +90,17 @@ Hacker News (hn.algolia.com API) se aaj ke top 10 posts ka data extract kar liya
 | 2 | Apple's git still trusts the compromised eMudhra certificates | https://emudhra.we-have-a-problem.com/apple.html |
 | 3 | Gemini 4 Carbon | https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-carbon/ |
 | 4 | MacBook Pro with PROLED XDR Display and Touch | https://www.ap
+
+## 2026-10-30 09:47 — issue #?
+**DONE** Hacker News pe aaj ke top 10 posts ka title aur link nikaalo. CSV file banao.
+Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur link extract kar liya.
+
+**CSV file:** `outputs/hn_top10_posts.csv`
+
+| Rank | Title | Link |
+|------|-------|------|
+| 1 | Binance-hacker-1029 – $5.6B stolen from Binance | https://arkm.com/explorer/entity/21a94755-f604-45e5-9501-6542e23005e8 |
+| 2 | I Returned My iPhone Duo | https://codakuma.com/i-returned-my-duo/ |
+| 3 | We're releasing the weights of Mistral Large 4 | https://mistral.ai/news/mistral-large-4-oss/ |
+| 4 | Ask HN: Are you tired too in this AI era? | https://news.ycombinator.com/item?id=50301479 |
+| 
