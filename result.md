@@ -41,29 +41,29 @@ Hacker News (hn.algolia.com API) se aaj ke top 10 posts ka data extract kar liya
 | 3 | Gemini 4 Carbon | https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-carbon/ |
 | 4 | MacBook Pro with PROLED XDR Display and Touch | https://www.ap
 
-## 2026-10-27 04:48 — issue #75
-**✅ ROOT GOAL:**
-Hacker News (https://news.ycombinator.com) se top 3 posts ka data extract kiya:
+## 2026-10-30 09:47 — issue #?
+**DONE** Hacker News pe aaj ke top 10 posts ka title aur link nikaalo. CSV file banao.
+Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur link extract kar liya.
 
-| Rank | Title | Points |
-|------|-------|--------|
-| 1 | Three new discoveries in mathematics, computer science, and physics | 649 |
-| 2 | The Exponential Time Hypothesis Is False [pdf] | 436 |
-| 3 | Sebastian
+**CSV file:** `outputs/hn_top10_posts.csv`
 
-**Time:** 59s · **Steps:** 8 · **Phases:** 1
+| Rank | Title | Link |
+|------|-------|------|
+| 1 | Binance-hacker-1029 –
+
+**Time:** 4m 8s · **Steps:** 23 · **Phases:** 1
 
 ---
 
 **Captures** (Files tab me download):
-- [final-74-121092.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/4400c8f4d6829b26fce41f9f0fc520dd3e88f1e8/outputs/final-74-121092.jpg)
-- [final-75-512477.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/4400c8f4d6829b26fce41f9f0fc520dd3e88f1e8/outputs/final-75-512477.jpg)
-- [final-76-727252.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/4400c8f4d6829b26fce41f9f0fc520dd3e88f1e8/outputs/final-76-727252.jpg)
-- [final-77-833127.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/4400c8f4d6829b26fce41f9f0fc520dd3e88f1e8/outputs/final-77-833127.jpg)
-- [final-task-129194.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/4400c8f4d6829b26fce41f9f0fc520dd3e88f1e8/outputs/final-task-129194.jpg)
-- [final-task-636518.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/4400c8f4d6829b26fce41f9f0fc520dd3e88f1e8/outputs/final-task-636518.jpg)
-- [final-task-799681.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/4400c8f4d6829b26fce41f9f0fc520dd3e88f1e8/outputs/final-task-799681.jpg)
-- [final-task-953089.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/4400c8f4d6829b26fce41f9f0fc520dd3e88f1e8/outputs/final-task-953089.jpg)
+- [final-75-512477.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/7e7cd72d18aa3677bb1683bc7f21eb5d01e83804/outputs/final-75-512477.jpg)
+- [final-76-727252.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/7e7cd72d18aa3677bb1683bc7f21eb5d01e83804/outputs/final-76-727252.jpg)
+- [final-77-833127.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/7e7cd72d18aa3677bb1683bc7f21eb5d01e83804/outputs/final-77-833127.jpg)
+- [final-task-021438.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/7e7cd72d18aa3677bb1683bc7f21eb5d01e83804/outputs/final-task-021438.jpg)
+- [final-task-129194.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/7e7cd72d18aa3677bb1683bc7f21eb5d01e83804/outputs/final-task-129194.jpg)
+- [final-task-636518.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/7e7cd72d18aa3677bb1683bc7f21eb5d01e83804/outputs/final-task-636518.jpg)
+- [final-task-799681.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/7e7cd72d18aa3677bb1683bc7f21eb5d01e83804/outputs/final-task-799681.jpg)
+- [final-task-953089.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/7e7cd72d18aa3677bb1683bc7f21eb5d01e83804/outputs/final-task-953089.jpg)
 
 Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur link extract kar liya.
 
@@ -71,60 +71,84 @@ Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur l
 
 | Rank | Title | Link |
 |------|-------|------|
-| 1 | Binance-hacker-1029 – $5.6B stolen from Binance | https://arkm.com/explorer/entity/21a94755-f604-45e5-9501-6542e23005e8 |
-| 2 | I Returned My iPhone Duo | https://codakuma.com/i-returned-my-duo/ |
-| 3 | We're releasing the weights of Mistral Large 4 | https://mistral.ai/news/mistral-large-4-oss/ |
-| 4 | Ask HN: Are you tired too in this AI era? | https://news.ycombinator.com/item?id=50301479 |
-| 5 | Cuis: The Modern Smalltalk-80 | https://cuis.st/ |
-| 6 | Astroterm: A Planetarium for Your Terminal | https://github.com/da-luce/astroterm |
-| 7 | Herdr has released native app | https://github.com/herdrdev/herdr-app |
-| 8 | I'm so bad at billiards that I ended up in the hyperbolic plane [video] | https://www.youtube.com/watch?v=kL9BTbIGxLg |
-| 9 | Gilgamesh by Simon Armitage review – an ancient epic is brilliantly translated | https://www.theguardian.com/books/2026/oct/20/gilgamesh-by-simon-armitage-review-an-ancient-epic-is-brilliantly-translated-for-our-times |
-| 10 | We ran AI agent swarms in Minecraft and Mindustry | https://labs.ycombinator.com/projects/games/index.html |
+| 1 | Switch Lowering in GCC | https://xoranth.net/gcc-switch/ |
+| 2 | Show HN: Marelleo, an open-source story box I built for my kids using ESP32 | https://zebra.rodeo/en/blog/marelleo/ |
+| 3 | My favourite PowerMac is a Nintendo Wii | https://virtuallyfun.com/2026/10/29/my-favourite-powermac-is-a-nintendo-wii/ |
+| 4 | Cloudflare Turnstile solver library (no headless browser required) | https://github.com/chris124567/cfsolve |
+| 5 | The $6.3B Binance hack was pulled off in just 20 minutes | https://www.wired.com/story/the-dollar63-billion-binance-hack-was-pulled-off-in-just-20-minutes/ |
+| 6 | Tell HN: Scribd Breached | https://news.ycombinator.com/item?id=50312756 |
+| 7 | Northflank Breached | https://status.northflank.com/ |
+| 8 | Digital Minimalism | https://vitalik.eth.limo/general/2026/10/31/digital_minimalism.html |
+| 9 | Breaking the open web won't stop the bad bots | https://www.techpolicy.press/breaking-the-open-web-wont-stop-the-bad-bots/ |
+| 10 | Longitudinal Changes In Wearable-Captured Physiology Before Sudden Cardiac Death | https://www.jacc.org/doi/epdf/10.1016/j.jaccas.2026.110397 |
 
-Source: https://news.ycombinator.com
+Source: https://news.ycombinator.com/
 
 ```json
 {
   "status": "success",
   "goal": "Hacker News pe aaj ke top 10 posts ka title aur link nikaalo. CSV file banao.",
-  "answer": "Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur link extract kar liya.\n\n**CSV file:** `outputs/hn_top10_posts.csv`\n\n| Rank | Title | Link |\n|------|-------|------|\n| 1 | Binance-hacker-1029 – $5.6B stolen from Binance | https://arkm.com/explorer/entity/21a94755-f604-45e5-9501-6542e23005e8 |\n| 2 | I Returned My iPhone Duo | https://codakuma.com/i-returned-my-duo/ |\n| 3 | We're releasing the weights of Mistral Large 4 | https://mistral.ai/news/mistral-large-4-oss/ |\n| 4 | Ask HN: Are you tired too in this AI era? | https://news.ycombinator.com/item?id=50301479 |\n| 5 | Cuis: The Modern Smalltalk-80 | https://cuis.st/ |\n| 6 | Astroterm: A Planetarium for Your Terminal | https://github.com/da-luce/astroterm |\n| 7 | Herdr has released native app | https://github.com/herdrdev/herdr-app |\n| 8 | I'm so bad at billiards that I ended up in the hyperbolic plane [video] | https://www.youtube.com/watch?v=kL9BTbIGxLg |\n| 9 | Gilgamesh by Simon Armitage review – an ancient epic is brilliantly translated | https://www.theguardian.com/books/2026/oct/20/gilgamesh-by-simon-armitage-review-an-ancient-epic-is-brilliantly-translated-for-our-times |\n| 10 | We ran AI agent swarms in Minecraft and Mindustry | https://labs.ycombinator.com/projects/games/index.html |\n\nSource: https://news.ycombinator.com",
-  "data": {},
+  "answer": "Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur link extract kar liya.\n\n**CSV file:** `outputs/hn_top10_posts.csv`\n\n| Rank | Title | Link |\n|------|-------|------|\n| 1 | Switch Lowering in GCC | https://xoranth.net/gcc-switch/ |\n| 2 | Show HN: Marelleo, an open-source story box I built for my kids using ESP32 | https://zebra.rodeo/en/blog/marelleo/ |\n| 3 | My favourite PowerMac is a Nintendo Wii | https://virtuallyfun.com/2026/10/29/my-favourite-powermac-is-a-nintendo-wii/ |\n| 4 | Cloudflare Turnstile solver library (no headless browser required) | https://github.com/chris124567/cfsolve |\n| 5 | The $6.3B Binance hack was pulled off in just 20 minutes | https://www.wired.com/story/the-dollar63-billion-binance-hack-was-pulled-off-in-just-20-minutes/ |\n| 6 | Tell HN: Scribd Breached | https://news.ycombinator.com/item?id=50312756 |\n| 7 | Northflank Breached | https://status.northflank.com/ |\n| 8 | Digital Minimalism | https://vitalik.eth.limo/general/2026/10/31/digital_minimalism.html |\n| 9 | Breaking the open web won't stop the bad bots | https://www.techpolicy.press/breaking-the-open-web-wont-stop-the-bad-bots/ |\n| 10 | Longitudinal Changes In Wearable-Captured Physiology Before Sudden Cardiac Death | https://www.jacc.org/doi/epdf/10.1016/j.jaccas.2026.110397 |\n\nSource: https://news.ycombinator.com/",
+  "data": {
+    "hn_top10": "Rank,Title,Link\n1,Switch Lowering in GCC,https://xoranth.net/gcc-switch/\n2,Show HN: Marelleo an open-source story box I built for my kids using ESP32,https://zebra.rodeo/en/blog/marelleo/\n3,My favourite PowerMac is a Nintendo Wii,https://virtuallyfun.com/2026/10/29/my-favourite-powermac-is-a-nintendo-wii/\n4,Cloudflare Turnstile solver library (no headless browser required),https://github.com/chris124567/cfsolve\n5,The $6.3B Binance hack was pulled off in just 20 minutes,https://www.wired.com/story/the-dollar63-billion-binance-hack-was-pulled-off-in-just-20-minutes/\n6,Tell HN: Scribd Breached,https://news.ycombinator.com/item?id=50312756\n7,Northflank Breached,https://status.northflank.com/\n8,Digital Minimalism,https://vitalik.eth.limo/general/2026/10/31/digital_minimalism.html\n9,Breaking the open web won't stop the bad bots,https://www.techpolicy.press/breaking-the-open-web-wont-stop-the-bad-bots/\n10,Show HN: A working Nintendo in ~1GB of Qwen weights,https://github.com/dbreunig/nintendo-qwen"
+  },
   "captures": [
-    "final-77-833127.jpg",
+    "final-task-021438.jpg",
     "final-task-129194.jpg",
     "final-task-636518.jpg",
     "final-task-799681.jpg",
     "final-task-953089.jpg"
   ],
   "files": [
-    "result-1793090954648.md",
     "result-1793179801550.md",
     "result-1793267131871.md",
+    "result-1793353638791.md",
     "sites.csv",
     "user_email_setup.md"
   ],
-  "steps": 8,
+  "steps": 23,
   "score": null,
   "phases": 1
 }
 ```
 
-<details><summary>Work report (8 entries)</summary>
+<details><summary>Data board (saved fields)</summary>
 
-- 09:46:24  Plan:
+- hn_top10 = Rank,Title,Link 1,Switch Lowering in GCC,https://xoranth.net/gcc-switch/ 2,Show HN: Marelleo an open-source story box I built for my kids using ESP32,https://zebra.rodeo/en/blog/marelleo/ 3,My favouri
+
+</details>
+
+<details><summary>Work report (24 entries)</summary>
+
+- 09:26:24  Plan:
 1. Open https://news.ycombinator.com in browser
-2. Extract top 10 post titles and their URLs
-3. Create CSV file with columns: Rank, Title, Link
-4. Save as `outputs/hn_top10_posts.csv`
-5. Verify CSV content is correct
-6. Confirm task completion
-- 09:46:39  khol raha hoon — news.ycombinator.com
-- 09:46:40  progress note save kar raha hoon
-- 09:46:43  extract_links
-- 09:47:09  file bana raha hoon — hn_top10_posts.csv
-- 09:47:11  page ka content padh raha hoon
-- 09:47:16  kaam khatam kar raha hoon
-- 09:47:16  VERIFY Verify: undefined% ✓ poora
+2. Locate the top 10 posts from the front page
+3. Extract title and URL for each of the 10 posts
+4. Create CSV file at `outputs/hn_top10_posts.csv`
+5. Format with columns: Rank, Title, Link
+6. Save and verify the file contents
+- 09:26:58  khol raha hoon — news.ycombinator.com
+- 09:26:58  progress note save kar raha hoon
+- 09:27:31  intezaar kar raha hoon
+- 09:27:38  khol raha hoon — hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=10&
+- 09:27:41  khol raha hoon — hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=10
+- 09:27:43  page ka content padh raha hoon
+- 09:28:17  khol raha hoon — hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=10&
+- 09:28:22  data nikaal raha hoon — body
+- 09:28:27  khol raha hoon — news.ycombinator.com
+- 09:28:32  extract_json
+- 09:28:36  extract_links
+- 09:28:42  extract_links
+- 09:28:42  extract_links
+- 09:28:50  save_field
+- 09:28:53  extract_links
+- 09:29:00  file bana raha hoon — hn_top10_posts.csv
+- 09:29:09  page ka content padh raha hoon
+- 09:29:09  khol raha hoon — file://outputs/hn_top10_posts.csv
+- 09:29:10  FAIL navigate — ERROR: Sirf http/https allowed hai (mila: file:)
+- 09:29:54  file bana raha hoon — hn_top10_posts.csv
+- 09:30:07  page ka content padh raha hoon
+- 09:30:21  kaam khatam kar raha hoon
+- 09:30:21  VERIFY Verify: undefined% ✓ poora
 
 </details>

@@ -104,3 +104,16 @@ Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur l
 | 3 | We're releasing the weights of Mistral Large 4 | https://mistral.ai/news/mistral-large-4-oss/ |
 | 4 | Ask HN: Are you tired too in this AI era? | https://news.ycombinator.com/item?id=50301479 |
 | 
+
+## 2026-10-31 09:30 — issue #?
+**DONE** Hacker News pe aaj ke top 10 posts ka title aur link nikaalo. CSV file banao.
+Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur link extract kar liya.
+
+**CSV file:** `outputs/hn_top10_posts.csv`
+
+| Rank | Title | Link |
+|------|-------|------|
+| 1 | Switch Lowering in GCC | https://xoranth.net/gcc-switch/ |
+| 2 | Show HN: Marelleo, an open-source story box I built for my kids using ESP32 | https://zebra.rodeo/en/blog/marelleo/ |
+| 3 | My favourite PowerMac is a Nintendo Wii | https://virtuallyfun.com/2026/10/29/my-favourite-powermac-is-a-nintendo-wii/ |
+| 4 | Cloudflare Turnstile solver library (no headless browser required) | https://github
