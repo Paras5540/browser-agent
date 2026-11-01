@@ -117,3 +117,15 @@ Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur l
 | 2 | Show HN: Marelleo, an open-source story box I built for my kids using ESP32 | https://zebra.rodeo/en/blog/marelleo/ |
 | 3 | My favourite PowerMac is a Nintendo Wii | https://virtuallyfun.com/2026/10/29/my-favourite-powermac-is-a-nintendo-wii/ |
 | 4 | Cloudflare Turnstile solver library (no headless browser required) | https://github
+
+## 2026-11-01 10:18 — issue #?
+**DONE** Hacker News pe aaj ke top 10 posts ka title aur link nikaalo. CSV file banao.
+Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur link extract kar liya.
+
+**CSV file:** `outputs/hn_top10_posts.csv`
+
+| Rank | Title | Link |
+|------|-------|------|
+| 1 | HackerTube: YouTube built from videos recommended by HN | https://karpathy.bearblog.dev/hacker-tube/ |
+| 2 | Japan's trains are great. Why is booking one so hard? | https://vinibrasil.com/japan-train/ |
+| 3 | An Italian farmer found some unknown seeds in his attic and planted them | https://www.smithsonianmag.com/science-nature/italian-farmer-found-unknown-seeds-attic-with-nothing-lose-planted-th
