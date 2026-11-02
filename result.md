@@ -51,36 +51,36 @@ Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur l
 |------|-------|------|
 | 1 | Binance-hacker-1029 –
 
-**Time:** 2m 53s · **Steps:** 12 · **Phases:** 1
+**Time:** 6m 45s · **Steps:** 24 · **Phases:** 1
 
 ---
 
 **Captures** (Files tab me download):
-- [final-76-727252.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/9a17daf2c79ddd3d12df0ce43dfc85a523a65d0e/outputs/final-76-727252.jpg)
-- [final-77-833127.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/9a17daf2c79ddd3d12df0ce43dfc85a523a65d0e/outputs/final-77-833127.jpg)
-- [final-task-021438.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/9a17daf2c79ddd3d12df0ce43dfc85a523a65d0e/outputs/final-task-021438.jpg)
-- [final-task-129194.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/9a17daf2c79ddd3d12df0ce43dfc85a523a65d0e/outputs/final-task-129194.jpg)
-- [final-task-305709.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/9a17daf2c79ddd3d12df0ce43dfc85a523a65d0e/outputs/final-task-305709.jpg)
-- [final-task-636518.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/9a17daf2c79ddd3d12df0ce43dfc85a523a65d0e/outputs/final-task-636518.jpg)
-- [final-task-799681.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/9a17daf2c79ddd3d12df0ce43dfc85a523a65d0e/outputs/final-task-799681.jpg)
-- [final-task-953089.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/9a17daf2c79ddd3d12df0ce43dfc85a523a65d0e/outputs/final-task-953089.jpg)
+- [final-77-833127.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/af62a80411d6cabcb00da6d8dd057b46ee659b0a/outputs/final-77-833127.jpg)
+- [final-task-021438.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/af62a80411d6cabcb00da6d8dd057b46ee659b0a/outputs/final-task-021438.jpg)
+- [final-task-129194.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/af62a80411d6cabcb00da6d8dd057b46ee659b0a/outputs/final-task-129194.jpg)
+- [final-task-305709.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/af62a80411d6cabcb00da6d8dd057b46ee659b0a/outputs/final-task-305709.jpg)
+- [final-task-636518.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/af62a80411d6cabcb00da6d8dd057b46ee659b0a/outputs/final-task-636518.jpg)
+- [final-task-714907.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/af62a80411d6cabcb00da6d8dd057b46ee659b0a/outputs/final-task-714907.jpg)
+- [final-task-799681.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/af62a80411d6cabcb00da6d8dd057b46ee659b0a/outputs/final-task-799681.jpg)
+- [final-task-953089.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/af62a80411d6cabcb00da6d8dd057b46ee659b0a/outputs/final-task-953089.jpg)
 
-Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur link extract kar liya.
+Hacker News (news.ycombinator.com) se aaj ke top 10 posts ka title aur link extract kar liya. CSV file save kar di hai.
 
 **CSV file:** `outputs/hn_top10_posts.csv`
 
 | Rank | Title | Link |
 |------|-------|------|
-| 1 | HackerTube: YouTube built from videos recommended by HN | https://karpathy.bearblog.dev/hacker-tube/ |
-| 2 | Japan's trains are great. Why is booking one so hard? | https://vinibrasil.com/japan-train/ |
-| 3 | An Italian farmer found some unknown seeds in his attic and planted them | https://www.smithsonianmag.com/science-nature/italian-farmer-found-unknown-seeds-attic-with-nothing-lose-planted-them-result-biblical-180989644/ |
-| 4 | Running a bootstrapped SaaS for 20 years with my brother | https://blog.zamzar.com/2026/10/30/20-years-766-million-files-two-chameleons/ |
-| 5 | Brazilian Court Sanctions Lawyers for Prompt Injection in Court Filing | https://jetstream.security/insights/brazilian-court-sanctions-prompt-injection-filing/ |
-| 6 | The AI cost of JavaScript frameworks | https://nolanlawson.com/2026/10/28/the-ai-cost-of-javascript-frameworks/ |
-| 7 | TCP Use-After-Free: CVE-2026-98432 / CVSS 9.8 | https://atlasum.net/blog/cve-2026-98432-linux-ipv4-tcp-uaf |
-| 8 | No AI, 52 min. Build all Linux Files utils in C by Hand [video] | https://www.youtube.com/watch?v=gQRmSlcTq9c |
-| 9 | Memdoor: A team of 5 Qwen3.8-27B models beats Fable 5 on LiveCodeBench Hard | https://github.com/guregodevo/memdoor/tree/main/examples/workflows/team-solve |
-| 10 | OpenIDEA: The IDE you know, rebuilt in Rust | https://github.com/l0ng-ai/openidea |
+| 1 | Show HN: Wikihack – HackerTube but for Wikipedia articles mentioned on HN | https://wikihack.netlify.app/ |
+| 2 | Show HN: HackerBooks – HackerTube but for books mentioned on HN | https://hackerbooks.org |
+| 3 | Postgres 19 is late because so many more bugs are being found now | https://rhaas.blogspot.com/2026/10/postgres-19-is-late-and-its-ais-fault.html |
+| 4 | HackerTube: YouTube built from videos recommended by HN | https://karpathy.bearblog.dev/hacker-tube/ |
+| 5 | F/OSS Comics #13: BSD Unix Part 3 – The Beginning of BSD Unix | https://fosscomics.com |
+| 6 | Bones may release proteins that slow aging and extend life span | https://www.science.org |
+| 7 | Ask HN: Which TV do you recommend for privacy? | https://news.ycombinator.com/item?id=50328896 |
+| 8 | Show HN: I've updated my Linux System Call website and API | https://syscall.sh |
+| 9 | From Charlemagne to the Kitchen Boy: Reading the Hamburg Rathaus | https://alsterrunde.com |
+| 10 | Mystery of 60-Second Fluctuations in Power Grids Solved | https://fz-juelich.de |
 
 Source: https://news.ycombinator.com
 
@@ -88,46 +88,57 @@ Source: https://news.ycombinator.com
 {
   "status": "success",
   "goal": "Hacker News pe aaj ke top 10 posts ka title aur link nikaalo. CSV file banao.",
-  "answer": "Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur link extract kar liya.\n\n**CSV file:** `outputs/hn_top10_posts.csv`\n\n| Rank | Title | Link |\n|------|-------|------|\n| 1 | HackerTube: YouTube built from videos recommended by HN | https://karpathy.bearblog.dev/hacker-tube/ |\n| 2 | Japan's trains are great. Why is booking one so hard? | https://vinibrasil.com/japan-train/ |\n| 3 | An Italian farmer found some unknown seeds in his attic and planted them | https://www.smithsonianmag.com/science-nature/italian-farmer-found-unknown-seeds-attic-with-nothing-lose-planted-them-result-biblical-180989644/ |\n| 4 | Running a bootstrapped SaaS for 20 years with my brother | https://blog.zamzar.com/2026/10/30/20-years-766-million-files-two-chameleons/ |\n| 5 | Brazilian Court Sanctions Lawyers for Prompt Injection in Court Filing | https://jetstream.security/insights/brazilian-court-sanctions-prompt-injection-filing/ |\n| 6 | The AI cost of JavaScript frameworks | https://nolanlawson.com/2026/10/28/the-ai-cost-of-javascript-frameworks/ |\n| 7 | TCP Use-After-Free: CVE-2026-98432 / CVSS 9.8 | https://atlasum.net/blog/cve-2026-98432-linux-ipv4-tcp-uaf |\n| 8 | No AI, 52 min. Build all Linux Files utils in C by Hand [video] | https://www.youtube.com/watch?v=gQRmSlcTq9c |\n| 9 | Memdoor: A team of 5 Qwen3.8-27B models beats Fable 5 on LiveCodeBench Hard | https://github.com/guregodevo/memdoor/tree/main/examples/workflows/team-solve |\n| 10 | OpenIDEA: The IDE you know, rebuilt in Rust | https://github.com/l0ng-ai/openidea |\n\nSource: https://news.ycombinator.com",
+  "answer": "Hacker News (news.ycombinator.com) se aaj ke top 10 posts ka title aur link extract kar liya. CSV file save kar di hai.\n\n**CSV file:** `outputs/hn_top10_posts.csv`\n\n| Rank | Title | Link |\n|------|-------|------|\n| 1 | Show HN: Wikihack – HackerTube but for Wikipedia articles mentioned on HN | https://wikihack.netlify.app/ |\n| 2 | Show HN: HackerBooks – HackerTube but for books mentioned on HN | https://hackerbooks.org |\n| 3 | Postgres 19 is late because so many more bugs are being found now | https://rhaas.blogspot.com/2026/10/postgres-19-is-late-and-its-ais-fault.html |\n| 4 | HackerTube: YouTube built from videos recommended by HN | https://karpathy.bearblog.dev/hacker-tube/ |\n| 5 | F/OSS Comics #13: BSD Unix Part 3 – The Beginning of BSD Unix | https://fosscomics.com |\n| 6 | Bones may release proteins that slow aging and extend life span | https://www.science.org |\n| 7 | Ask HN: Which TV do you recommend for privacy? | https://news.ycombinator.com/item?id=50328896 |\n| 8 | Show HN: I've updated my Linux System Call website and API | https://syscall.sh |\n| 9 | From Charlemagne to the Kitchen Boy: Reading the Hamburg Rathaus | https://alsterrunde.com |\n| 10 | Mystery of 60-Second Fluctuations in Power Grids Solved | https://fz-juelich.de |\n\nSource: https://news.ycombinator.com",
   "data": {},
   "captures": [
-    "final-task-129194.jpg",
     "final-task-305709.jpg",
     "final-task-636518.jpg",
+    "final-task-714907.jpg",
     "final-task-799681.jpg",
     "final-task-953089.jpg"
   ],
   "files": [
-    "result-1793267131871.md",
     "result-1793353638791.md",
     "result-1793439023170.md",
+    "result-1793528307439.md",
     "sites.csv",
     "user_email_setup.md"
   ],
-  "steps": 12,
+  "steps": 24,
   "score": null,
   "phases": 1
 }
 ```
 
-<details><summary>Work report (13 entries)</summary>
+<details><summary>Work report (24 entries)</summary>
 
-- 10:15:36  Plan:
-1. Open https://news.ycombinator.com in browser
-2. Extract top 10 post titles and their URLs from the front page
-3. Create CSV file at `outputs/hn_top10_posts.csv` with columns: Rank, Title, Link
-4. Verify the CSV file is correctly formatted
-- 10:15:43  khol raha hoon — news.ycombinator.com
-- 10:15:44  progress note save kar raha hoon
-- 10:15:46  extract_json
-- 10:15:46  FAIL extract_json — ERROR: page.evaluate: SyntaxError: Failed to execute 'querySelectorAll' on 'Docu
-- 10:15:55  extract_json
-- 10:15:56  extract_links
-- 10:16:04  extract_links
-- 10:16:14  extract_links
-- 10:16:14  extract_links
-- 10:17:52  file bana raha hoon — hn_top10_posts.csv
-- 10:18:25  kaam khatam kar raha hoon
-- 10:18:25  VERIFY Verify: undefined% ✓ poora
+- 10:45:18  Plan:
+1. Open Hacker News (news.ycombinator.com)
+2. Extract top 10 post titles and URLs
+3. Create CSV file with columns: Rank, Title, Link
+4. Save as outputs/hn_top10_posts.csv
+- 10:45:22  khol raha hoon — news.ycombinator.com
+- 10:45:23  progress note save kar raha hoon
+- 10:45:25  khol raha hoon — hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=10&
+- 10:45:30  page ka content padh raha hoon
+- 10:45:30  extract_json
+- 10:45:32  page ka content padh raha hoon
+- 10:45:37  file bana raha hoon — hn_top10_posts.csv
+- 10:47:43  khol raha hoon — hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=10
+- 10:47:46  page ka content padh raha hoon
+- 10:47:55  page ka content padh raha hoon
+- 10:47:57  page ka content padh raha hoon
+- 10:48:27  khol raha hoon — hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=10&
+- 10:48:43  page ka content padh raha hoon
+- 10:49:06  khol raha hoon — hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=10&
+- 10:49:13  khol raha hoon — news.ycombinator.com
+- 10:49:51  extract_links
+- 10:50:44  file bana raha hoon — hn_top10_posts.csv
+- 10:50:57  page ka content padh raha hoon
+- 10:51:17  file bana raha hoon — hn_top10_posts.csv
+- 10:51:32  page ka content padh raha hoon
+- 10:51:32  file bana raha hoon — hn_top10_posts.csv
+- 10:51:54  kaam khatam kar raha hoon
+- 10:51:54  VERIFY Verify: undefined% ✓ poora
 
 </details>

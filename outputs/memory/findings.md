@@ -129,3 +129,16 @@ Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur l
 | 1 | HackerTube: YouTube built from videos recommended by HN | https://karpathy.bearblog.dev/hacker-tube/ |
 | 2 | Japan's trains are great. Why is booking one so hard? | https://vinibrasil.com/japan-train/ |
 | 3 | An Italian farmer found some unknown seeds in his attic and planted them | https://www.smithsonianmag.com/science-nature/italian-farmer-found-unknown-seeds-attic-with-nothing-lose-planted-th
+
+## 2026-11-02 10:51 — issue #?
+**DONE** Hacker News pe aaj ke top 10 posts ka title aur link nikaalo. CSV file banao.
+Hacker News (news.ycombinator.com) se aaj ke top 10 posts ka title aur link extract kar liya. CSV file save kar di hai.
+
+**CSV file:** `outputs/hn_top10_posts.csv`
+
+| Rank | Title | Link |
+|------|-------|------|
+| 1 | Show HN: Wikihack – HackerTube but for Wikipedia articles mentioned on HN | https://wikihack.netlify.app/ |
+| 2 | Show HN: HackerBooks – HackerTube but for books mentioned on HN | https://hackerbooks.org |
+| 3 | Postgres 19 is late because so many more bugs are being found now | https://rhaas.blogspot.com/2026/10/postgres-19-is-late-and-its-ais-fault.html |
+| 4 | HackerTube: You
