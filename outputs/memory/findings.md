@@ -142,3 +142,18 @@ Hacker News (news.ycombinator.com) se aaj ke top 10 posts ka title aur link extr
 | 2 | Show HN: HackerBooks – HackerTube but for books mentioned on HN | https://hackerbooks.org |
 | 3 | Postgres 19 is late because so many more bugs are being found now | https://rhaas.blogspot.com/2026/10/postgres-19-is-late-and-its-ais-fault.html |
 | 4 | HackerTube: You
+
+## 2026-11-03 10:40 — issue #?
+**DONE** Hacker News pe aaj ke top 10 posts ka title aur link nikaalo. CSV file banao.
+Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur link extract kar liya.
+
+**CSV file:** `outputs/hn_top10_posts.csv`
+
+| Rank | Title | Link |
+|------|-------|------|
+| 1 | Astra can read and write weights to improve Qwen | https://rikiyat.github.io |
+| 2 | No Vehicles in the Park | https://novehiclesinthepark.com |
+| 3 | Nvidia – open-source auto-ontology | https://github.com/nvidia |
+| 4 | Toit v2.0.0 | https://toit.io |
+| 5 | DiscImageStudio: burn visible artwork onto CDs, DVDs and Blu-ray discs | https://github.com/jiafeimiao-k-cat |
+| 6 | Show HN: Hacker Times,
