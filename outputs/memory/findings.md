@@ -157,3 +157,16 @@ Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur l
 | 4 | Toit v2.0.0 | https://toit.io |
 | 5 | DiscImageStudio: burn visible artwork onto CDs, DVDs and Blu-ray discs | https://github.com/jiafeimiao-k-cat |
 | 6 | Show HN: Hacker Times,
+
+## 2026-11-04 10:42 — issue #?
+**DONE** Hacker News pe aaj ke top 10 posts ka title aur link nikaalo. CSV file banao.
+Hacker News ke aaj ke top 10 posts ka data extract kar liya aur CSV file bana di.
+
+**CSV file:** `outputs/hn_top10_posts.csv`
+
+| Rank | Title | Link |
+|------|-------|------|
+| 1 | Kitty 0.50 | https://sw.kovidgoyal.net/kitty/changelog/# |
+| 2 | Nvidia RTX Spark encrypted firmware slows inference speed to 35% on Linux | https://www.mindstudio.ai/blog/linux-nvidia-rtx-spark-laptop |
+| 3 | Verification Is Not Knowledge: Science needs more than answers | https://blog.cosmos-institute.org/p/verification-is-not-knowledge |
+| 4 | Incident with Pull Requests, Git Operations and Issues | https://www.g
