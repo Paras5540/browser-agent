@@ -170,3 +170,17 @@ Hacker News ke aaj ke top 10 posts ka data extract kar liya aur CSV file bana di
 | 2 | Nvidia RTX Spark encrypted firmware slows inference speed to 35% on Linux | https://www.mindstudio.ai/blog/linux-nvidia-rtx-spark-laptop |
 | 3 | Verification Is Not Knowledge: Science needs more than answers | https://blog.cosmos-institute.org/p/verification-is-not-knowledge |
 | 4 | Incident with Pull Requests, Git Operations and Issues | https://www.g
+
+## 2026-11-05 10:35 — issue #?
+**DONE** Hacker News pe aaj ke top 10 posts ka title aur link nikaalo. CSV file banao.
+Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur link extract kar liya.
+
+**CSV file:** `outputs/hn_top10_posts.csv`
+
+| Rank | Title | Link |
+|------|-------|------|
+| 1 | Residential proxies detected on White House network | https://layer3intel.com/blog/residential-proxies-white-house-network |
+| 2 | Lemmings CSS Animation | https://markblah.github.io/lemmings/ |
+| 3 | Baidu dropped ERNIE 5.5 Flash Base | https://ernie.baidu.com/release/ernie-5-5-flash-base/ |
+| 4 | Images 2.6 | https://openai.com/index/introducing-images-2-6/ |
+| 5 | A thousand fewer paths to roo
