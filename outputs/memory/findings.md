@@ -184,3 +184,17 @@ Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur l
 | 3 | Baidu dropped ERNIE 5.5 Flash Base | https://ernie.baidu.com/release/ernie-5-5-flash-base/ |
 | 4 | Images 2.6 | https://openai.com/index/introducing-images-2-6/ |
 | 5 | A thousand fewer paths to roo
+
+## 2026-11-06 10:38 — issue #?
+**DONE** Hacker News pe aaj ke top 10 posts ka title aur link nikaalo. CSV file banao.
+Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur link extract kar liya.
+
+**CSV file:** `outputs/hn_top10_posts.csv`
+
+| Rank | Title | Link |
+|------|-------|------|
+| 1 | Blender's UI and Runtime: Much Faster Than GPUI | https://github.com/ppmpreetham |
+| 2 | Claude Code sends your email address to websites | https://github.com/anthropics/claude-code/issues/107757 |
+| 3 | Kugelblitz – Mac-Native Google Earth Alternative | https://metaebene.me |
+| 4 | ssHole (OpenSSH Password Authentication Bypass) | https://sshhole.com |
+| 5 | Dutch 'idealist' bank ASN blocks non-

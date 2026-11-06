@@ -51,19 +51,19 @@ Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur l
 |------|-------|------|
 | 1 | Binance-hacker-1029 –
 
-**Time:** 1m 17s · **Steps:** 11 · **Phases:** 1
+**Time:** 56s · **Steps:** 20 · **Phases:** 1
 
 ---
 
 **Captures** (Files tab me download):
-- [final-task-305709.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/029abd872dfc0513d9073719839d869f2050eac0/outputs/final-task-305709.jpg)
-- [final-task-415232.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/029abd872dfc0513d9073719839d869f2050eac0/outputs/final-task-415232.jpg)
-- [final-task-636518.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/029abd872dfc0513d9073719839d869f2050eac0/outputs/final-task-636518.jpg)
-- [final-task-714907.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/029abd872dfc0513d9073719839d869f2050eac0/outputs/final-task-714907.jpg)
-- [final-task-799681.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/029abd872dfc0513d9073719839d869f2050eac0/outputs/final-task-799681.jpg)
-- [final-task-952556.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/029abd872dfc0513d9073719839d869f2050eac0/outputs/final-task-952556.jpg)
-- [final-task-953089.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/029abd872dfc0513d9073719839d869f2050eac0/outputs/final-task-953089.jpg)
-- [final-task-955033.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/029abd872dfc0513d9073719839d869f2050eac0/outputs/final-task-955033.jpg)
+- [final-task-415232.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/6ba66b263307666326f4da5020ad28e5cedacdf4/outputs/final-task-415232.jpg)
+- [final-task-509177.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/6ba66b263307666326f4da5020ad28e5cedacdf4/outputs/final-task-509177.jpg)
+- [final-task-636518.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/6ba66b263307666326f4da5020ad28e5cedacdf4/outputs/final-task-636518.jpg)
+- [final-task-714907.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/6ba66b263307666326f4da5020ad28e5cedacdf4/outputs/final-task-714907.jpg)
+- [final-task-799681.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/6ba66b263307666326f4da5020ad28e5cedacdf4/outputs/final-task-799681.jpg)
+- [final-task-952556.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/6ba66b263307666326f4da5020ad28e5cedacdf4/outputs/final-task-952556.jpg)
+- [final-task-953089.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/6ba66b263307666326f4da5020ad28e5cedacdf4/outputs/final-task-953089.jpg)
+- [final-task-955033.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/6ba66b263307666326f4da5020ad28e5cedacdf4/outputs/final-task-955033.jpg)
 
 Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur link extract kar liya.
 
@@ -71,16 +71,16 @@ Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur l
 
 | Rank | Title | Link |
 |------|-------|------|
-| 1 | Residential proxies detected on White House network | https://layer3intel.com/blog/residential-proxies-white-house-network |
-| 2 | Lemmings CSS Animation | https://markblah.github.io/lemmings/ |
-| 3 | Baidu dropped ERNIE 5.5 Flash Base | https://ernie.baidu.com/release/ernie-5-5-flash-base/ |
-| 4 | Images 2.6 | https://openai.com/index/introducing-images-2-6/ |
-| 5 | A thousand fewer paths to root | https://openai.com/index/a-thousand-fewer-paths-to-root/ |
-| 6 | Partial Operator Precedence | https://ziglang.org/devlog/2026/#2026-10-24 |
-| 7 | Kimi K3.1 Pro model weights are out | https://huggingface.co/moonshotai/Kimi-K3.1-Pro |
-| 8 | Ripple-65B Preview: U.S. Open-Weight SOTA on Agentic Coding | https://www.ricursive.com/ripple |
-| 9 | Insects don't swarm at LED lights | https://www.birdsoutsidemywindow.org/2026/11/03/insects-dont-swarm-at-led-lights/ |
-| 10 | A new Go API for JSON | https://go.dev/blog/jsonv2 |
+| 1 | Blender's UI and Runtime: Much Faster Than GPUI | https://github.com/ppmpreetham |
+| 2 | Claude Code sends your email address to websites | https://github.com/anthropics/claude-code/issues/107757 |
+| 3 | Kugelblitz – Mac-Native Google Earth Alternative | https://metaebene.me |
+| 4 | ssHole (OpenSSH Password Authentication Bypass) | https://sshhole.com |
+| 5 | Dutch 'idealist' bank ASN blocks non-Google Android including GrapheneOS | https://github.com/privsec-dev |
+| 6 | App Store 2026 in numbers: AI pricing abandoned apps | https://obelisk.club |
+| 7 | Multiplayer tanks that demolish real buildings from OpenStreetMap | https://worldstrike.fun |
+| 8 | MS Paint Remote Code Execution Vulnerability | https://www.cve.org/CVERecord?id=CVE-2026-83844 |
+| 9 | Pwn.college | https://pwn.college |
+| 10 | Hardcoded credentials and other issues in Tata Motors App | https://cert-in.org.in |
 
 Source: https://news.ycombinator.com
 
@@ -88,8 +88,19 @@ Source: https://news.ycombinator.com
 {
   "status": "success",
   "goal": "Hacker News pe aaj ke top 10 posts ka title aur link nikaalo. CSV file banao.",
-  "answer": "Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur link extract kar liya.\n\n**CSV file:** `outputs/hn_top10_posts.csv`\n\n| Rank | Title | Link |\n|------|-------|------|\n| 1 | Residential proxies detected on White House network | https://layer3intel.com/blog/residential-proxies-white-house-network |\n| 2 | Lemmings CSS Animation | https://markblah.github.io/lemmings/ |\n| 3 | Baidu dropped ERNIE 5.5 Flash Base | https://ernie.baidu.com/release/ernie-5-5-flash-base/ |\n| 4 | Images 2.6 | https://openai.com/index/introducing-images-2-6/ |\n| 5 | A thousand fewer paths to root | https://openai.com/index/a-thousand-fewer-paths-to-root/ |\n| 6 | Partial Operator Precedence | https://ziglang.org/devlog/2026/#2026-10-24 |\n| 7 | Kimi K3.1 Pro model weights are out | https://huggingface.co/moonshotai/Kimi-K3.1-Pro |\n| 8 | Ripple-65B Preview: U.S. Open-Weight SOTA on Agentic Coding | https://www.ricursive.com/ripple |\n| 9 | Insects don't swarm at LED lights | https://www.birdsoutsidemywindow.org/2026/11/03/insects-dont-swarm-at-led-lights/ |\n| 10 | A new Go API for JSON | https://go.dev/blog/jsonv2 |\n\nSource: https://news.ycombinator.com",
-  "data": {},
+  "answer": "Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur link extract kar liya.\n\n**CSV file:** `outputs/hn_top10_posts.csv`\n\n| Rank | Title | Link |\n|------|-------|------|\n| 1 | Blender's UI and Runtime: Much Faster Than GPUI | https://github.com/ppmpreetham |\n| 2 | Claude Code sends your email address to websites | https://github.com/anthropics/claude-code/issues/107757 |\n| 3 | Kugelblitz – Mac-Native Google Earth Alternative | https://metaebene.me |\n| 4 | ssHole (OpenSSH Password Authentication Bypass) | https://sshhole.com |\n| 5 | Dutch 'idealist' bank ASN blocks non-Google Android including GrapheneOS | https://github.com/privsec-dev |\n| 6 | App Store 2026 in numbers: AI pricing abandoned apps | https://obelisk.club |\n| 7 | Multiplayer tanks that demolish real buildings from OpenStreetMap | https://worldstrike.fun |\n| 8 | MS Paint Remote Code Execution Vulnerability | https://www.cve.org/CVERecord?id=CVE-2026-83844 |\n| 9 | Pwn.college | https://pwn.college |\n| 10 | Hardcoded credentials and other issues in Tata Motors App | https://cert-in.org.in |\n\nSource: https://news.ycombinator.com",
+  "data": {
+    "hn_post_1": "Blender's UI and Runtime: Much Faster Than GPUI|https://github.com/ppmpreetham",
+    "hn_post_2": "Claude Code sends your email address to websites|https://github.com/anthropics/claude-code/issues/107757",
+    "hn_post_3": "Kugelblitz – Mac-Native Google Earth Alternative|https://metaebene.me",
+    "hn_post_4": "ssHole (OpenSSH Password Authentication Bypass)|https://sshhole.com",
+    "hn_post_5": "Dutch 'idealist' bank ASN blocks non-Google Android, including GrapheneOS|https://github.com/privsec-dev",
+    "hn_post_6": "App Store 2026 in numbers: AI, pricing, abandoned apps|https://obelisk.club",
+    "hn_post_7": "Multiplayer tanks that demolish real buildings from OpenStreetMap|https://worldstrike.fun",
+    "hn_post_8": "MS Paint Remote Code Execution Vulnerability|https://www.cve.org/CVERecord?id=CVE-2026-83844",
+    "hn_post_9": "Pwn.college|https://pwn.college",
+    "hn_post_10": "Hardcoded credentials and other issues in Tata Motors App|https://cert-in.org.in"
+  },
   "captures": [
     "final-task-714907.jpg",
     "final-task-799681.jpg",
@@ -98,34 +109,58 @@ Source: https://news.ycombinator.com
     "final-task-955033.jpg"
   ],
   "files": [
-    "result-1793616714982.md",
     "result-1793702417178.md",
     "result-1793788957331.md",
+    "result-1793874954692.md",
     "sites.csv",
     "user_email_setup.md"
   ],
-  "steps": 11,
+  "steps": 20,
   "score": null,
   "phases": 1
 }
 ```
 
-<details><summary>Work report (11 entries)</summary>
+<details><summary>Data board (saved fields)</summary>
 
-- 10:34:51  Plan:
-1. Open hn.algolia.com API to fetch today's top 10 posts
-2. Extract rank, title, and link for each post
-3. Create CSV file at outputs/hn_top10_posts.csv with headers: Rank,Title,Link
-4. Verify all 10 posts are captured correctly
-- 10:34:53  khol raha hoon — hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=10&
-- 10:34:56  khol raha hoon — hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=10
-- 10:35:23  page ka content padh raha hoon
-- 10:35:27  khol raha hoon — hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=10&
-- 10:35:31  khol raha hoon — news.ycombinator.com
-- 10:35:37  file bana raha hoon — hn_top10_posts.csv
-- 10:35:39  extract_links
-- 10:35:47  file bana raha hoon — hn_top10_posts.csv
-- 10:35:52  kaam khatam kar raha hoon
-- 10:35:52  VERIFY Verify: undefined% ✓ poora
+- hn_post_1 = Blender's UI and Runtime: Much Faster Than GPUI|https://github.com/ppmpreetham
+- hn_post_2 = Claude Code sends your email address to websites|https://github.com/anthropics/claude-code/issues/107757
+- hn_post_3 = Kugelblitz – Mac-Native Google Earth Alternative|https://metaebene.me
+- hn_post_4 = ssHole (OpenSSH Password Authentication Bypass)|https://sshhole.com
+- hn_post_5 = Dutch 'idealist' bank ASN blocks non-Google Android, including GrapheneOS|https://github.com/privsec-dev
+- hn_post_6 = App Store 2026 in numbers: AI, pricing, abandoned apps|https://obelisk.club
+- hn_post_7 = Multiplayer tanks that demolish real buildings from OpenStreetMap|https://worldstrike.fun
+- hn_post_8 = MS Paint Remote Code Execution Vulnerability|https://www.cve.org/CVERecord?id=CVE-2026-83844
+- hn_post_9 = Pwn.college|https://pwn.college
+- hn_post_10 = Hardcoded credentials and other issues in Tata Motors App|https://cert-in.org.in
+
+</details>
+
+<details><summary>Work report (20 entries)</summary>
+
+- 10:37:37  Plan:
+1. Open https://hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=10
+2. Parse JSON response to extract title and url for top 10 posts
+3. Create CSV file with columns: Rank, Title, Link
+4. Save as outputs/hn_top10_posts.csv
+- 10:37:41  khol raha hoon — hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=10
+- 10:37:43  page ka content padh raha hoon
+- 10:37:49  page ka content padh raha hoon
+- 10:37:52  page ka content padh raha hoon
+- 10:37:57  page ka content padh raha hoon
+- 10:37:59  khol raha hoon — news.ycombinator.com
+- 10:38:19  save_field
+- 10:38:19  save_field
+- 10:38:19  save_field
+- 10:38:19  save_field
+- 10:38:19  save_field
+- 10:38:19  save_field
+- 10:38:19  save_field
+- 10:38:19  save_field
+- 10:38:19  save_field
+- 10:38:19  save_field
+- 10:38:23  file bana raha hoon — hn_top10_posts.csv
+- 10:38:29  kaam khatam kar raha hoon
+- 10:38:29  VERIFY Verify: undefined% ✓ poora
 
 </details>
