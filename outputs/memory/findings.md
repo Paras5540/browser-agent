@@ -198,3 +198,16 @@ Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur l
 | 3 | Kugelblitz – Mac-Native Google Earth Alternative | https://metaebene.me |
 | 4 | ssHole (OpenSSH Password Authentication Bypass) | https://sshhole.com |
 | 5 | Dutch 'idealist' bank ASN blocks non-
+
+## 2026-11-07 09:52 — issue #?
+**DONE** Hacker News pe aaj ke top 10 posts ka title aur link nikaalo. CSV file banao.
+Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur link extract kar liya.
+
+**CSV file:** `outputs/hn_top10_posts.csv`
+
+| Rank | Title | Link |
+|------|-------|------|
+| 1 | Libghostty 1.0 | https://mitchellh.com/writing/libghostty-1-0 |
+| 2 | A barbarian tribe's mythic origin story is true, ancient DNA reveals | https://www.science.org/content/article/barbarian-tribe-s-mythic-origin-story-true-ancient-dna-reveals |
+| 3 | The Components of Agent Memory | https://www.anthropic.com/research/components-of-agent-memory |
+| 4 | A Jev that can ask Opus for help gives Opus 
