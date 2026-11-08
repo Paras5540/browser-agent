@@ -211,3 +211,17 @@ Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur l
 | 2 | A barbarian tribe's mythic origin story is true, ancient DNA reveals | https://www.science.org/content/article/barbarian-tribe-s-mythic-origin-story-true-ancient-dna-reveals |
 | 3 | The Components of Agent Memory | https://www.anthropic.com/research/components-of-agent-memory |
 | 4 | A Jev that can ask Opus for help gives Opus 
+
+## 2026-11-08 10:01 — issue #?
+**DONE** Hacker News pe aaj ke top 10 posts ka title aur link nikaalo. CSV file banao.
+Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur link extract kar liya.
+
+**CSV file:** `outputs/hn_top10_posts.csv`
+
+| Rank | Title | Link |
+|------|-------|------|
+| 1 | Goodbye Claude, Hello Pi | https://caleb.software/posts/claude-to-pi.html |
+| 2 | Agent memory needs its OpenTelemetry moment | https://www.lorekit.io/blog/open-agent-memory-format |
+| 3 | Clj.rs – a Clojure dialect implemented in Rust | https://clj.rs/ |
+| 4 | What I run on my $10 USD OpenStick homelab | https://blog.bosscher.ch/posts/openstick/ |
+| 5 | Claude Code's "Don't Ask Again" exposes pa

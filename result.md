@@ -51,19 +51,19 @@ Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur l
 |------|-------|------|
 | 1 | Binance-hacker-1029 –
 
-**Time:** 4m 7s · **Steps:** 10 · **Phases:** 1
+**Time:** 1m 35s · **Steps:** 20 · **Phases:** 1
 
 ---
 
 **Captures** (Files tab me download):
-- [final-task-415232.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/501383de6611d3385c0d291a8df7702226cf5e91/outputs/final-task-415232.jpg)
-- [final-task-509177.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/501383de6611d3385c0d291a8df7702226cf5e91/outputs/final-task-509177.jpg)
-- [final-task-636518.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/501383de6611d3385c0d291a8df7702226cf5e91/outputs/final-task-636518.jpg)
-- [final-task-714907.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/501383de6611d3385c0d291a8df7702226cf5e91/outputs/final-task-714907.jpg)
-- [final-task-799681.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/501383de6611d3385c0d291a8df7702226cf5e91/outputs/final-task-799681.jpg)
-- [final-task-952556.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/501383de6611d3385c0d291a8df7702226cf5e91/outputs/final-task-952556.jpg)
-- [final-task-953089.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/501383de6611d3385c0d291a8df7702226cf5e91/outputs/final-task-953089.jpg)
-- [final-task-955033.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/501383de6611d3385c0d291a8df7702226cf5e91/outputs/final-task-955033.jpg)
+- [final-task-509177.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/570e9dcaef2d8b982d24ff7c4f8620d6e84a9e25/outputs/final-task-509177.jpg)
+- [final-task-636518.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/570e9dcaef2d8b982d24ff7c4f8620d6e84a9e25/outputs/final-task-636518.jpg)
+- [final-task-714907.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/570e9dcaef2d8b982d24ff7c4f8620d6e84a9e25/outputs/final-task-714907.jpg)
+- [final-task-799681.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/570e9dcaef2d8b982d24ff7c4f8620d6e84a9e25/outputs/final-task-799681.jpg)
+- [final-task-952556.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/570e9dcaef2d8b982d24ff7c4f8620d6e84a9e25/outputs/final-task-952556.jpg)
+- [final-task-953089.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/570e9dcaef2d8b982d24ff7c4f8620d6e84a9e25/outputs/final-task-953089.jpg)
+- [final-task-955033.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/570e9dcaef2d8b982d24ff7c4f8620d6e84a9e25/outputs/final-task-955033.jpg)
+- [hn_top10_posts.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/570e9dcaef2d8b982d24ff7c4f8620d6e84a9e25/outputs/hn_top10_posts.jpg)
 
 Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur link extract kar liya.
 
@@ -71,59 +71,80 @@ Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur l
 
 | Rank | Title | Link |
 |------|-------|------|
-| 1 | Libghostty 1.0 | https://mitchellh.com/writing/libghostty-1-0 |
-| 2 | A barbarian tribe's mythic origin story is true, ancient DNA reveals | https://www.science.org/content/article/barbarian-tribe-s-mythic-origin-story-true-ancient-dna-reveals |
-| 3 | The Components of Agent Memory | https://www.anthropic.com/research/components-of-agent-memory |
-| 4 | A Jev that can ask Opus for help gives Opus accuracy at 4x lower cost | https://hightouch.com/blog/llm-judges-identity-resolution |
-| 5 | Tesla to wind down Cybertruck production | https://www.nbcnews.com/tech/tech-news/tesla-wind-cybertruck-production-years-poor-sales-markets-rcna607817 |
-| 6 | PostgreSQL Internals [pdf] | https://edu.postgrespro.com/postgresql_internals-14_en.pdf |
-| 7 | RealPage rent-pricing case wraps with nearly $360M to renters | https://www.multifamilydive.com/news/realpage-rent-pricing-case-360m-renters/873553/ |
-| 8 | Asahi Linux Progress Linux 7.3 | https://asahilinux.org/2026/11/progress-report-7-3/ |
-| 9 | US FAA says it will phase out floppy disks from air traffic control by 2028 | https://www.reuters.com/world/us/us-faa-says-it-will-phase-out-floppy-disks-air-traffic-control-by-2028-2026-11-05/ |
-| 10 | Greece has its own Pompeii: Thera buried Akrotiri in ash 17th-16th century BCE | https://www.smithsonianmag.com/history/greece-has-its-own-pompeii-and-the-ruins-tell-a-captivating-story-of-a-sophisticated-seafaring-bronze-age-society-180989747/ |
+| 1 | Goodbye Claude, Hello Pi | https://caleb.software/posts/claude-to-pi.html |
+| 2 | Agent memory needs its OpenTelemetry moment | https://www.lorekit.io/blog/open-agent-memory-format |
+| 3 | Clj.rs – a Clojure dialect implemented in Rust | https://clj.rs/ |
+| 4 | What I run on my $10 USD OpenStick homelab | https://blog.bosscher.ch/posts/openstick/ |
+| 5 | Claude Code's "Don't Ask Again" exposes passwords in 1,122 public GitHub files | https://apiiro.com/blog/coding-agents-leaking-secrets-github-dont-ask-again |
+| 6 | Kirlian Photography: Building Your Own Equipment | https://imagesco.com/kirlian-photography |
+| 7 | Making any integer with four 2s (2025) | https://thegreenplace.net |
+| 8 | Finding Xanadu: Inside a JRPG classic translation 15 years in the making | https://readonlymemo.com |
+| 9 | Need for Speed Underground 2 online in the browser | https://nfsu2.xyz/ |
+| 10 | New typeface using intricate designs from Shakespeare's First Folio (2023) | https://itsnicethat.com |
+
+Source: https://news.ycombinator.com
 
 ```json
 {
   "status": "success",
   "goal": "Hacker News pe aaj ke top 10 posts ka title aur link nikaalo. CSV file banao.",
-  "answer": "Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur link extract kar liya.\n\n**CSV file:** `outputs/hn_top10_posts.csv`\n\n| Rank | Title | Link |\n|------|-------|------|\n| 1 | Libghostty 1.0 | https://mitchellh.com/writing/libghostty-1-0 |\n| 2 | A barbarian tribe's mythic origin story is true, ancient DNA reveals | https://www.science.org/content/article/barbarian-tribe-s-mythic-origin-story-true-ancient-dna-reveals |\n| 3 | The Components of Agent Memory | https://www.anthropic.com/research/components-of-agent-memory |\n| 4 | A Jev that can ask Opus for help gives Opus accuracy at 4x lower cost | https://hightouch.com/blog/llm-judges-identity-resolution |\n| 5 | Tesla to wind down Cybertruck production | https://www.nbcnews.com/tech/tech-news/tesla-wind-cybertruck-production-years-poor-sales-markets-rcna607817 |\n| 6 | PostgreSQL Internals [pdf] | https://edu.postgrespro.com/postgresql_internals-14_en.pdf |\n| 7 | RealPage rent-pricing case wraps with nearly $360M to renters | https://www.multifamilydive.com/news/realpage-rent-pricing-case-360m-renters/873553/ |\n| 8 | Asahi Linux Progress Linux 7.3 | https://asahilinux.org/2026/11/progress-report-7-3/ |\n| 9 | US FAA says it will phase out floppy disks from air traffic control by 2028 | https://www.reuters.com/world/us/us-faa-says-it-will-phase-out-floppy-disks-air-traffic-control-by-2028-2026-11-05/ |\n| 10 | Greece has its own Pompeii: Thera buried Akrotiri in ash 17th-16th century BCE | https://www.smithsonianmag.com/history/greece-has-its-own-pompeii-and-the-ruins-tell-a-captivating-story-of-a-sophisticated-seafaring-bronze-age-society-180989747/ |",
-  "data": {},
+  "answer": "Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur link extract kar liya.\n\n**CSV file:** `outputs/hn_top10_posts.csv`\n\n| Rank | Title | Link |\n|------|-------|------|\n| 1 | Goodbye Claude, Hello Pi | https://caleb.software/posts/claude-to-pi.html |\n| 2 | Agent memory needs its OpenTelemetry moment | https://www.lorekit.io/blog/open-agent-memory-format |\n| 3 | Clj.rs – a Clojure dialect implemented in Rust | https://clj.rs/ |\n| 4 | What I run on my $10 USD OpenStick homelab | https://blog.bosscher.ch/posts/openstick/ |\n| 5 | Claude Code's \"Don't Ask Again\" exposes passwords in 1,122 public GitHub files | https://apiiro.com/blog/coding-agents-leaking-secrets-github-dont-ask-again |\n| 6 | Kirlian Photography: Building Your Own Equipment | https://imagesco.com/kirlian-photography |\n| 7 | Making any integer with four 2s (2025) | https://thegreenplace.net |\n| 8 | Finding Xanadu: Inside a JRPG classic translation 15 years in the making | https://readonlymemo.com |\n| 9 | Need for Speed Underground 2 online in the browser | https://nfsu2.xyz/ |\n| 10 | New typeface using intricate designs from Shakespeare's First Folio (2023) | https://itsnicethat.com |\n\nSource: https://news.ycombinator.com",
+  "data": {
+    "hn_top10_done": "true"
+  },
   "captures": [
-    "final-task-714907.jpg",
     "final-task-799681.jpg",
     "final-task-952556.jpg",
     "final-task-953089.jpg",
-    "final-task-955033.jpg"
+    "final-task-955033.jpg",
+    "hn_top10_posts.jpg"
   ],
   "files": [
-    "result-1793788957331.md",
     "result-1793874954692.md",
     "result-1793961510845.md",
+    "result-1794045121441.md",
     "sites.csv",
     "user_email_setup.md"
   ],
-  "steps": 10,
+  "steps": 20,
   "score": null,
   "phases": 1
 }
 ```
 
-<details><summary>Work report (11 entries)</summary>
+<details><summary>Data board (saved fields)</summary>
 
-- 09:48:14  Plan:
+- hn_top10_done = true
+
+</details>
+
+<details><summary>Work report (22 entries)</summary>
+
+- 10:00:02  Plan:
 1. Open https://news.ycombinator.com in browser
-2. Extract top 10 post titles and URLs from the page
+2. Extract top 10 post titles and URLs from the front page
 3. Create CSV file with columns: Rank, Title, Link
-4. Save as outputs/hn_top10_posts.csv
-- 09:48:17  khol raha hoon — news.ycombinator.com
-- 09:48:19  extract_json
-- 09:48:20  FAIL extract_json — ERROR: page.evaluate: SyntaxError: Failed to execute 'querySelectorAll' on 'Docu
-- 09:48:23  extract_json
-- 09:48:25  data nikaal raha hoon — a.storylink
-- 09:48:28  data nikaal raha hoon — .titleline a
-- 09:48:31  data nikaal raha hoon — .titleline a
-- 09:51:18  file bana raha hoon — hn_top10_posts.csv
-- 09:51:59  kaam khatam kar raha hoon
-- 09:51:59  VERIFY Verify: undefined% ✓ poora
+4. Save as `outputs/hn_top10_posts.csv`
+- 10:00:06  khol raha hoon — news.ycombinator.com
+- 10:00:07  progress note save kar raha hoon
+- 10:00:25  extract_json
+- 10:00:25  FAIL extract_json — ERROR: page.evaluate: SyntaxError: Failed to execute 'querySelectorAll' on 'Docu
+- 10:00:28  extract_json
+- 10:00:30  data nikaal raha hoon — a.storylink
+- 10:00:30  data nikaal raha hoon — a.storylink
+- 10:00:33  data nikaal raha hoon — .titleline
+- 10:00:33  page ke buttons aur links dekh raha hoon
+- 10:00:36  data nikaal raha hoon — .titleline a
+- 10:00:43  file bana raha hoon — hn_top10_posts.csv
+- 10:00:51  page ka content padh raha hoon
+- 10:00:51  khol raha hoon — file://outputs/hn_top10_posts.csv
+- 10:00:51  FAIL navigate — ERROR: Sirf http/https allowed hai (mila: file:)
+- 10:00:54  data nikaal raha hoon — body
+- 10:00:54  save_field
+- 10:01:26  file bana raha hoon — hn_top10_posts.csv
+- 10:01:27  extract_table
+- 10:01:27  capture
+- 10:01:32  kaam khatam kar raha hoon
+- 10:01:32  VERIFY Verify: undefined% ✓ poora
 
 </details>
