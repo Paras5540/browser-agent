@@ -225,3 +225,16 @@ Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur l
 | 3 | Clj.rs – a Clojure dialect implemented in Rust | https://clj.rs/ |
 | 4 | What I run on my $10 USD OpenStick homelab | https://blog.bosscher.ch/posts/openstick/ |
 | 5 | Claude Code's "Don't Ask Again" exposes pa
+
+## 2026-11-09 11:10 — issue #?
+**DONE** Hacker News pe aaj ke top 10 posts ka title aur link nikaalo. CSV file banao.
+Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur link extract kar liya.
+
+**CSV file:** `outputs/hn_top10_posts.csv`
+
+| Rank | Title | Link |
+|------|-------|------|
+| 1 | Fun things to do with your VM/370 CE machine – Fun with big computers | https://rbanffy.github.io/fun-with-big-computers/fun-with-vm370/ |
+| 2 | Next-Concept Modeling: Fast, Parallel Coarse-to-Fine Text Generation | https://arxiv.org/abs/2610.14162 |
+| 3 | Unlocking any car from X brand in most of the world | https://shubs.io/unlocking-any-car-from-x-brand-in-most-of-the-world/ |
+| 4 | KetchUp – 
