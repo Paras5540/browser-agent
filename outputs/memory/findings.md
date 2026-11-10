@@ -238,3 +238,16 @@ Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur l
 | 2 | Next-Concept Modeling: Fast, Parallel Coarse-to-Fine Text Generation | https://arxiv.org/abs/2610.14162 |
 | 3 | Unlocking any car from X brand in most of the world | https://shubs.io/unlocking-any-car-from-x-brand-in-most-of-the-world/ |
 | 4 | KetchUp – 
+
+## 2026-11-10 10:57 — issue #?
+**DONE** Hacker News pe aaj ke top 10 posts ka title aur link nikaalo. CSV file banao.
+Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur link extract kar liya.
+
+**CSV file:** `outputs/hn_top10_posts.csv`
+
+| Rank | Title | Link |
+|------|-------|------|
+| 1 | Amazon saves millions by replacing Sonnet 4.6 with Strands Decider | https://strandsagents.com/blog/amazon-saves-millions-replacing-sonnet-with-strands-decider/ |
+| 2 | Claude Fable 5.2 and Mythos 5.2 | https://www.anthropic.com/claude-fable-and-mythos-5-2 |
+| 3 | Queens Public library under ransomware attack e-borrowing suspended | https://connect.queenslibrary.org/ |
+| 4 | USPS now offers offic
