@@ -51,19 +51,19 @@ Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur l
 |------|-------|------|
 | 1 | Binance-hacker-1029 –
 
-**Time:** 3m 30s · **Steps:** 11 · **Phases:** 1
+**Time:** 1m 12s · **Steps:** 10 · **Phases:** 1
 
 ---
 
 **Captures** (Files tab me download):
-- [final-task-632509.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/f8d7e179a046cd10531f5ed641888d6e81550af1/outputs/final-task-632509.jpg)
-- [final-task-636518.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/f8d7e179a046cd10531f5ed641888d6e81550af1/outputs/final-task-636518.jpg)
-- [final-task-714907.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/f8d7e179a046cd10531f5ed641888d6e81550af1/outputs/final-task-714907.jpg)
-- [final-task-799681.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/f8d7e179a046cd10531f5ed641888d6e81550af1/outputs/final-task-799681.jpg)
-- [final-task-952556.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/f8d7e179a046cd10531f5ed641888d6e81550af1/outputs/final-task-952556.jpg)
-- [final-task-953089.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/f8d7e179a046cd10531f5ed641888d6e81550af1/outputs/final-task-953089.jpg)
-- [final-task-955033.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/f8d7e179a046cd10531f5ed641888d6e81550af1/outputs/final-task-955033.jpg)
-- [hn_top10_posts.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/f8d7e179a046cd10531f5ed641888d6e81550af1/outputs/hn_top10_posts.jpg)
+- [final-task-632509.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/e37bf671d1f0ef7b16e2ca3521784cafed820f27/outputs/final-task-632509.jpg)
+- [final-task-636518.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/e37bf671d1f0ef7b16e2ca3521784cafed820f27/outputs/final-task-636518.jpg)
+- [final-task-714907.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/e37bf671d1f0ef7b16e2ca3521784cafed820f27/outputs/final-task-714907.jpg)
+- [final-task-799681.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/e37bf671d1f0ef7b16e2ca3521784cafed820f27/outputs/final-task-799681.jpg)
+- [final-task-952556.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/e37bf671d1f0ef7b16e2ca3521784cafed820f27/outputs/final-task-952556.jpg)
+- [final-task-953089.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/e37bf671d1f0ef7b16e2ca3521784cafed820f27/outputs/final-task-953089.jpg)
+- [final-task-955033.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/e37bf671d1f0ef7b16e2ca3521784cafed820f27/outputs/final-task-955033.jpg)
+- [hn_top10_posts.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/e37bf671d1f0ef7b16e2ca3521784cafed820f27/outputs/hn_top10_posts.jpg)
 
 Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur link extract kar liya.
 
@@ -71,24 +71,24 @@ Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur l
 
 | Rank | Title | Link |
 |------|-------|------|
-| 1 | Amazon saves millions by replacing Sonnet 4.6 with Strands Decider | https://strandsagents.com/blog/amazon-saves-millions-replacing-sonnet-with-strands-decider/ |
-| 2 | Claude Fable 5.2 and Mythos 5.2 | https://www.anthropic.com/claude-fable-and-mythos-5-2 |
-| 3 | Queens Public library under ransomware attack e-borrowing suspended | https://connect.queenslibrary.org/ |
-| 4 | USPS now offers official ZIP Code boundary polygons | https://postalpro.usps.com/zcb |
-| 5 | Your TV can see through walls | https://maurycyz.com/projects/fading/ |
-| 6 | Fireworks AI security breach impacts Notion and their customers | https://www.notion.com/help/security-incident-involving-a-third-party-ai-vendor |
-| 7 | Locating the source of a mysterious beep | https://simonwillison.net/2026/Nov/9/mysterious-beeps/ |
-| 8 | How hard is it to check for whitespace? | https://serce.me/posts/2026-10-30-how-hard-is-it-to-check-for-whitespace |
-| 9 | Payments Canada announces launch of Canada's Real-Time Rail (RTR) payment system | https://www.payments.ca/canada-launches-real-time-rail-bringing-247-payment-infrastructure-national-economy |
-| 10 | E-means: Outperforming k-means in one-tenth the epochs | https://e-means.github.io/ |
+| 1 | Protecting SSH Keys with macOS Secure Enclave | https://gatezh.com/posts/macos-secure-enclave-ssh-keys/ |
+| 2 | Smart home devices should work without the internet | https://docodethatmatters.com/home-automation-overnight-success/ |
+| 3 | .name Grandfathered | https://neil.fraser.name/news/2026/11/10/ |
+| 4 | Scion is back and is going to sell a kei truck in America | https://www.theautopian.com/scion-is-back-and-its-going-to-sell-a-freaking-kei-truck-in-america/ |
+| 5 | Greg Kurtzer's Ginux is now a userspace kernel | https://github.com/gmkurtzer/ginux |
+| 6 | A great old-timey game-programming hack (2013) | https://blog.moertel.com/posts/2013-12-14-great-old-timey-game-programming-hack.html |
+| 7 | Apple has new Mac app coming to make running local AI models easy | https://9to5mac.com/2026/11/10/apple-has-new-mac-app-coming-to-make-running-local-ai-models-easy/ |
+| 8 | To deter bioterrorism, U.S. imposes new rules on ordering synthetic DNA | https://www.science.org/content/article/deter-bioterrorism-u-s-imposes-new-rules-ordering-synthetic-dna |
+| 9 | Six Math Essentials | https://teorth.github.io/tao-web/six-math-essentials.html |
+| 10 | Why I wrote the BEAM book (2025) | https://happihacking.com/blog/posts/2025/why_I_wrote_theBEAMBook/ |
 
-Source: https://news.ycombinator.com/
+Source: https://news.ycombinator.com
 
 ```json
 {
   "status": "success",
   "goal": "Hacker News pe aaj ke top 10 posts ka title aur link nikaalo. CSV file banao.",
-  "answer": "Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur link extract kar liya.\n\n**CSV file:** `outputs/hn_top10_posts.csv`\n\n| Rank | Title | Link |\n|------|-------|------|\n| 1 | Amazon saves millions by replacing Sonnet 4.6 with Strands Decider | https://strandsagents.com/blog/amazon-saves-millions-replacing-sonnet-with-strands-decider/ |\n| 2 | Claude Fable 5.2 and Mythos 5.2 | https://www.anthropic.com/claude-fable-and-mythos-5-2 |\n| 3 | Queens Public library under ransomware attack e-borrowing suspended | https://connect.queenslibrary.org/ |\n| 4 | USPS now offers official ZIP Code boundary polygons | https://postalpro.usps.com/zcb |\n| 5 | Your TV can see through walls | https://maurycyz.com/projects/fading/ |\n| 6 | Fireworks AI security breach impacts Notion and their customers | https://www.notion.com/help/security-incident-involving-a-third-party-ai-vendor |\n| 7 | Locating the source of a mysterious beep | https://simonwillison.net/2026/Nov/9/mysterious-beeps/ |\n| 8 | How hard is it to check for whitespace? | https://serce.me/posts/2026-10-30-how-hard-is-it-to-check-for-whitespace |\n| 9 | Payments Canada announces launch of Canada's Real-Time Rail (RTR) payment system | https://www.payments.ca/canada-launches-real-time-rail-bringing-247-payment-infrastructure-national-economy |\n| 10 | E-means: Outperforming k-means in one-tenth the epochs | https://e-means.github.io/ |\n\nSource: https://news.ycombinator.com/",
+  "answer": "Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur link extract kar liya.\n\n**CSV file:** `outputs/hn_top10_posts.csv`\n\n| Rank | Title | Link |\n|------|-------|------|\n| 1 | Protecting SSH Keys with macOS Secure Enclave | https://gatezh.com/posts/macos-secure-enclave-ssh-keys/ |\n| 2 | Smart home devices should work without the internet | https://docodethatmatters.com/home-automation-overnight-success/ |\n| 3 | .name Grandfathered | https://neil.fraser.name/news/2026/11/10/ |\n| 4 | Scion is back and is going to sell a kei truck in America | https://www.theautopian.com/scion-is-back-and-its-going-to-sell-a-freaking-kei-truck-in-america/ |\n| 5 | Greg Kurtzer's Ginux is now a userspace kernel | https://github.com/gmkurtzer/ginux |\n| 6 | A great old-timey game-programming hack (2013) | https://blog.moertel.com/posts/2013-12-14-great-old-timey-game-programming-hack.html |\n| 7 | Apple has new Mac app coming to make running local AI models easy | https://9to5mac.com/2026/11/10/apple-has-new-mac-app-coming-to-make-running-local-ai-models-easy/ |\n| 8 | To deter bioterrorism, U.S. imposes new rules on ordering synthetic DNA | https://www.science.org/content/article/deter-bioterrorism-u-s-imposes-new-rules-ordering-synthetic-dna |\n| 9 | Six Math Essentials | https://teorth.github.io/tao-web/six-math-essentials.html |\n| 10 | Why I wrote the BEAM book (2025) | https://happihacking.com/blog/posts/2025/why_I_wrote_theBEAMBook/ |\n\nSource: https://news.ycombinator.com",
   "data": {},
   "captures": [
     "final-task-799681.jpg",
@@ -98,35 +98,34 @@ Source: https://news.ycombinator.com/
     "hn_top10_posts.jpg"
   ],
   "files": [
-    "result-1794045121441.md",
     "result-1794132094126.md",
     "result-1794222634312.md",
+    "result-1794308272363.md",
     "sites.csv",
     "user_email_setup.md"
   ],
-  "steps": 11,
+  "steps": 10,
   "score": null,
   "phases": 1
 }
 ```
 
-<details><summary>Work report (12 entries)</summary>
+<details><summary>Work report (11 entries)</summary>
 
-- 10:54:27  Plan:
-1. Open Hacker News (news.ycombinator.com)
-2. Extract top 10 post titles and URLs
-3. Create CSV file with columns: Rank, Title, Link
-4. Save as outputs/hn_top10_posts.csv
-- 10:54:31  khol raha hoon — news.ycombinator.com
-- 10:54:32  progress note save kar raha hoon
-- 10:54:49  extract_json
-- 10:54:49  FAIL extract_json — ERROR: page.evaluate: SyntaxError: Failed to execute 'querySelectorAll' on 'Docu
-- 10:54:52  extract_links
-- 10:54:52  page ka content padh raha hoon
-- 10:55:12  data nikaal raha hoon — span.titleline > a
-- 10:57:31  data nikaal raha hoon — span.titleline > a
-- 10:57:31  file bana raha hoon — hn_top10_posts.csv
-- 10:57:51  kaam khatam kar raha hoon
-- 10:57:51  VERIFY Verify: undefined% ✓ poora
+- 10:33:58  Plan:
+1. Open Hacker News (https://news.ycombinator.com)
+2. Extract top 10 post titles and URLs from the front page
+3. Create CSV file at outputs/hn_top10_posts.csv with columns: Rank, Title, Link
+4. Verify the CSV file was created correctly
+- 10:34:07  khol raha hoon — news.ycombinator.com
+- 10:34:08  extract_json
+- 10:34:08  FAIL extract_json — ERROR: page.evaluate: SyntaxError: Failed to execute 'querySelectorAll' on 'Docu
+- 10:34:19  extract_links
+- 10:34:21  extract_links
+- 10:34:32  extract_links
+- 10:34:39  extract_links
+- 10:34:55  file bana raha hoon — hn_top10_posts.csv
+- 10:35:00  kaam khatam kar raha hoon
+- 10:35:00  VERIFY Verify: undefined% ✓ poora
 
 </details>

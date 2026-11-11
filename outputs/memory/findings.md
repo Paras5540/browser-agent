@@ -251,3 +251,16 @@ Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur l
 | 2 | Claude Fable 5.2 and Mythos 5.2 | https://www.anthropic.com/claude-fable-and-mythos-5-2 |
 | 3 | Queens Public library under ransomware attack e-borrowing suspended | https://connect.queenslibrary.org/ |
 | 4 | USPS now offers offic
+
+## 2026-11-11 10:35 — issue #?
+**DONE** Hacker News pe aaj ke top 10 posts ka title aur link nikaalo. CSV file banao.
+Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur link extract kar liya.
+
+**CSV file:** `outputs/hn_top10_posts.csv`
+
+| Rank | Title | Link |
+|------|-------|------|
+| 1 | Protecting SSH Keys with macOS Secure Enclave | https://gatezh.com/posts/macos-secure-enclave-ssh-keys/ |
+| 2 | Smart home devices should work without the internet | https://docodethatmatters.com/home-automation-overnight-success/ |
+| 3 | .name Grandfathered | https://neil.fraser.name/news/2026/11/10/ |
+| 4 | Scion is back and is going to sell a kei truck in America | https://www.theautopian.com/
