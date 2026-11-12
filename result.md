@@ -51,19 +51,19 @@ Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur l
 |------|-------|------|
 | 1 | Binance-hacker-1029 –
 
-**Time:** 1m 12s · **Steps:** 10 · **Phases:** 1
+**Time:** 2m 39s · **Steps:** 15 · **Phases:** 1
 
 ---
 
 **Captures** (Files tab me download):
-- [final-task-632509.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/e37bf671d1f0ef7b16e2ca3521784cafed820f27/outputs/final-task-632509.jpg)
-- [final-task-636518.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/e37bf671d1f0ef7b16e2ca3521784cafed820f27/outputs/final-task-636518.jpg)
-- [final-task-714907.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/e37bf671d1f0ef7b16e2ca3521784cafed820f27/outputs/final-task-714907.jpg)
-- [final-task-799681.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/e37bf671d1f0ef7b16e2ca3521784cafed820f27/outputs/final-task-799681.jpg)
-- [final-task-952556.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/e37bf671d1f0ef7b16e2ca3521784cafed820f27/outputs/final-task-952556.jpg)
-- [final-task-953089.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/e37bf671d1f0ef7b16e2ca3521784cafed820f27/outputs/final-task-953089.jpg)
-- [final-task-955033.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/e37bf671d1f0ef7b16e2ca3521784cafed820f27/outputs/final-task-955033.jpg)
-- [hn_top10_posts.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/e37bf671d1f0ef7b16e2ca3521784cafed820f27/outputs/hn_top10_posts.jpg)
+- [final-task-632509.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/cc79cecee8be5b45c760e15af61ad9d955e02c31/outputs/final-task-632509.jpg)
+- [final-task-636518.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/cc79cecee8be5b45c760e15af61ad9d955e02c31/outputs/final-task-636518.jpg)
+- [final-task-714907.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/cc79cecee8be5b45c760e15af61ad9d955e02c31/outputs/final-task-714907.jpg)
+- [final-task-799681.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/cc79cecee8be5b45c760e15af61ad9d955e02c31/outputs/final-task-799681.jpg)
+- [final-task-952556.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/cc79cecee8be5b45c760e15af61ad9d955e02c31/outputs/final-task-952556.jpg)
+- [final-task-953089.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/cc79cecee8be5b45c760e15af61ad9d955e02c31/outputs/final-task-953089.jpg)
+- [final-task-955033.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/cc79cecee8be5b45c760e15af61ad9d955e02c31/outputs/final-task-955033.jpg)
+- [hn_top10_posts.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/cc79cecee8be5b45c760e15af61ad9d955e02c31/outputs/hn_top10_posts.jpg)
 
 Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur link extract kar liya.
 
@@ -71,16 +71,16 @@ Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur l
 
 | Rank | Title | Link |
 |------|-------|------|
-| 1 | Protecting SSH Keys with macOS Secure Enclave | https://gatezh.com/posts/macos-secure-enclave-ssh-keys/ |
-| 2 | Smart home devices should work without the internet | https://docodethatmatters.com/home-automation-overnight-success/ |
-| 3 | .name Grandfathered | https://neil.fraser.name/news/2026/11/10/ |
-| 4 | Scion is back and is going to sell a kei truck in America | https://www.theautopian.com/scion-is-back-and-its-going-to-sell-a-freaking-kei-truck-in-america/ |
-| 5 | Greg Kurtzer's Ginux is now a userspace kernel | https://github.com/gmkurtzer/ginux |
-| 6 | A great old-timey game-programming hack (2013) | https://blog.moertel.com/posts/2013-12-14-great-old-timey-game-programming-hack.html |
-| 7 | Apple has new Mac app coming to make running local AI models easy | https://9to5mac.com/2026/11/10/apple-has-new-mac-app-coming-to-make-running-local-ai-models-easy/ |
-| 8 | To deter bioterrorism, U.S. imposes new rules on ordering synthetic DNA | https://www.science.org/content/article/deter-bioterrorism-u-s-imposes-new-rules-ordering-synthetic-dna |
-| 9 | Six Math Essentials | https://teorth.github.io/tao-web/six-math-essentials.html |
-| 10 | Why I wrote the BEAM book (2025) | https://happihacking.com/blog/posts/2025/why_I_wrote_theBEAMBook/ |
+| 1 | Jane Street: Socratic Tutor | https://github.com/janestreet/agent_skills/blob/master/socratic-tutor/SKILL.md |
+| 2 | A live tree of systemd jobs on the boot console | https://codeberg.org/wvhulle/bootvine |
+| 3 | Tim Peters has died | https://discuss.python.org/t/in-memoriam-tim-peters-1952-2026/110028 |
+| 4 | 93% of paint splatters are valid Perl programs (2019) | https://www.mcmillen.dev/sigbovik/ |
+| 5 | Critical RCE Vulnerability in Apache HTTP Server | https://www.wiz.io/blog/cve-2026-119618-rce-apache-http-server-vulnerability |
+| 6 | Legocam: My Lego webcam from 2000 working on a modern Mac | https://blog.benjamin.ie/legocam |
+| 7 | AWS emulator | https://github.com/aws/aws-emulator |
+| 8 | Nvidia is preparing to oust Jensen Huang | https://www.wsj.com/business/nvidia-is-preparing-to-oust-nvidia-ceo-jensen-huang-30f421ad |
+| 9 | A false smoke alarm almost drowned Jane Street's only NYC datacenter | https://michael.bacarella.com/2026/11/10/false-smoke-alarm-jane-street-datacenter/ |
+| 10 | Gemini Decisions API | https://blog.google/innovation-and-ai/technology/developers-tools/gemini-decisions-api/ |
 
 Source: https://news.ycombinator.com
 
@@ -88,8 +88,10 @@ Source: https://news.ycombinator.com
 {
   "status": "success",
   "goal": "Hacker News pe aaj ke top 10 posts ka title aur link nikaalo. CSV file banao.",
-  "answer": "Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur link extract kar liya.\n\n**CSV file:** `outputs/hn_top10_posts.csv`\n\n| Rank | Title | Link |\n|------|-------|------|\n| 1 | Protecting SSH Keys with macOS Secure Enclave | https://gatezh.com/posts/macos-secure-enclave-ssh-keys/ |\n| 2 | Smart home devices should work without the internet | https://docodethatmatters.com/home-automation-overnight-success/ |\n| 3 | .name Grandfathered | https://neil.fraser.name/news/2026/11/10/ |\n| 4 | Scion is back and is going to sell a kei truck in America | https://www.theautopian.com/scion-is-back-and-its-going-to-sell-a-freaking-kei-truck-in-america/ |\n| 5 | Greg Kurtzer's Ginux is now a userspace kernel | https://github.com/gmkurtzer/ginux |\n| 6 | A great old-timey game-programming hack (2013) | https://blog.moertel.com/posts/2013-12-14-great-old-timey-game-programming-hack.html |\n| 7 | Apple has new Mac app coming to make running local AI models easy | https://9to5mac.com/2026/11/10/apple-has-new-mac-app-coming-to-make-running-local-ai-models-easy/ |\n| 8 | To deter bioterrorism, U.S. imposes new rules on ordering synthetic DNA | https://www.science.org/content/article/deter-bioterrorism-u-s-imposes-new-rules-ordering-synthetic-dna |\n| 9 | Six Math Essentials | https://teorth.github.io/tao-web/six-math-essentials.html |\n| 10 | Why I wrote the BEAM book (2025) | https://happihacking.com/blog/posts/2025/why_I_wrote_theBEAMBook/ |\n\nSource: https://news.ycombinator.com",
-  "data": {},
+  "answer": "Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur link extract kar liya.\n\n**CSV file:** `outputs/hn_top10_posts.csv`\n\n| Rank | Title | Link |\n|------|-------|------|\n| 1 | Jane Street: Socratic Tutor | https://github.com/janestreet/agent_skills/blob/master/socratic-tutor/SKILL.md |\n| 2 | A live tree of systemd jobs on the boot console | https://codeberg.org/wvhulle/bootvine |\n| 3 | Tim Peters has died | https://discuss.python.org/t/in-memoriam-tim-peters-1952-2026/110028 |\n| 4 | 93% of paint splatters are valid Perl programs (2019) | https://www.mcmillen.dev/sigbovik/ |\n| 5 | Critical RCE Vulnerability in Apache HTTP Server | https://www.wiz.io/blog/cve-2026-119618-rce-apache-http-server-vulnerability |\n| 6 | Legocam: My Lego webcam from 2000 working on a modern Mac | https://blog.benjamin.ie/legocam |\n| 7 | AWS emulator | https://github.com/aws/aws-emulator |\n| 8 | Nvidia is preparing to oust Jensen Huang | https://www.wsj.com/business/nvidia-is-preparing-to-oust-nvidia-ceo-jensen-huang-30f421ad |\n| 9 | A false smoke alarm almost drowned Jane Street's only NYC datacenter | https://michael.bacarella.com/2026/11/10/false-smoke-alarm-jane-street-datacenter/ |\n| 10 | Gemini Decisions API | https://blog.google/innovation-and-ai/technology/developers-tools/gemini-decisions-api/ |\n\nSource: https://news.ycombinator.com",
+  "data": {
+    "hn_top10_titles": "1. Jane Street: Socratic Tutor, 2. A live tree of systemd jobs on the boot console, 3. Tim Peters has died, 4. 93% of paint splatters are valid Perl programs (2019), 5. Critical RCE Vulnerability in Apache HTTP Server, 6. Legocam: My Lego webcam from 2000 working on a modern Mac, 7. AWS emulator, 8. Nvidia is preparing to oust Jensen Huang, 9. A false smoke alarm almost drowned Jane Street's only NYC datacenter, 10. Gemini Decisions API"
+  },
   "captures": [
     "final-task-799681.jpg",
     "final-task-952556.jpg",
@@ -98,34 +100,48 @@ Source: https://news.ycombinator.com
     "hn_top10_posts.jpg"
   ],
   "files": [
-    "result-1794132094126.md",
     "result-1794222634312.md",
     "result-1794308272363.md",
+    "result-1794393302257.md",
     "sites.csv",
     "user_email_setup.md"
   ],
-  "steps": 10,
+  "steps": 15,
   "score": null,
   "phases": 1
 }
 ```
 
-<details><summary>Work report (11 entries)</summary>
+<details><summary>Data board (saved fields)</summary>
 
-- 10:33:58  Plan:
-1. Open Hacker News (https://news.ycombinator.com)
-2. Extract top 10 post titles and URLs from the front page
+- hn_top10_titles = 1. Jane Street: Socratic Tutor, 2. A live tree of systemd jobs on the boot console, 3. Tim Peters has died, 4. 93% of paint splatters are valid Perl programs (2019), 5. Critical RCE Vulnerability in A
+
+</details>
+
+<details><summary>Work report (17 entries)</summary>
+
+- 10:47:36  Plan:
+1. Open https://hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=10
+2. Parse the JSON response to extract title and url for top 10 hits
 3. Create CSV file at outputs/hn_top10_posts.csv with columns: Rank, Title, Link
-4. Verify the CSV file was created correctly
-- 10:34:07  khol raha hoon — news.ycombinator.com
-- 10:34:08  extract_json
-- 10:34:08  FAIL extract_json — ERROR: page.evaluate: SyntaxError: Failed to execute 'querySelectorAll' on 'Docu
-- 10:34:19  extract_links
-- 10:34:21  extract_links
-- 10:34:32  extract_links
-- 10:34:39  extract_links
-- 10:34:55  file bana raha hoon — hn_top10_posts.csv
-- 10:35:00  kaam khatam kar raha hoon
-- 10:35:00  VERIFY Verify: undefined% ✓ poora
+4. Format: 1-10 for rank, title from "title" field, link from "url" field
+5. Save the CSV file
+6. Verify the file was created with correct data
+- 10:47:41  khol raha hoon — hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=10
+- 10:47:45  page ka content padh raha hoon
+- 10:47:53  page ka content padh raha hoon
+- 10:48:12  page ka content padh raha hoon
+- 10:48:19  scroll kar raha hoon neeche
+- 10:48:34  khol raha hoon — news.ycombinator.com
+- 10:49:03  extract_json
+- 10:49:03  FAIL extract_json — ERROR: page.evaluate: SyntaxError: Failed to execute 'querySelectorAll' on 'Docu
+- 10:49:15  extract_json
+- 10:49:15  FAIL extract_json — ERROR: page.evaluate: SyntaxError: Failed to execute 'querySelectorAll' on 'Docu
+- 10:49:18  data nikaal raha hoon — .titleline > a
+- 10:49:25  data nikaal raha hoon — .titleline > a
+- 10:49:43  file bana raha hoon — hn_top10_posts.csv
+- 10:50:01  save_field
+- 10:50:11  kaam khatam kar raha hoon
+- 10:50:11  VERIFY Verify: undefined% ✓ poora
 
 </details>

@@ -264,3 +264,16 @@ Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur l
 | 2 | Smart home devices should work without the internet | https://docodethatmatters.com/home-automation-overnight-success/ |
 | 3 | .name Grandfathered | https://neil.fraser.name/news/2026/11/10/ |
 | 4 | Scion is back and is going to sell a kei truck in America | https://www.theautopian.com/
+
+## 2026-11-12 10:50 — issue #?
+**DONE** Hacker News pe aaj ke top 10 posts ka title aur link nikaalo. CSV file banao.
+Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur link extract kar liya.
+
+**CSV file:** `outputs/hn_top10_posts.csv`
+
+| Rank | Title | Link |
+|------|-------|------|
+| 1 | Jane Street: Socratic Tutor | https://github.com/janestreet/agent_skills/blob/master/socratic-tutor/SKILL.md |
+| 2 | A live tree of systemd jobs on the boot console | https://codeberg.org/wvhulle/bootvine |
+| 3 | Tim Peters has died | https://discuss.python.org/t/in-memoriam-tim-peters-1952-2026/110028 |
+| 4 | 93% of paint splatters are valid Perl programs (2019) | https://www.mcmillen.dev/sigbov
