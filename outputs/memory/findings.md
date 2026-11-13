@@ -277,3 +277,12 @@ Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur l
 | 2 | A live tree of systemd jobs on the boot console | https://codeberg.org/wvhulle/bootvine |
 | 3 | Tim Peters has died | https://discuss.python.org/t/in-memoriam-tim-peters-1952-2026/110028 |
 | 4 | 93% of paint splatters are valid Perl programs (2019) | https://www.mcmillen.dev/sigbov
+
+## 2026-11-13 10:44 — issue #?
+**INCOMPLETE** Hacker News pe aaj ke top 10 posts ka title aur link nikaalo. CSV file banao.
+## ❌ Agent fail ho gaya
+
+```
+meta/llama-3.3-70b-instruct 410: {"type":"about:blank","title":"Gone","status":410,"detail":"The model 'meta/llama-3.3-70b-instruct' has reached its end of life on 2026-08-26T09:00:00Z and is no longer available."}
+
+```
