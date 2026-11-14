@@ -286,3 +286,16 @@ Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur l
 meta/llama-3.3-70b-instruct 410: {"type":"about:blank","title":"Gone","status":410,"detail":"The model 'meta/llama-3.3-70b-instruct' has reached its end of life on 2026-08-26T09:00:00Z and is no longer available."}
 
 ```
+
+## 2026-11-14 09:58 — issue #?
+**DONE** Hacker News pe aaj ke top 10 posts ka title aur link nikaalo. CSV file banao.
+Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur link extract kar liya.
+
+**CSV file:** `outputs/hn_top10_posts.csv`
+
+| Rank | Title | Link |
+|------|-------|------|
+| 1 | Why get an expensive Pi when I have an old phone? | https://so.long.thanks.fish/why-pi-when-i-have-an-old-phone/ |
+| 2 | Ggml v1.0.0 | https://github.com/ggml-org/ggml/releases/tag/v1.0.0 |
+| 3 | Nvidia allegedly engineered scarcity by funding AI startups to buy its GPUs | https://www.techpowerup.com/354814/nvidia-allegedly-engineered-scarcity-by-funding-ai-startups-to-buy-its-gpus |
+| 4 | Monkey
