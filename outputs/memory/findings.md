@@ -299,3 +299,16 @@ Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur l
 | 2 | Ggml v1.0.0 | https://github.com/ggml-org/ggml/releases/tag/v1.0.0 |
 | 3 | Nvidia allegedly engineered scarcity by funding AI startups to buy its GPUs | https://www.techpowerup.com/354814/nvidia-allegedly-engineered-scarcity-by-funding-ai-startups-to-buy-its-gpus |
 | 4 | Monkey
+
+## 2026-11-15 10:35 — issue #?
+**DONE** Hacker News pe aaj ke top 10 posts ka title aur link nikaalo. CSV file banao.
+Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur link extract kar liya.
+
+CSV file: `outputs/hn_top10_posts.csv`
+
+| Rank | Title | Link |
+|------|-------|------|
+| 1 | SpaceX catches the Starship to end Flight 15 | https://www.spacex.com/launches/starship-flight-15 |
+| 2 | Why did some Apollo missions carry a grenade launcher? | https://space.stackexchange.com/questions/37775 |
+| 3 | Lovable apps expose passport details and more than 200K private messages | https://www.crissyfield.de/research/lovable-en/ |
+| 4 | A rare glimpse inside the high-risk, high-reward Horm
