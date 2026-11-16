@@ -312,3 +312,16 @@ CSV file: `outputs/hn_top10_posts.csv`
 | 2 | Why did some Apollo missions carry a grenade launcher? | https://space.stackexchange.com/questions/37775 |
 | 3 | Lovable apps expose passport details and more than 200K private messages | https://www.crissyfield.de/research/lovable-en/ |
 | 4 | A rare glimpse inside the high-risk, high-reward Horm
+
+## 2026-11-16 10:52 — issue #?
+**DONE** Hacker News pe aaj ke top 10 posts ka title aur link nikaalo. CSV file banao.
+Hacker News ke aaj ke top 10 posts ka data extract kar liya using Algolia HN API.
+
+**CSV file:** `outputs/hn_top10_posts.csv`
+
+| Rank | Title | Link |
+|------|-------|------|
+| 1 | SpaceX catches the Starship to end Flight 15 | https://www.spacex.com/launches/starship-flight-15 |
+| 2 | Microsoft 365 outage leads to chlorine gas poisoning of 15 hotel guests | https://www1.wdr.de/nrw/rheinland/rhein-erft-kreis/technischer-defekt-chlor-phantasialand-100.html |
+| 3 | Qwen4-Max | https://qwen.ai/blog?id=qwen4-max |
+| 4 | Universal XSS in uBlock Origin from website-driven element picker | https://it

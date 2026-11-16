@@ -51,42 +51,44 @@ Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur l
 |------|-------|------|
 | 1 | Binance-hacker-1029 –
 
-**Time:** 59s · **Steps:** 10 · **Phases:** 1
+**Time:** 1m 57s · **Steps:** 13 · **Phases:** 1
 
 ---
 
 **Captures** (Files tab me download):
-- [final-task-672796.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/f865e7e400428cd91004f3ed49805694d0edbda2/outputs/final-task-672796.jpg)
-- [final-task-714907.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/f865e7e400428cd91004f3ed49805694d0edbda2/outputs/final-task-714907.jpg)
-- [final-task-799681.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/f865e7e400428cd91004f3ed49805694d0edbda2/outputs/final-task-799681.jpg)
-- [final-task-924660.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/f865e7e400428cd91004f3ed49805694d0edbda2/outputs/final-task-924660.jpg)
-- [final-task-952556.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/f865e7e400428cd91004f3ed49805694d0edbda2/outputs/final-task-952556.jpg)
-- [final-task-953089.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/f865e7e400428cd91004f3ed49805694d0edbda2/outputs/final-task-953089.jpg)
-- [final-task-955033.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/f865e7e400428cd91004f3ed49805694d0edbda2/outputs/final-task-955033.jpg)
-- [hn_top10_posts.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/f865e7e400428cd91004f3ed49805694d0edbda2/outputs/hn_top10_posts.jpg)
+- [final-task-672796.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/d2b0ff1c54f28aa73f1e83072acfbb713137bbfa/outputs/final-task-672796.jpg)
+- [final-task-714907.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/d2b0ff1c54f28aa73f1e83072acfbb713137bbfa/outputs/final-task-714907.jpg)
+- [final-task-799681.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/d2b0ff1c54f28aa73f1e83072acfbb713137bbfa/outputs/final-task-799681.jpg)
+- [final-task-924660.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/d2b0ff1c54f28aa73f1e83072acfbb713137bbfa/outputs/final-task-924660.jpg)
+- [final-task-952556.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/d2b0ff1c54f28aa73f1e83072acfbb713137bbfa/outputs/final-task-952556.jpg)
+- [final-task-953089.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/d2b0ff1c54f28aa73f1e83072acfbb713137bbfa/outputs/final-task-953089.jpg)
+- [final-task-955033.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/d2b0ff1c54f28aa73f1e83072acfbb713137bbfa/outputs/final-task-955033.jpg)
+- [hn_top10_posts.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/d2b0ff1c54f28aa73f1e83072acfbb713137bbfa/outputs/hn_top10_posts.jpg)
 
-Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur link extract kar liya.
+Hacker News ke aaj ke top 10 posts ka data extract kar liya using Algolia HN API.
 
-CSV file: `outputs/hn_top10_posts.csv`
+**CSV file:** `outputs/hn_top10_posts.csv`
 
 | Rank | Title | Link |
 |------|-------|------|
 | 1 | SpaceX catches the Starship to end Flight 15 | https://www.spacex.com/launches/starship-flight-15 |
-| 2 | Why did some Apollo missions carry a grenade launcher? | https://space.stackexchange.com/questions/37775 |
-| 3 | Lovable apps expose passport details and more than 200K private messages | https://www.crissyfield.de/research/lovable-en/ |
-| 4 | A rare glimpse inside the high-risk, high-reward Hormuz trade | https://www.lloydslist.com/LL1158922/A-rare-glimpse-inside-the-highrisk-highreward-Hormuz-trade |
-| 5 | Court denies motion to dismiss DRAM price fixing case | https://litnews.ai/articles/garciaguirre-samsung-sk-hynix-micron-dram-conspiracy-suit-survives-dismissal |
-| 6 | Handwritten 200-year-old dismissal notice found on roof tile | https://www.bbc.co.uk/news/articles/c6jdmdzv25r9o |
-| 7 | How did Woz write the Apple 1 BASIC before building the computer? | https://retrocomputing.stackexchange.com/questions/17957 |
-| 8 | Disk encryption on NetBSD – achieving secrecy | https://netbsd.org/~nia/disk-encrypt/ |
-| 9 | My favourite modern NES games | https://jordi.inversethought.com/blog/25-of-my-favourite-modern-nes-games/ |
-| 10 | Semicircle Packing | https://rorz.io/writing/semicircle-packing |
+| 2 | Microsoft 365 outage leads to chlorine gas poisoning of 15 hotel guests | https://www1.wdr.de/nrw/rheinland/rhein-erft-kreis/technischer-defekt-chlor-phantasialand-100.html |
+| 3 | Qwen4-Max | https://qwen.ai/blog?id=qwen4-max |
+| 4 | Universal XSS in uBlock Origin from website-driven element picker | https://iter.ca/post/ubo-uxss/ |
+| 5 | Protomaps: Self-hosting map tiles has gotten cheap and easy | https://bruceroettgers.eu/blog/protomaps/ |
+| 6 | Handwriting, as a Font | https://ductus.sorenblank.com |
+| 7 | Old Bitly links are being hijacked | https://ransomnews.com/burger-king-tweet-bitly-link-hijack-2026/ |
+| 8 | What's Next for Nvidia? | https://steveblank.com/2026/11/15/whats-next-for-nvidia/ |
+| 9 | How to make almost anything | https://pub.cba.mit.edu/863.26/site/ |
+| 10 | Crows make decisions faster than we can | https://www.nytimes.com/2026/11/15/science/birdbrain-crows-birds-research-decision.html |
+
+Source: https://hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=10
 
 ```json
 {
   "status": "success",
   "goal": "Hacker News pe aaj ke top 10 posts ka title aur link nikaalo. CSV file banao.",
-  "answer": "Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur link extract kar liya.\n\nCSV file: `outputs/hn_top10_posts.csv`\n\n| Rank | Title | Link |\n|------|-------|------|\n| 1 | SpaceX catches the Starship to end Flight 15 | https://www.spacex.com/launches/starship-flight-15 |\n| 2 | Why did some Apollo missions carry a grenade launcher? | https://space.stackexchange.com/questions/37775 |\n| 3 | Lovable apps expose passport details and more than 200K private messages | https://www.crissyfield.de/research/lovable-en/ |\n| 4 | A rare glimpse inside the high-risk, high-reward Hormuz trade | https://www.lloydslist.com/LL1158922/A-rare-glimpse-inside-the-highrisk-highreward-Hormuz-trade |\n| 5 | Court denies motion to dismiss DRAM price fixing case | https://litnews.ai/articles/garciaguirre-samsung-sk-hynix-micron-dram-conspiracy-suit-survives-dismissal |\n| 6 | Handwritten 200-year-old dismissal notice found on roof tile | https://www.bbc.co.uk/news/articles/c6jdmdzv25r9o |\n| 7 | How did Woz write the Apple 1 BASIC before building the computer? | https://retrocomputing.stackexchange.com/questions/17957 |\n| 8 | Disk encryption on NetBSD – achieving secrecy | https://netbsd.org/~nia/disk-encrypt/ |\n| 9 | My favourite modern NES games | https://jordi.inversethought.com/blog/25-of-my-favourite-modern-nes-games/ |\n| 10 | Semicircle Packing | https://rorz.io/writing/semicircle-packing |",
+  "answer": "Hacker News ke aaj ke top 10 posts ka data extract kar liya using Algolia HN API.\n\n**CSV file:** `outputs/hn_top10_posts.csv`\n\n| Rank | Title | Link |\n|------|-------|------|\n| 1 | SpaceX catches the Starship to end Flight 15 | https://www.spacex.com/launches/starship-flight-15 |\n| 2 | Microsoft 365 outage leads to chlorine gas poisoning of 15 hotel guests | https://www1.wdr.de/nrw/rheinland/rhein-erft-kreis/technischer-defekt-chlor-phantasialand-100.html |\n| 3 | Qwen4-Max | https://qwen.ai/blog?id=qwen4-max |\n| 4 | Universal XSS in uBlock Origin from website-driven element picker | https://iter.ca/post/ubo-uxss/ |\n| 5 | Protomaps: Self-hosting map tiles has gotten cheap and easy | https://bruceroettgers.eu/blog/protomaps/ |\n| 6 | Handwriting, as a Font | https://ductus.sorenblank.com |\n| 7 | Old Bitly links are being hijacked | https://ransomnews.com/burger-king-tweet-bitly-link-hijack-2026/ |\n| 8 | What's Next for Nvidia? | https://steveblank.com/2026/11/15/whats-next-for-nvidia/ |\n| 9 | How to make almost anything | https://pub.cba.mit.edu/863.26/site/ |\n| 10 | Crows make decisions faster than we can | https://www.nytimes.com/2026/11/15/science/birdbrain-crows-birds-research-decision.html |\n\nSource: https://hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=10",
   "data": {},
   "captures": [
     "final-task-924660.jpg",
@@ -96,34 +98,40 @@ CSV file: `outputs/hn_top10_posts.csv`
     "hn_top10_posts.jpg"
   ],
   "files": [
-    "result-1794480613185.md",
     "result-1794566674320.md",
     "result-1794650310506.md",
+    "result-1794738926204.md",
     "sites.csv",
     "user_email_setup.md"
   ],
-  "steps": 10,
+  "steps": 13,
   "score": null,
   "phases": 1
 }
 ```
 
-<details><summary>Work report (11 entries)</summary>
+<details><summary>Work report (15 entries)</summary>
 
-- 10:34:29  Plan:
-1. Open https://news.ycombinator.com in browser
-2. Extract top 10 post titles and URLs from the front page
-3. Create CSV file at `outputs/hn_top10_posts.csv` with columns: Rank, Title, Link
-4. Save the file with proper formatting
-- 10:34:30  khol raha hoon — news.ycombinator.com
-- 10:34:32  extract_json
-- 10:34:32  FAIL extract_json — ERROR: page.evaluate: SyntaxError: Failed to execute 'querySelectorAll' on 'Docu
-- 10:34:34  extract_json
-- 10:34:36  extract_links
-- 10:34:37  extract_links
-- 10:34:44  extract_links
-- 10:35:20  file bana raha hoon — hn_top10_posts.csv
-- 10:35:24  kaam khatam kar raha hoon
-- 10:35:24  VERIFY Verify: undefined% ✓ poora
+- 10:51:01  Plan:
+1. Open news.ycombinator.com in browser
+2. Identify top 10 posts by rank/score
+3. Extract title and URL for each post
+4. Create CSV file with columns: Rank, Title, Link
+5. Save as outputs/hn_top10_posts.csv
+6. Verify CSV content matches HN page
+- 10:51:03  khol raha hoon — news.ycombinator.com
+- 10:51:08  extract_json
+- 10:51:09  FAIL extract_json — ERROR: page.evaluate: SyntaxError: Failed to execute 'querySelectorAll' on 'Docu
+- 10:51:10  extract_links
+- 10:51:10  FAIL extract_links — ERROR: page.evaluate: SyntaxError: Failed to execute 'querySelectorAll' on 'Docu
+- 10:51:18  page ka content padh raha hoon
+- 10:51:21  extract_links
+- 10:51:23  khol raha hoon — hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=10
+- 10:51:26  page ka content padh raha hoon
+- 10:51:35  khol raha hoon — hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=10&
+- 10:52:04  page ka content padh raha hoon
+- 10:52:25  file bana raha hoon — hn_top10_posts.csv
+- 10:52:40  kaam khatam kar raha hoon
+- 10:52:40  VERIFY Verify: undefined% ✓ poora
 
 </details>
