@@ -325,3 +325,12 @@ Hacker News ke aaj ke top 10 posts ka data extract kar liya using Algolia HN API
 | 2 | Microsoft 365 outage leads to chlorine gas poisoning of 15 hotel guests | https://www1.wdr.de/nrw/rheinland/rhein-erft-kreis/technischer-defekt-chlor-phantasialand-100.html |
 | 3 | Qwen4-Max | https://qwen.ai/blog?id=qwen4-max |
 | 4 | Universal XSS in uBlock Origin from website-driven element picker | https://it
+
+## 2026-11-17 11:47 — issue #?
+**INCOMPLETE** Hacker News pe aaj ke top 10 posts ka title aur link nikaalo. CSV file banao.
+## ❌ Agent fail ho gaya
+
+```
+meta/llama-3.3-70b-instruct 410: {"type":"about:blank","title":"Gone","status":410,"detail":"The model 'meta/llama-3.3-70b-instruct' has reached its end of life on 2026-08-26T09:00:00Z and is no longer available."}
+
+```

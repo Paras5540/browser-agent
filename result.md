@@ -1,4 +1,4 @@
-# Task result — SUCCESS
+# Task result — INCOMPLETE
 
 **Goal:** Hacker News pe aaj ke top 10 posts ka title aur link nikaalo. CSV file banao.
 
@@ -51,44 +51,32 @@ Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur l
 |------|-------|------|
 | 1 | Binance-hacker-1029 –
 
-**Time:** 1m 57s · **Steps:** 13 · **Phases:** 1
+**Time:** 10m 20s · **Steps:** 8
 
 ---
 
 **Captures** (Files tab me download):
-- [final-task-672796.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/d2b0ff1c54f28aa73f1e83072acfbb713137bbfa/outputs/final-task-672796.jpg)
-- [final-task-714907.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/d2b0ff1c54f28aa73f1e83072acfbb713137bbfa/outputs/final-task-714907.jpg)
-- [final-task-799681.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/d2b0ff1c54f28aa73f1e83072acfbb713137bbfa/outputs/final-task-799681.jpg)
-- [final-task-924660.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/d2b0ff1c54f28aa73f1e83072acfbb713137bbfa/outputs/final-task-924660.jpg)
-- [final-task-952556.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/d2b0ff1c54f28aa73f1e83072acfbb713137bbfa/outputs/final-task-952556.jpg)
-- [final-task-953089.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/d2b0ff1c54f28aa73f1e83072acfbb713137bbfa/outputs/final-task-953089.jpg)
-- [final-task-955033.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/d2b0ff1c54f28aa73f1e83072acfbb713137bbfa/outputs/final-task-955033.jpg)
-- [hn_top10_posts.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/d2b0ff1c54f28aa73f1e83072acfbb713137bbfa/outputs/hn_top10_posts.jpg)
+- [final-task-672796.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/40d3da2347f9847c7f9a47e1634c17750a5dfd1a/outputs/final-task-672796.jpg)
+- [final-task-714907.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/40d3da2347f9847c7f9a47e1634c17750a5dfd1a/outputs/final-task-714907.jpg)
+- [final-task-799681.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/40d3da2347f9847c7f9a47e1634c17750a5dfd1a/outputs/final-task-799681.jpg)
+- [final-task-924660.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/40d3da2347f9847c7f9a47e1634c17750a5dfd1a/outputs/final-task-924660.jpg)
+- [final-task-952556.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/40d3da2347f9847c7f9a47e1634c17750a5dfd1a/outputs/final-task-952556.jpg)
+- [final-task-953089.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/40d3da2347f9847c7f9a47e1634c17750a5dfd1a/outputs/final-task-953089.jpg)
+- [final-task-955033.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/40d3da2347f9847c7f9a47e1634c17750a5dfd1a/outputs/final-task-955033.jpg)
+- [hn_top10_posts.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/40d3da2347f9847c7f9a47e1634c17750a5dfd1a/outputs/hn_top10_posts.jpg)
 
-Hacker News ke aaj ke top 10 posts ka data extract kar liya using Algolia HN API.
+## ❌ Agent fail ho gaya
 
-**CSV file:** `outputs/hn_top10_posts.csv`
+```
+meta/llama-3.3-70b-instruct 410: {"type":"about:blank","title":"Gone","status":410,"detail":"The model 'meta/llama-3.3-70b-instruct' has reached its end of life on 2026-08-26T09:00:00Z and is no longer available."}
 
-| Rank | Title | Link |
-|------|-------|------|
-| 1 | SpaceX catches the Starship to end Flight 15 | https://www.spacex.com/launches/starship-flight-15 |
-| 2 | Microsoft 365 outage leads to chlorine gas poisoning of 15 hotel guests | https://www1.wdr.de/nrw/rheinland/rhein-erft-kreis/technischer-defekt-chlor-phantasialand-100.html |
-| 3 | Qwen4-Max | https://qwen.ai/blog?id=qwen4-max |
-| 4 | Universal XSS in uBlock Origin from website-driven element picker | https://iter.ca/post/ubo-uxss/ |
-| 5 | Protomaps: Self-hosting map tiles has gotten cheap and easy | https://bruceroettgers.eu/blog/protomaps/ |
-| 6 | Handwriting, as a Font | https://ductus.sorenblank.com |
-| 7 | Old Bitly links are being hijacked | https://ransomnews.com/burger-king-tweet-bitly-link-hijack-2026/ |
-| 8 | What's Next for Nvidia? | https://steveblank.com/2026/11/15/whats-next-for-nvidia/ |
-| 9 | How to make almost anything | https://pub.cba.mit.edu/863.26/site/ |
-| 10 | Crows make decisions faster than we can | https://www.nytimes.com/2026/11/15/science/birdbrain-crows-birds-research-decision.html |
-
-Source: https://hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=10
+```
 
 ```json
 {
-  "status": "success",
+  "status": "incomplete",
   "goal": "Hacker News pe aaj ke top 10 posts ka title aur link nikaalo. CSV file banao.",
-  "answer": "Hacker News ke aaj ke top 10 posts ka data extract kar liya using Algolia HN API.\n\n**CSV file:** `outputs/hn_top10_posts.csv`\n\n| Rank | Title | Link |\n|------|-------|------|\n| 1 | SpaceX catches the Starship to end Flight 15 | https://www.spacex.com/launches/starship-flight-15 |\n| 2 | Microsoft 365 outage leads to chlorine gas poisoning of 15 hotel guests | https://www1.wdr.de/nrw/rheinland/rhein-erft-kreis/technischer-defekt-chlor-phantasialand-100.html |\n| 3 | Qwen4-Max | https://qwen.ai/blog?id=qwen4-max |\n| 4 | Universal XSS in uBlock Origin from website-driven element picker | https://iter.ca/post/ubo-uxss/ |\n| 5 | Protomaps: Self-hosting map tiles has gotten cheap and easy | https://bruceroettgers.eu/blog/protomaps/ |\n| 6 | Handwriting, as a Font | https://ductus.sorenblank.com |\n| 7 | Old Bitly links are being hijacked | https://ransomnews.com/burger-king-tweet-bitly-link-hijack-2026/ |\n| 8 | What's Next for Nvidia? | https://steveblank.com/2026/11/15/whats-next-for-nvidia/ |\n| 9 | How to make almost anything | https://pub.cba.mit.edu/863.26/site/ |\n| 10 | Crows make decisions faster than we can | https://www.nytimes.com/2026/11/15/science/birdbrain-crows-birds-research-decision.html |\n\nSource: https://hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=10",
+  "answer": "## ❌ Agent fail ho gaya\n\n```\nmeta/llama-3.3-70b-instruct 410: {\"type\":\"about:blank\",\"title\":\"Gone\",\"status\":410,\"detail\":\"The model 'meta/llama-3.3-70b-instruct' has reached its end of life on 2026-08-26T09:00:00Z and is no longer available.\"}\n\n```",
   "data": {},
   "captures": [
     "final-task-924660.jpg",
@@ -98,40 +86,32 @@ Source: https://hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=10
     "hn_top10_posts.jpg"
   ],
   "files": [
-    "result-1794566674320.md",
     "result-1794650310506.md",
     "result-1794738926204.md",
+    "result-1794826363008.md",
     "sites.csv",
     "user_email_setup.md"
   ],
-  "steps": 13,
+  "steps": 8,
   "score": null,
-  "phases": 1
+  "phases": null
 }
 ```
 
-<details><summary>Work report (15 entries)</summary>
+<details><summary>Work report (8 entries)</summary>
 
-- 10:51:01  Plan:
-1. Open news.ycombinator.com in browser
-2. Identify top 10 posts by rank/score
-3. Extract title and URL for each post
-4. Create CSV file with columns: Rank, Title, Link
-5. Save as outputs/hn_top10_posts.csv
-6. Verify CSV content matches HN page
-- 10:51:03  khol raha hoon — news.ycombinator.com
-- 10:51:08  extract_json
-- 10:51:09  FAIL extract_json — ERROR: page.evaluate: SyntaxError: Failed to execute 'querySelectorAll' on 'Docu
-- 10:51:10  extract_links
-- 10:51:10  FAIL extract_links — ERROR: page.evaluate: SyntaxError: Failed to execute 'querySelectorAll' on 'Docu
-- 10:51:18  page ka content padh raha hoon
-- 10:51:21  extract_links
-- 10:51:23  khol raha hoon — hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=10
-- 10:51:26  page ka content padh raha hoon
-- 10:51:35  khol raha hoon — hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=10&
-- 10:52:04  page ka content padh raha hoon
-- 10:52:25  file bana raha hoon — hn_top10_posts.csv
-- 10:52:40  kaam khatam kar raha hoon
-- 10:52:40  VERIFY Verify: undefined% ✓ poora
+- 11:37:50  Plan:
+1. Open https://news.ycombinator.com.  
+2. Find the first 10 rows with class "athing" and extract each title and its href link.  
+3. Store the data as rows: Rank, Title, Link.  
+4. Convert the rows into CSV format.  
+5. Write the CSV to outputs/hn_top10_posts.csv.
+- 11:38:31  extract_json
+- 11:39:11  khol raha hoon — news.ycombinator.com
+- 11:39:52  web pe dhoondh raha hoon — "hn.algolia.com API top 10 posts"
+- 11:40:30  khol raha hoon — hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=10
+- 11:41:18  --- groq limit — 70s baad wapas, ab agla model
+- 11:43:29  --- groq limit — 70s baad wapas, ab agla model
+- 11:46:04  --- groq limit — 70s baad wapas, ab agla model
 
 </details>
