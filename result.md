@@ -1,4 +1,4 @@
-# Task result — INCOMPLETE
+# Task result — SUCCESS
 
 **Goal:** Hacker News pe aaj ke top 10 posts ka title aur link nikaalo. CSV file banao.
 
@@ -51,32 +51,44 @@ Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur l
 |------|-------|------|
 | 1 | Binance-hacker-1029 –
 
-**Time:** 10m 20s · **Steps:** 8
+**Time:** 21m 53s · **Steps:** 30 · **Phases:** 2
 
 ---
 
 **Captures** (Files tab me download):
-- [final-task-672796.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/40d3da2347f9847c7f9a47e1634c17750a5dfd1a/outputs/final-task-672796.jpg)
-- [final-task-714907.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/40d3da2347f9847c7f9a47e1634c17750a5dfd1a/outputs/final-task-714907.jpg)
-- [final-task-799681.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/40d3da2347f9847c7f9a47e1634c17750a5dfd1a/outputs/final-task-799681.jpg)
-- [final-task-924660.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/40d3da2347f9847c7f9a47e1634c17750a5dfd1a/outputs/final-task-924660.jpg)
-- [final-task-952556.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/40d3da2347f9847c7f9a47e1634c17750a5dfd1a/outputs/final-task-952556.jpg)
-- [final-task-953089.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/40d3da2347f9847c7f9a47e1634c17750a5dfd1a/outputs/final-task-953089.jpg)
-- [final-task-955033.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/40d3da2347f9847c7f9a47e1634c17750a5dfd1a/outputs/final-task-955033.jpg)
-- [hn_top10_posts.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/40d3da2347f9847c7f9a47e1634c17750a5dfd1a/outputs/hn_top10_posts.jpg)
+- [final-task-672796.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/2ea1cfa2b332a9bc84b8eea7f716a6e5a8f08edb/outputs/final-task-672796.jpg)
+- [final-task-714907.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/2ea1cfa2b332a9bc84b8eea7f716a6e5a8f08edb/outputs/final-task-714907.jpg)
+- [final-task-799681.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/2ea1cfa2b332a9bc84b8eea7f716a6e5a8f08edb/outputs/final-task-799681.jpg)
+- [final-task-924660.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/2ea1cfa2b332a9bc84b8eea7f716a6e5a8f08edb/outputs/final-task-924660.jpg)
+- [final-task-952556.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/2ea1cfa2b332a9bc84b8eea7f716a6e5a8f08edb/outputs/final-task-952556.jpg)
+- [final-task-953089.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/2ea1cfa2b332a9bc84b8eea7f716a6e5a8f08edb/outputs/final-task-953089.jpg)
+- [final-task-955033.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/2ea1cfa2b332a9bc84b8eea7f716a6e5a8f08edb/outputs/final-task-955033.jpg)
+- [hn_top10_posts.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/2ea1cfa2b332a9bc84b8eea7f716a6e5a8f08edb/outputs/hn_top10_posts.jpg)
 
-## ❌ Agent fail ho gaya
+Hacker News (news.ycombinator.com) se aaj ke top 10 posts ka title aur link extract kar liya.
 
-```
-meta/llama-3.3-70b-instruct 410: {"type":"about:blank","title":"Gone","status":410,"detail":"The model 'meta/llama-3.3-70b-instruct' has reached its end of life on 2026-08-26T09:00:00Z and is no longer available."}
+**CSV file:** `outputs/hn_top10_posts.csv`
 
-```
+| Rank | Title | Link |
+|------|-------|------|
+| 1 | Energy-Based Reasoners: 385x more efficient inference | https://energy-based-reasoners.github.io |
+| 2 | Java4Shell: RCE in OpenJDK when processing Base64 | https://calif.io |
+| 3 | Google's AI answers reducing search traffic by 40% | https://revscope.co |
+| 4 | Codeberg.org Not Reachable | https://anoxinon.de |
+| 5 | Quad9's withdrawal from France: A canary in the coal mine | https://cloudflare.com |
+| 6 | ID.me terms required for IRS sign-in | https://consumerrights.wiki |
+| 7 | Talos Linux | https://siderolabs.com |
+| 8 | Nvidia stopped disclosing Singapore sales as revenues hit $104B | https://ft.com |
+| 9 | Why is Gemini 4 Carbon taking so long? | https://kernel.dev |
+| 10 | Microsoft's ONNX Runtime has disappeared from GitHub | https://github.com/microsoft |
+
+Source: https://news.ycombinator.com
 
 ```json
 {
-  "status": "incomplete",
+  "status": "success",
   "goal": "Hacker News pe aaj ke top 10 posts ka title aur link nikaalo. CSV file banao.",
-  "answer": "## ❌ Agent fail ho gaya\n\n```\nmeta/llama-3.3-70b-instruct 410: {\"type\":\"about:blank\",\"title\":\"Gone\",\"status\":410,\"detail\":\"The model 'meta/llama-3.3-70b-instruct' has reached its end of life on 2026-08-26T09:00:00Z and is no longer available.\"}\n\n```",
+  "answer": "Hacker News (news.ycombinator.com) se aaj ke top 10 posts ka title aur link extract kar liya.\n\n**CSV file:** `outputs/hn_top10_posts.csv`\n\n| Rank | Title | Link |\n|------|-------|------|\n| 1 | Energy-Based Reasoners: 385x more efficient inference | https://energy-based-reasoners.github.io |\n| 2 | Java4Shell: RCE in OpenJDK when processing Base64 | https://calif.io |\n| 3 | Google's AI answers reducing search traffic by 40% | https://revscope.co |\n| 4 | Codeberg.org Not Reachable | https://anoxinon.de |\n| 5 | Quad9's withdrawal from France: A canary in the coal mine | https://cloudflare.com |\n| 6 | ID.me terms required for IRS sign-in | https://consumerrights.wiki |\n| 7 | Talos Linux | https://siderolabs.com |\n| 8 | Nvidia stopped disclosing Singapore sales as revenues hit $104B | https://ft.com |\n| 9 | Why is Gemini 4 Carbon taking so long? | https://kernel.dev |\n| 10 | Microsoft's ONNX Runtime has disappeared from GitHub | https://github.com/microsoft |\n\nSource: https://news.ycombinator.com",
   "data": {},
   "captures": [
     "final-task-924660.jpg",
@@ -86,32 +98,55 @@ meta/llama-3.3-70b-instruct 410: {"type":"about:blank","title":"Gone","status":4
     "hn_top10_posts.jpg"
   ],
   "files": [
-    "result-1794650310506.md",
-    "result-1794738926204.md",
     "result-1794826363008.md",
+    "result-1794916048821.md",
+    "result-e899545c.md",
     "sites.csv",
     "user_email_setup.md"
   ],
-  "steps": 8,
+  "steps": 30,
   "score": null,
-  "phases": null
+  "phases": 2
 }
 ```
 
-<details><summary>Work report (8 entries)</summary>
+<details><summary>Work report (30 entries)</summary>
 
-- 11:37:50  Plan:
-1. Open https://news.ycombinator.com.  
-2. Find the first 10 rows with class "athing" and extract each title and its href link.  
-3. Store the data as rows: Rank, Title, Link.  
-4. Convert the rows into CSV format.  
-5. Write the CSV to outputs/hn_top10_posts.csv.
-- 11:38:31  extract_json
-- 11:39:11  khol raha hoon — news.ycombinator.com
-- 11:39:52  web pe dhoondh raha hoon — "hn.algolia.com API top 10 posts"
-- 11:40:30  khol raha hoon — hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=10
-- 11:41:18  --- groq limit — 70s baad wapas, ab agla model
-- 11:43:29  --- groq limit — 70s baad wapas, ab agla model
-- 11:46:04  --- groq limit — 70s baad wapas, ab agla model
+- 11:28:35  Plan:
+1. Open https://news.ycombinator.com in a browser.  
+2. Identify the first 10 `<tr class="athing">` rows on the page.  
+3. For each row, extract the title text from the `<a class="storylink">` element and its `href` attribute.  
+4. Store the extracted data in a list of objects with fields: Rank, Title, Link.  
+5. Write the list to a CSV file at `outputs/hn_top10_posts.csv` with headers Rank, Title, Link.  
+6. Confirm the CSV file exists and contains exactly 10 rows of data.
+- 11:28:48  khol raha hoon — news.ycombinator.com
+- 11:29:00  khol raha hoon — hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=10&
+- 11:30:51  khol raha hoon — hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=10
+- 11:30:54  page ka content padh raha hoon
+- 11:32:01  page ka content padh raha hoon
+- 11:32:47  scroll kar raha hoon neeche
+- 11:34:01  file bana raha hoon — hn_top10_posts_partial.csv
+- 11:34:13  khol raha hoon — hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=10&
+- 11:34:24  copy
+- 11:41:44  file bana raha hoon — result
+- 11:41:47  khol raha hoon — hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=10&
+- 11:41:58  khol raha hoon — hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=10
+- 11:42:03  extract_json
+- 11:44:09  khol raha hoon — news.ycombinator.com
+- 11:44:14  intezaar kar raha hoon
+- 11:44:23  khol raha hoon — news.ycombinator.com
+- 11:44:28  khol raha hoon — hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=10&
+- 11:44:32  page ka content padh raha hoon
+- 11:44:44  khol raha hoon — hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=10&
+- 11:44:54  page ka content padh raha hoon
+- 11:44:54  --- Phase 2 — pichhla result poora nahi tha, kaam continue
+- 11:44:55  page ka content padh raha hoon
+- 11:45:12  khol raha hoon — hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=10&
+- 11:45:20  extract_json
+- 11:45:43  file bana raha hoon — hn_top10_posts.csv
+- 11:45:59  khol raha hoon — news.ycombinator.com
+- 11:46:13  file bana raha hoon — hn_top10_posts.csv
+- 11:46:25  kaam khatam kar raha hoon
+- 11:46:25  VERIFY Verify: undefined% ✓ poora
 
 </details>

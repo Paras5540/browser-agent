@@ -334,3 +334,18 @@ Hacker News ke aaj ke top 10 posts ka data extract kar liya using Algolia HN API
 meta/llama-3.3-70b-instruct 410: {"type":"about:blank","title":"Gone","status":410,"detail":"The model 'meta/llama-3.3-70b-instruct' has reached its end of life on 2026-08-26T09:00:00Z and is no longer available."}
 
 ```
+
+## 2026-11-18 11:46 — issue #?
+**DONE** Hacker News pe aaj ke top 10 posts ka title aur link nikaalo. CSV file banao.
+Hacker News (news.ycombinator.com) se aaj ke top 10 posts ka title aur link extract kar liya.
+
+**CSV file:** `outputs/hn_top10_posts.csv`
+
+| Rank | Title | Link |
+|------|-------|------|
+| 1 | Energy-Based Reasoners: 385x more efficient inference | https://energy-based-reasoners.github.io |
+| 2 | Java4Shell: RCE in OpenJDK when processing Base64 | https://calif.io |
+| 3 | Google's AI answers reducing search traffic by 40% | https://revscope.co |
+| 4 | Codeberg.org Not Reachable | https://anoxinon.de |
+| 5 | Quad9's withdrawal from France: A canary in the coal mine | https://cloudflare.com |
+| 
