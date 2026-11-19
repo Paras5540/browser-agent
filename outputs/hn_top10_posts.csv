@@ -1,11 +1,11 @@
 Rank,Title,Link
-1,"Energy-Based Reasoners: 385x more efficient inference",https://energy-based-reasoners.github.io
-2,"Java4Shell: RCE in OpenJDK when processing Base64",https://calif.io
-3,"Google's AI answers reducing search traffic by 40%",https://revscope.co
-4,"Codeberg.org Not Reachable",https://anoxinon.de
-5,"Quad9's withdrawal from France: A canary in the coal mine",https://cloudflare.com
-6,"ID.me terms required for IRS sign-in",https://consumerrights.wiki
-7,"Talos Linux",https://siderolabs.com
-8,"Nvidia stopped disclosing Singapore sales as revenues hit $104B",https://ft.com
-9,"Why is Gemini 4 Carbon taking so long?",https://kernel.dev
-10,"Microsoft's ONNX Runtime has disappeared from GitHub",https://github.com/microsoft
+1,Ruby2ßhell: Pre-authentication RCE on stock Rails,https://verialabs.com/ruby2shell/
+2,What's New in PHP 8.6,https://www.php.net/releases/8.6/en.php
+3,Distributed, high-performance blob storage on SQLite,https://zerodha.tech/blog/high-performance-distributed-blob-storage/
+4,Gemini 4 Neon,https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-neon/
+5,15M web servers on one VM – smoltcp, DPDK, AF_XDP,https://kapteko.com/15-million-webservers/
+6,Unauthenticated remote code execution in Nginx,https://www.wiz.io/blog/nginx-http2-rce-vulnerabilities
+7,Do not buy RAM, compress,https://curiousbits.nl/blog/do-not-buy-ram-compress/
+8,SSD prices will start going down the second half of next year,https://www.drivevault.io/blog/when-will-hard-drive-prices-come-down.html
+9,Garage Door Spam,https://blog.harrison.page/garage-door-spam/
+10,Multiple vulnerabilities in Regexp and String case conversion,https://www.ruby-lang.org/en/news/2026/11/18/multiple-vulnerabilities-in-regexp-and-string/

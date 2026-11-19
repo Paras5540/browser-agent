@@ -349,3 +349,16 @@ Hacker News (news.ycombinator.com) se aaj ke top 10 posts ka title aur link extr
 | 4 | Codeberg.org Not Reachable | https://anoxinon.de |
 | 5 | Quad9's withdrawal from France: A canary in the coal mine | https://cloudflare.com |
 | 
+
+## 2026-11-19 11:22 — issue #?
+**DONE** Hacker News pe aaj ke top 10 posts ka title aur link nikaalo. CSV file banao.
+Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur link extract kar liya.
+
+**CSV file:** `outputs/hn_top10_posts.csv`
+
+| Rank | Title | Link |
+|------|-------|------|
+| 1 | Ruby2ßhell: Pre-authentication RCE on stock Rails | https://verialabs.com/ruby2shell/ |
+| 2 | What's New in PHP 8.6 | https://www.php.net/releases/8.6/en.php |
+| 3 | Distributed, high-performance blob storage on SQLite | https://zerodha.tech/blog/high-performance-distributed-blob-storage/ |
+| 4 | Gemini 4 Neon | https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-g
