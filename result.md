@@ -1,4 +1,4 @@
-# Task result — SUCCESS
+# Task result — INCOMPLETE
 
 **Goal:** Hacker News pe aaj ke top 10 posts ka title aur link nikaalo. CSV file banao.
 
@@ -51,44 +51,32 @@ Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur l
 |------|-------|------|
 | 1 | Binance-hacker-1029 –
 
-**Time:** 2m 4s · **Steps:** 10 · **Phases:** 1
+**Time:** 2m 5s · **Steps:** 7
 
 ---
 
 **Captures** (Files tab me download):
-- [final-task-672796.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/1e510b7f9d10fd223b5cbe146e08fd516e0481e5/outputs/final-task-672796.jpg)
-- [final-task-714907.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/1e510b7f9d10fd223b5cbe146e08fd516e0481e5/outputs/final-task-714907.jpg)
-- [final-task-799681.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/1e510b7f9d10fd223b5cbe146e08fd516e0481e5/outputs/final-task-799681.jpg)
-- [final-task-924660.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/1e510b7f9d10fd223b5cbe146e08fd516e0481e5/outputs/final-task-924660.jpg)
-- [final-task-952556.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/1e510b7f9d10fd223b5cbe146e08fd516e0481e5/outputs/final-task-952556.jpg)
-- [final-task-953089.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/1e510b7f9d10fd223b5cbe146e08fd516e0481e5/outputs/final-task-953089.jpg)
-- [final-task-955033.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/1e510b7f9d10fd223b5cbe146e08fd516e0481e5/outputs/final-task-955033.jpg)
-- [hn_top10_posts.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/1e510b7f9d10fd223b5cbe146e08fd516e0481e5/outputs/hn_top10_posts.jpg)
+- [final-task-672796.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/4ceaa7ced4e87e06cf16cf05e6643890daa3f0fb/outputs/final-task-672796.jpg)
+- [final-task-714907.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/4ceaa7ced4e87e06cf16cf05e6643890daa3f0fb/outputs/final-task-714907.jpg)
+- [final-task-799681.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/4ceaa7ced4e87e06cf16cf05e6643890daa3f0fb/outputs/final-task-799681.jpg)
+- [final-task-924660.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/4ceaa7ced4e87e06cf16cf05e6643890daa3f0fb/outputs/final-task-924660.jpg)
+- [final-task-952556.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/4ceaa7ced4e87e06cf16cf05e6643890daa3f0fb/outputs/final-task-952556.jpg)
+- [final-task-953089.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/4ceaa7ced4e87e06cf16cf05e6643890daa3f0fb/outputs/final-task-953089.jpg)
+- [final-task-955033.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/4ceaa7ced4e87e06cf16cf05e6643890daa3f0fb/outputs/final-task-955033.jpg)
+- [hn_top10_posts.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/4ceaa7ced4e87e06cf16cf05e6643890daa3f0fb/outputs/hn_top10_posts.jpg)
 
-Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur link extract kar liya.
+## ❌ Agent fail ho gaya
 
-**CSV file:** `outputs/hn_top10_posts.csv`
+```
+meta/llama-3.3-70b-instruct 410: {"type":"about:blank","title":"Gone","status":410,"detail":"The model 'meta/llama-3.3-70b-instruct' has reached its end of life on 2026-08-26T09:00:00Z and is no longer available."}
 
-| Rank | Title | Link |
-|------|-------|------|
-| 1 | Ruby2ßhell: Pre-authentication RCE on stock Rails | https://verialabs.com/ruby2shell/ |
-| 2 | What's New in PHP 8.6 | https://www.php.net/releases/8.6/en.php |
-| 3 | Distributed, high-performance blob storage on SQLite | https://zerodha.tech/blog/high-performance-distributed-blob-storage/ |
-| 4 | Gemini 4 Neon | https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-neon/ |
-| 5 | 15M web servers on one VM – smoltcp, DPDK, AF_XDP | https://kapteko.com/15-million-webservers/ |
-| 6 | Unauthenticated remote code execution in Nginx | https://www.wiz.io/blog/nginx-http2-rce-vulnerabilities |
-| 7 | Do not buy RAM, compress | https://curiousbits.nl/blog/do-not-buy-ram-compress/ |
-| 8 | SSD prices will start going down the second half of next year | https://www.drivevault.io/blog/when-will-hard-drive-prices-come-down.html |
-| 9 | Garage Door Spam | https://blog.harrison.page/garage-door-spam/ |
-| 10 | Multiple vulnerabilities in Regexp and String case conversion | https://www.ruby-lang.org/en/news/2026/11/18/multiple-vulnerabilities-in-regexp-and-string/ |
-
-Source: https://news.ycombinator.com
+```
 
 ```json
 {
-  "status": "success",
+  "status": "incomplete",
   "goal": "Hacker News pe aaj ke top 10 posts ka title aur link nikaalo. CSV file banao.",
-  "answer": "Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur link extract kar liya.\n\n**CSV file:** `outputs/hn_top10_posts.csv`\n\n| Rank | Title | Link |\n|------|-------|------|\n| 1 | Ruby2ßhell: Pre-authentication RCE on stock Rails | https://verialabs.com/ruby2shell/ |\n| 2 | What's New in PHP 8.6 | https://www.php.net/releases/8.6/en.php |\n| 3 | Distributed, high-performance blob storage on SQLite | https://zerodha.tech/blog/high-performance-distributed-blob-storage/ |\n| 4 | Gemini 4 Neon | https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-neon/ |\n| 5 | 15M web servers on one VM – smoltcp, DPDK, AF_XDP | https://kapteko.com/15-million-webservers/ |\n| 6 | Unauthenticated remote code execution in Nginx | https://www.wiz.io/blog/nginx-http2-rce-vulnerabilities |\n| 7 | Do not buy RAM, compress | https://curiousbits.nl/blog/do-not-buy-ram-compress/ |\n| 8 | SSD prices will start going down the second half of next year | https://www.drivevault.io/blog/when-will-hard-drive-prices-come-down.html |\n| 9 | Garage Door Spam | https://blog.harrison.page/garage-door-spam/ |\n| 10 | Multiple vulnerabilities in Regexp and String case conversion | https://www.ruby-lang.org/en/news/2026/11/18/multiple-vulnerabilities-in-regexp-and-string/ |\n\nSource: https://news.ycombinator.com",
+  "answer": "## ❌ Agent fail ho gaya\n\n```\nmeta/llama-3.3-70b-instruct 410: {\"type\":\"about:blank\",\"title\":\"Gone\",\"status\":410,\"detail\":\"The model 'meta/llama-3.3-70b-instruct' has reached its end of life on 2026-08-26T09:00:00Z and is no longer available.\"}\n\n```",
   "data": {},
   "captures": [
     "final-task-924660.jpg",
@@ -98,35 +86,33 @@ Source: https://news.ycombinator.com
     "hn_top10_posts.jpg"
   ],
   "files": [
-    "result-1794916048821.md",
     "result-1795002386756.md",
+    "result-1795087368877.md",
     "result-e899545c.md",
     "sites.csv",
     "user_email_setup.md"
   ],
-  "steps": 10,
+  "steps": 7,
   "score": null,
-  "phases": 1
+  "phases": null
 }
 ```
 
-<details><summary>Work report (12 entries)</summary>
+<details><summary>Work report (8 entries)</summary>
 
-- 11:20:58  Plan:
-1. Open news.ycombinator.com
-2. Extract top 10 post titles and URLs
-3. Create CSV with columns: Rank, Title, Link
-4. Save to outputs/hn_top10_posts.csv
-- 11:21:01  khol raha hoon — news.ycombinator.com
-- 11:21:04  extract_json
-- 11:21:04  FAIL extract_json — ERROR: page.evaluate: SyntaxError: Failed to execute 'querySelectorAll' on 'Docu
-- 11:21:06  extract_links
-- 11:21:06  FAIL extract_links — ERROR: page.evaluate: SyntaxError: Failed to execute 'querySelectorAll' on 'Docu
-- 11:21:11  extract_links
-- 11:21:16  extract_links
-- 11:21:18  extract_links
-- 11:21:33  file bana raha hoon — hn_top10_posts.csv
-- 11:22:46  kaam khatam kar raha hoon
-- 11:22:46  VERIFY Verify: undefined% ✓ poora
+- 11:09:16  Plan:
+1. Open https://news.ycombinator.com in browser
+2. Identify the top 10 post entries from the front page
+3. Extract title and URL from each of the 10 posts
+4. Create CSV file with columns: Rank, Title, Link
+5. Save CSV to outputs/hn_top10_posts.csv
+6. Verify the file contains all 10 entries correctly
+- 11:09:18  khol raha hoon — news.ycombinator.com
+- 11:09:53  extract_json
+- 11:09:54  FAIL extract_json — ERROR: page.evaluate: SyntaxError: Failed to execute 'querySelectorAll' on 'Docu
+- 11:09:54  --- dahl limit — 70s baad wapas, ab agla model
+- 11:09:54  --- Provider switch: dahl → groq (memory carry)
+- 11:09:54  extract_json
+- 11:09:54  --- groq limit — 70s baad wapas, ab agla model
 
 </details>

@@ -362,3 +362,12 @@ Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur l
 | 2 | What's New in PHP 8.6 | https://www.php.net/releases/8.6/en.php |
 | 3 | Distributed, high-performance blob storage on SQLite | https://zerodha.tech/blog/high-performance-distributed-blob-storage/ |
 | 4 | Gemini 4 Neon | https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-g
+
+## 2026-11-20 11:10 — issue #?
+**INCOMPLETE** Hacker News pe aaj ke top 10 posts ka title aur link nikaalo. CSV file banao.
+## ❌ Agent fail ho gaya
+
+```
+meta/llama-3.3-70b-instruct 410: {"type":"about:blank","title":"Gone","status":410,"detail":"The model 'meta/llama-3.3-70b-instruct' has reached its end of life on 2026-08-26T09:00:00Z and is no longer available."}
+
+```
