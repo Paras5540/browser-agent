@@ -51,19 +51,19 @@ Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur l
 |------|-------|------|
 | 1 | Binance-hacker-1029 –
 
-**Time:** 2m 5s · **Steps:** 7
+**Time:** 6m 42s · **Steps:** 4
 
 ---
 
 **Captures** (Files tab me download):
-- [final-task-672796.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/4ceaa7ced4e87e06cf16cf05e6643890daa3f0fb/outputs/final-task-672796.jpg)
-- [final-task-714907.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/4ceaa7ced4e87e06cf16cf05e6643890daa3f0fb/outputs/final-task-714907.jpg)
-- [final-task-799681.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/4ceaa7ced4e87e06cf16cf05e6643890daa3f0fb/outputs/final-task-799681.jpg)
-- [final-task-924660.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/4ceaa7ced4e87e06cf16cf05e6643890daa3f0fb/outputs/final-task-924660.jpg)
-- [final-task-952556.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/4ceaa7ced4e87e06cf16cf05e6643890daa3f0fb/outputs/final-task-952556.jpg)
-- [final-task-953089.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/4ceaa7ced4e87e06cf16cf05e6643890daa3f0fb/outputs/final-task-953089.jpg)
-- [final-task-955033.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/4ceaa7ced4e87e06cf16cf05e6643890daa3f0fb/outputs/final-task-955033.jpg)
-- [hn_top10_posts.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/4ceaa7ced4e87e06cf16cf05e6643890daa3f0fb/outputs/hn_top10_posts.jpg)
+- [final-task-672796.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/1baf3c1562bb541a801ee420400adf99732f9204/outputs/final-task-672796.jpg)
+- [final-task-714907.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/1baf3c1562bb541a801ee420400adf99732f9204/outputs/final-task-714907.jpg)
+- [final-task-799681.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/1baf3c1562bb541a801ee420400adf99732f9204/outputs/final-task-799681.jpg)
+- [final-task-924660.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/1baf3c1562bb541a801ee420400adf99732f9204/outputs/final-task-924660.jpg)
+- [final-task-952556.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/1baf3c1562bb541a801ee420400adf99732f9204/outputs/final-task-952556.jpg)
+- [final-task-953089.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/1baf3c1562bb541a801ee420400adf99732f9204/outputs/final-task-953089.jpg)
+- [final-task-955033.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/1baf3c1562bb541a801ee420400adf99732f9204/outputs/final-task-955033.jpg)
+- [hn_top10_posts.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/1baf3c1562bb541a801ee420400adf99732f9204/outputs/hn_top10_posts.jpg)
 
 ## ❌ Agent fail ho gaya
 
@@ -86,33 +86,29 @@ meta/llama-3.3-70b-instruct 410: {"type":"about:blank","title":"Gone","status":4
     "hn_top10_posts.jpg"
   ],
   "files": [
-    "result-1795002386756.md",
     "result-1795087368877.md",
+    "result-1795173009964.md",
     "result-e899545c.md",
     "sites.csv",
     "user_email_setup.md"
   ],
-  "steps": 7,
+  "steps": 4,
   "score": null,
   "phases": null
 }
 ```
 
-<details><summary>Work report (8 entries)</summary>
+<details><summary>Work report (4 entries)</summary>
 
-- 11:09:16  Plan:
-1. Open https://news.ycombinator.com in browser
-2. Identify the top 10 post entries from the front page
-3. Extract title and URL from each of the 10 posts
-4. Create CSV file with columns: Rank, Title, Link
-5. Save CSV to outputs/hn_top10_posts.csv
-6. Verify the file contains all 10 entries correctly
-- 11:09:18  khol raha hoon — news.ycombinator.com
-- 11:09:53  extract_json
-- 11:09:54  FAIL extract_json — ERROR: page.evaluate: SyntaxError: Failed to execute 'querySelectorAll' on 'Docu
-- 11:09:54  --- dahl limit — 70s baad wapas, ab agla model
-- 11:09:54  --- Provider switch: dahl → groq (memory carry)
-- 11:09:54  extract_json
-- 11:09:54  --- groq limit — 70s baad wapas, ab agla model
+- 10:50:16  Plan:
+1. Open https://hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=10
+2. Parse JSON response to extract title and url for each of 10 posts
+3. Create CSV file with columns: Rank, Title, Link
+4. Save as outputs/hn_top10_posts.csv
+5. Verify CSV has 10 rows of data
+6. Display the CSV content for confirmation
+- 10:51:08  khol raha hoon — hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=10
+- 10:55:17  --- groq limit — 70s baad wapas, ab agla model
+- 10:55:18  --- dahl limit — 70s baad wapas, ab agla model
 
 </details>
