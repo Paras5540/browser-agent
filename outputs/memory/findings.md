@@ -380,3 +380,15 @@ meta/llama-3.3-70b-instruct 410: {"type":"about:blank","title":"Gone","status":4
 meta/llama-3.3-70b-instruct 410: {"type":"about:blank","title":"Gone","status":410,"detail":"The model 'meta/llama-3.3-70b-instruct' has reached its end of life on 2026-08-26T09:00:00Z and is no longer available."}
 
 ```
+
+## 2026-11-22 10:58 — issue #?
+**DONE** Hacker News pe aaj ke top 10 posts ka title aur link nikaalo. CSV file banao.
+Hacker News ke aaj ke top 10 posts ka title aur link extract kar liya. Algolia HN API (https://hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=10) se data liya.
+
+**CSV file:** `outputs/hn_top10_posts.csv`
+
+| Rank | Title | Link |
+|------|-------|------|
+| 1 | Hurried Announcement: Alessandro Masullo GRH | https://math216.wordpress.com/2026/11/20/hurried-announcement-alessandro-masullo-grh/ |
+| 2 | Lean verification of the Riemann Hypothesis | https://leanprover-community.github.io/blog/posts/riemann-hypothesis/ |
+| 3 | Pill to treat pancreatic cancer hailed as 'biggest breakthrough in

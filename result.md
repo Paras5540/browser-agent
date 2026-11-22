@@ -1,4 +1,4 @@
-# Task result — INCOMPLETE
+# Task result — SUCCESS
 
 **Goal:** Hacker News pe aaj ke top 10 posts ka title aur link nikaalo. CSV file banao.
 
@@ -51,33 +51,45 @@ Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur l
 |------|-------|------|
 | 1 | Binance-hacker-1029 –
 
-**Time:** 6m 42s · **Steps:** 4
+**Time:** 2m 47s · **Steps:** 7 · **Phases:** 1
 
 ---
 
 **Captures** (Files tab me download):
-- [final-task-672796.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/1baf3c1562bb541a801ee420400adf99732f9204/outputs/final-task-672796.jpg)
-- [final-task-714907.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/1baf3c1562bb541a801ee420400adf99732f9204/outputs/final-task-714907.jpg)
-- [final-task-799681.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/1baf3c1562bb541a801ee420400adf99732f9204/outputs/final-task-799681.jpg)
-- [final-task-924660.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/1baf3c1562bb541a801ee420400adf99732f9204/outputs/final-task-924660.jpg)
-- [final-task-952556.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/1baf3c1562bb541a801ee420400adf99732f9204/outputs/final-task-952556.jpg)
-- [final-task-953089.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/1baf3c1562bb541a801ee420400adf99732f9204/outputs/final-task-953089.jpg)
-- [final-task-955033.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/1baf3c1562bb541a801ee420400adf99732f9204/outputs/final-task-955033.jpg)
-- [hn_top10_posts.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/1baf3c1562bb541a801ee420400adf99732f9204/outputs/hn_top10_posts.jpg)
+- [final-task-672796.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/42bd3d46d471735ba6fcb014d901e300b08e9fb0/outputs/final-task-672796.jpg)
+- [final-task-714907.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/42bd3d46d471735ba6fcb014d901e300b08e9fb0/outputs/final-task-714907.jpg)
+- [final-task-799681.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/42bd3d46d471735ba6fcb014d901e300b08e9fb0/outputs/final-task-799681.jpg)
+- [final-task-924660.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/42bd3d46d471735ba6fcb014d901e300b08e9fb0/outputs/final-task-924660.jpg)
+- [final-task-952556.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/42bd3d46d471735ba6fcb014d901e300b08e9fb0/outputs/final-task-952556.jpg)
+- [final-task-953089.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/42bd3d46d471735ba6fcb014d901e300b08e9fb0/outputs/final-task-953089.jpg)
+- [final-task-955033.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/42bd3d46d471735ba6fcb014d901e300b08e9fb0/outputs/final-task-955033.jpg)
+- [hn_top10_posts.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/42bd3d46d471735ba6fcb014d901e300b08e9fb0/outputs/hn_top10_posts.jpg)
 
-## ❌ Agent fail ho gaya
+Hacker News ke aaj ke top 10 posts ka title aur link extract kar liya. Algolia HN API (https://hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=10) se data liya.
 
-```
-meta/llama-3.3-70b-instruct 410: {"type":"about:blank","title":"Gone","status":410,"detail":"The model 'meta/llama-3.3-70b-instruct' has reached its end of life on 2026-08-26T09:00:00Z and is no longer available."}
+**CSV file:** `outputs/hn_top10_posts.csv`
 
-```
+| Rank | Title | Link |
+|------|-------|------|
+| 1 | Hurried Announcement: Alessandro Masullo GRH | https://math216.wordpress.com/2026/11/20/hurried-announcement-alessandro-masullo-grh/ |
+| 2 | Lean verification of the Riemann Hypothesis | https://leanprover-community.github.io/blog/posts/riemann-hypothesis/ |
+| 3 | Pill to treat pancreatic cancer hailed as 'biggest breakthrough in decades' | https://www.theguardian.com/society/2026/nov/20/pill-pancreatic-cancer-breakthrough-daraxonrasib |
+| 4 | Detonating a pile of lead azide | https://www.science.org/content/blog-post/detonating-huge-pile-lead-azide-really |
+| 5 | My monitor was cutting my download speed by 75% | https://blog.tymscar.com/posts/studiodisplayethernet/ |
+| 6 | Toyota, Nissan, and Honda to standardize parts to lower costs | https://www.caranddriver.com/news/a74490092/toyota-nissan-honda-standardize-parts-lower-costs/ |
+| 7 | Inkling-2-Mini in 5.4 GB Memory | https://github.com/ShinMegamiBoson/lookatmyquant |
+| 8 | Getting the mind to steer the body to steer you | https://notnottalmud.substack.com/p/getting-the-mind-to-steer-the-body |
+| 9 | Show HN: I built a terminal-based web browser | https://github.com/inkling-lang/inkling |
+| 10 | Ask HN: What's your favorite toy as a kid? | https://news.ycombinator.com/item?id=50597000 |
 
 ```json
 {
-  "status": "incomplete",
+  "status": "success",
   "goal": "Hacker News pe aaj ke top 10 posts ka title aur link nikaalo. CSV file banao.",
-  "answer": "## ❌ Agent fail ho gaya\n\n```\nmeta/llama-3.3-70b-instruct 410: {\"type\":\"about:blank\",\"title\":\"Gone\",\"status\":410,\"detail\":\"The model 'meta/llama-3.3-70b-instruct' has reached its end of life on 2026-08-26T09:00:00Z and is no longer available.\"}\n\n```",
-  "data": {},
+  "answer": "Hacker News ke aaj ke top 10 posts ka title aur link extract kar liya. Algolia HN API (https://hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=10) se data liya.\n\n**CSV file:** `outputs/hn_top10_posts.csv`\n\n| Rank | Title | Link |\n|------|-------|------|\n| 1 | Hurried Announcement: Alessandro Masullo GRH | https://math216.wordpress.com/2026/11/20/hurried-announcement-alessandro-masullo-grh/ |\n| 2 | Lean verification of the Riemann Hypothesis | https://leanprover-community.github.io/blog/posts/riemann-hypothesis/ |\n| 3 | Pill to treat pancreatic cancer hailed as 'biggest breakthrough in decades' | https://www.theguardian.com/society/2026/nov/20/pill-pancreatic-cancer-breakthrough-daraxonrasib |\n| 4 | Detonating a pile of lead azide | https://www.science.org/content/blog-post/detonating-huge-pile-lead-azide-really |\n| 5 | My monitor was cutting my download speed by 75% | https://blog.tymscar.com/posts/studiodisplayethernet/ |\n| 6 | Toyota, Nissan, and Honda to standardize parts to lower costs | https://www.caranddriver.com/news/a74490092/toyota-nissan-honda-standardize-parts-lower-costs/ |\n| 7 | Inkling-2-Mini in 5.4 GB Memory | https://github.com/ShinMegamiBoson/lookatmyquant |\n| 8 | Getting the mind to steer the body to steer you | https://notnottalmud.substack.com/p/getting-the-mind-to-steer-the-body |\n| 9 | Show HN: I built a terminal-based web browser | https://github.com/inkling-lang/inkling |\n| 10 | Ask HN: What's your favorite toy as a kid? | https://news.ycombinator.com/item?id=50597000 |",
+  "data": {
+    "hn_top10_titles": "1. Hurried Announcement: Alessandro Masullo GRH | 2. Lean verification of the Riemann Hypothesis | 3. Pill to treat pancreatic cancer hailed as 'biggest breakthrough in decades' | 4. Detonating a pile of lead azide | 5. My monitor was cutting my download speed by 75% | 6. Toyota, Nissan, and Honda to standardize parts to lower costs | 7. Inkling-2-Mini in 5.4 GB Memory | 8. Getting the mind to steer the body to steer you | 9. Show HN: I built a terminal-based web browser | 10. Ask HN: What's your favorite toy as a kid?"
+  },
   "captures": [
     "final-task-924660.jpg",
     "final-task-952556.jpg",
@@ -86,29 +98,36 @@ meta/llama-3.3-70b-instruct 410: {"type":"about:blank","title":"Gone","status":4
     "hn_top10_posts.jpg"
   ],
   "files": [
-    "result-1795087368877.md",
     "result-1795173009964.md",
+    "result-1795258530427.md",
     "result-e899545c.md",
     "sites.csv",
     "user_email_setup.md"
   ],
-  "steps": 4,
+  "steps": 7,
   "score": null,
-  "phases": null
+  "phases": 1
 }
 ```
 
-<details><summary>Work report (4 entries)</summary>
+<details><summary>Data board (saved fields)</summary>
 
-- 10:50:16  Plan:
+- hn_top10_titles = 1. Hurried Announcement: Alessandro Masullo GRH | 2. Lean verification of the Riemann Hypothesis | 3. Pill to treat pancreatic cancer hailed as 'biggest breakthrough in decades' | 4. Detonating a pile
+
+</details>
+
+<details><summary>Work report (7 entries)</summary>
+
+- 10:56:23  Plan:
 1. Open https://hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=10
-2. Parse JSON response to extract title and url for each of 10 posts
-3. Create CSV file with columns: Rank, Title, Link
-4. Save as outputs/hn_top10_posts.csv
-5. Verify CSV has 10 rows of data
-6. Display the CSV content for confirmation
-- 10:51:08  khol raha hoon — hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=10
-- 10:55:17  --- groq limit — 70s baad wapas, ab agla model
-- 10:55:18  --- dahl limit — 70s baad wapas, ab agla model
+2. Parse JSON response to extract title and url for each of top 10 hits
+3. Create CSV file at outputs/hn_top10_posts.csv with columns: Rank, Title, Link
+4. Verify CSV file was created successfully
+- 10:56:28  khol raha hoon — hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=10
+- 10:56:34  page ka content padh raha hoon
+- 10:57:10  file bana raha hoon — hn_top10_posts.csv
+- 10:57:38  save_field
+- 10:58:47  kaam khatam kar raha hoon
+- 10:58:47  VERIFY Verify: undefined% ✓ poora
 
 </details>
