@@ -392,3 +392,16 @@ Hacker News ke aaj ke top 10 posts ka title aur link extract kar liya. Algolia H
 | 1 | Hurried Announcement: Alessandro Masullo GRH | https://math216.wordpress.com/2026/11/20/hurried-announcement-alessandro-masullo-grh/ |
 | 2 | Lean verification of the Riemann Hypothesis | https://leanprover-community.github.io/blog/posts/riemann-hypothesis/ |
 | 3 | Pill to treat pancreatic cancer hailed as 'biggest breakthrough in
+
+## 2026-11-23 12:34 — issue #?
+**DONE** Hacker News pe aaj ke top 10 posts ka title aur link nikaalo. CSV file banao.
+Hacker News ke aaj ke top 10 posts ka data extract kar liya using Algolia HN API.
+
+**CSV file:** `outputs/hn_top10_posts.csv`
+
+| Rank | Title | Link |
+|------|-------|------|
+| 1 | Toyota, Nissan, and Honda to standardize parts to lower costs | https://www.caranddriver.com/news/a74490092/toyota-nissan-honda-standardize-parts-lower-costs/ |
+| 2 | What Happened to Silicon Valley? | https://www.oreilly.com/radar/what-happened-to-silicon-valley/ |
+| 3 | Perplexity and Intelligence | https://openai.com/index/perplexity-and-intelligence/ |
+| 4 | Free alternative TV network built from the Internet Ar

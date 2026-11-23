@@ -51,45 +51,45 @@ Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur l
 |------|-------|------|
 | 1 | Binance-hacker-1029 –
 
-**Time:** 2m 47s · **Steps:** 7 · **Phases:** 1
+**Time:** 32m 1s · **Steps:** 7 · **Phases:** 1
 
 ---
 
 **Captures** (Files tab me download):
-- [final-task-672796.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/42bd3d46d471735ba6fcb014d901e300b08e9fb0/outputs/final-task-672796.jpg)
-- [final-task-714907.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/42bd3d46d471735ba6fcb014d901e300b08e9fb0/outputs/final-task-714907.jpg)
-- [final-task-799681.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/42bd3d46d471735ba6fcb014d901e300b08e9fb0/outputs/final-task-799681.jpg)
-- [final-task-924660.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/42bd3d46d471735ba6fcb014d901e300b08e9fb0/outputs/final-task-924660.jpg)
-- [final-task-952556.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/42bd3d46d471735ba6fcb014d901e300b08e9fb0/outputs/final-task-952556.jpg)
-- [final-task-953089.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/42bd3d46d471735ba6fcb014d901e300b08e9fb0/outputs/final-task-953089.jpg)
-- [final-task-955033.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/42bd3d46d471735ba6fcb014d901e300b08e9fb0/outputs/final-task-955033.jpg)
-- [hn_top10_posts.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/42bd3d46d471735ba6fcb014d901e300b08e9fb0/outputs/hn_top10_posts.jpg)
+- [final-task-672796.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/a13d75e962ebdda4f22943b0e18e85cd13166358/outputs/final-task-672796.jpg)
+- [final-task-714907.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/a13d75e962ebdda4f22943b0e18e85cd13166358/outputs/final-task-714907.jpg)
+- [final-task-799681.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/a13d75e962ebdda4f22943b0e18e85cd13166358/outputs/final-task-799681.jpg)
+- [final-task-924660.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/a13d75e962ebdda4f22943b0e18e85cd13166358/outputs/final-task-924660.jpg)
+- [final-task-952556.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/a13d75e962ebdda4f22943b0e18e85cd13166358/outputs/final-task-952556.jpg)
+- [final-task-953089.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/a13d75e962ebdda4f22943b0e18e85cd13166358/outputs/final-task-953089.jpg)
+- [final-task-955033.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/a13d75e962ebdda4f22943b0e18e85cd13166358/outputs/final-task-955033.jpg)
+- [hn_top10_posts.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/a13d75e962ebdda4f22943b0e18e85cd13166358/outputs/hn_top10_posts.jpg)
 
-Hacker News ke aaj ke top 10 posts ka title aur link extract kar liya. Algolia HN API (https://hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=10) se data liya.
+Hacker News ke aaj ke top 10 posts ka data extract kar liya using Algolia HN API.
 
 **CSV file:** `outputs/hn_top10_posts.csv`
 
 | Rank | Title | Link |
 |------|-------|------|
-| 1 | Hurried Announcement: Alessandro Masullo GRH | https://math216.wordpress.com/2026/11/20/hurried-announcement-alessandro-masullo-grh/ |
-| 2 | Lean verification of the Riemann Hypothesis | https://leanprover-community.github.io/blog/posts/riemann-hypothesis/ |
-| 3 | Pill to treat pancreatic cancer hailed as 'biggest breakthrough in decades' | https://www.theguardian.com/society/2026/nov/20/pill-pancreatic-cancer-breakthrough-daraxonrasib |
-| 4 | Detonating a pile of lead azide | https://www.science.org/content/blog-post/detonating-huge-pile-lead-azide-really |
-| 5 | My monitor was cutting my download speed by 75% | https://blog.tymscar.com/posts/studiodisplayethernet/ |
-| 6 | Toyota, Nissan, and Honda to standardize parts to lower costs | https://www.caranddriver.com/news/a74490092/toyota-nissan-honda-standardize-parts-lower-costs/ |
-| 7 | Inkling-2-Mini in 5.4 GB Memory | https://github.com/ShinMegamiBoson/lookatmyquant |
-| 8 | Getting the mind to steer the body to steer you | https://notnottalmud.substack.com/p/getting-the-mind-to-steer-the-body |
-| 9 | Show HN: I built a terminal-based web browser | https://github.com/inkling-lang/inkling |
-| 10 | Ask HN: What's your favorite toy as a kid? | https://news.ycombinator.com/item?id=50597000 |
+| 1 | Toyota, Nissan, and Honda to standardize parts to lower costs | https://www.caranddriver.com/news/a74490092/toyota-nissan-honda-standardize-parts-lower-costs/ |
+| 2 | What Happened to Silicon Valley? | https://www.oreilly.com/radar/what-happened-to-silicon-valley/ |
+| 3 | Perplexity and Intelligence | https://openai.com/index/perplexity-and-intelligence/ |
+| 4 | Free alternative TV network built from the Internet Archive's forgotten videos | https://spelunkr.tv |
+| 5 | A Beginner's Guide to Local AI with Inkling, Qwen, and Unsloth | https://www.gpupartner.com/blog/beginners-guide-local-ai-inkling-qwen-unsloth |
+| 6 | The Birds of GTA 6: A Field Guide to Vice City and Leonida's Wildlife | https://www.audubon.org/magazine/birds-of-gta-6-field-guide-vice-city-wildlife |
+| 7 | XNU Linux: Full OS X GUI Userspace on Linux | https://github.com/AFK-surf/xnulinux |
+| 8 | Show HN: I built a game where you are an LLM's subagent | https://github.com/gulivan/worker755 |
+| 9 | A miniature San Francisco with live buses, planes and boats | https://smallsf.com/ |
+| 10 | Show HN: I made a terminal-based AI coding assistant that lives in your shell | https://github.com/cirowrc/shell-gpt |
+
+Source: https://hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=10
 
 ```json
 {
   "status": "success",
   "goal": "Hacker News pe aaj ke top 10 posts ka title aur link nikaalo. CSV file banao.",
-  "answer": "Hacker News ke aaj ke top 10 posts ka title aur link extract kar liya. Algolia HN API (https://hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=10) se data liya.\n\n**CSV file:** `outputs/hn_top10_posts.csv`\n\n| Rank | Title | Link |\n|------|-------|------|\n| 1 | Hurried Announcement: Alessandro Masullo GRH | https://math216.wordpress.com/2026/11/20/hurried-announcement-alessandro-masullo-grh/ |\n| 2 | Lean verification of the Riemann Hypothesis | https://leanprover-community.github.io/blog/posts/riemann-hypothesis/ |\n| 3 | Pill to treat pancreatic cancer hailed as 'biggest breakthrough in decades' | https://www.theguardian.com/society/2026/nov/20/pill-pancreatic-cancer-breakthrough-daraxonrasib |\n| 4 | Detonating a pile of lead azide | https://www.science.org/content/blog-post/detonating-huge-pile-lead-azide-really |\n| 5 | My monitor was cutting my download speed by 75% | https://blog.tymscar.com/posts/studiodisplayethernet/ |\n| 6 | Toyota, Nissan, and Honda to standardize parts to lower costs | https://www.caranddriver.com/news/a74490092/toyota-nissan-honda-standardize-parts-lower-costs/ |\n| 7 | Inkling-2-Mini in 5.4 GB Memory | https://github.com/ShinMegamiBoson/lookatmyquant |\n| 8 | Getting the mind to steer the body to steer you | https://notnottalmud.substack.com/p/getting-the-mind-to-steer-the-body |\n| 9 | Show HN: I built a terminal-based web browser | https://github.com/inkling-lang/inkling |\n| 10 | Ask HN: What's your favorite toy as a kid? | https://news.ycombinator.com/item?id=50597000 |",
-  "data": {
-    "hn_top10_titles": "1. Hurried Announcement: Alessandro Masullo GRH | 2. Lean verification of the Riemann Hypothesis | 3. Pill to treat pancreatic cancer hailed as 'biggest breakthrough in decades' | 4. Detonating a pile of lead azide | 5. My monitor was cutting my download speed by 75% | 6. Toyota, Nissan, and Honda to standardize parts to lower costs | 7. Inkling-2-Mini in 5.4 GB Memory | 8. Getting the mind to steer the body to steer you | 9. Show HN: I built a terminal-based web browser | 10. Ask HN: What's your favorite toy as a kid?"
-  },
+  "answer": "Hacker News ke aaj ke top 10 posts ka data extract kar liya using Algolia HN API.\n\n**CSV file:** `outputs/hn_top10_posts.csv`\n\n| Rank | Title | Link |\n|------|-------|------|\n| 1 | Toyota, Nissan, and Honda to standardize parts to lower costs | https://www.caranddriver.com/news/a74490092/toyota-nissan-honda-standardize-parts-lower-costs/ |\n| 2 | What Happened to Silicon Valley? | https://www.oreilly.com/radar/what-happened-to-silicon-valley/ |\n| 3 | Perplexity and Intelligence | https://openai.com/index/perplexity-and-intelligence/ |\n| 4 | Free alternative TV network built from the Internet Archive's forgotten videos | https://spelunkr.tv |\n| 5 | A Beginner's Guide to Local AI with Inkling, Qwen, and Unsloth | https://www.gpupartner.com/blog/beginners-guide-local-ai-inkling-qwen-unsloth |\n| 6 | The Birds of GTA 6: A Field Guide to Vice City and Leonida's Wildlife | https://www.audubon.org/magazine/birds-of-gta-6-field-guide-vice-city-wildlife |\n| 7 | XNU Linux: Full OS X GUI Userspace on Linux | https://github.com/AFK-surf/xnulinux |\n| 8 | Show HN: I built a game where you are an LLM's subagent | https://github.com/gulivan/worker755 |\n| 9 | A miniature San Francisco with live buses, planes and boats | https://smallsf.com/ |\n| 10 | Show HN: I made a terminal-based AI coding assistant that lives in your shell | https://github.com/cirowrc/shell-gpt |\n\nSource: https://hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=10",
+  "data": {},
   "captures": [
     "final-task-924660.jpg",
     "final-task-952556.jpg",
@@ -98,8 +98,8 @@ Hacker News ke aaj ke top 10 posts ka title aur link extract kar liya. Algolia H
     "hn_top10_posts.jpg"
   ],
   "files": [
-    "result-1795173009964.md",
     "result-1795258530427.md",
+    "result-1795345128915.md",
     "result-e899545c.md",
     "sites.csv",
     "user_email_setup.md"
@@ -110,24 +110,18 @@ Hacker News ke aaj ke top 10 posts ka title aur link extract kar liya. Algolia H
 }
 ```
 
-<details><summary>Data board (saved fields)</summary>
-
-- hn_top10_titles = 1. Hurried Announcement: Alessandro Masullo GRH | 2. Lean verification of the Riemann Hypothesis | 3. Pill to treat pancreatic cancer hailed as 'biggest breakthrough in decades' | 4. Detonating a pile
-
-</details>
-
 <details><summary>Work report (7 entries)</summary>
 
-- 10:56:23  Plan:
-1. Open https://hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=10
-2. Parse JSON response to extract title and url for each of top 10 hits
-3. Create CSV file at outputs/hn_top10_posts.csv with columns: Rank, Title, Link
-4. Verify CSV file was created successfully
-- 10:56:28  khol raha hoon — hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=10
-- 10:56:34  page ka content padh raha hoon
-- 10:57:10  file bana raha hoon — hn_top10_posts.csv
-- 10:57:38  save_field
-- 10:58:47  kaam khatam kar raha hoon
-- 10:58:47  VERIFY Verify: undefined% ✓ poora
+- 12:02:55  Plan:
+1. Open `https://hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=10`
+2. Parse JSON response to extract title and url from each hit
+3. Create CSV file with columns: Rank, Title, Link
+4. Save as `outputs/hn_top10_posts.csv`
+- 12:03:05  khol raha hoon — hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=10
+- 12:03:28  page ka content padh raha hoon
+- 12:03:32  page ka content padh raha hoon
+- 12:32:28  file bana raha hoon — hn_top10_posts.csv
+- 12:34:19  kaam khatam kar raha hoon
+- 12:34:19  VERIFY Verify: undefined% ✓ poora
 
 </details>
