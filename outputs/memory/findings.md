@@ -405,3 +405,12 @@ Hacker News ke aaj ke top 10 posts ka data extract kar liya using Algolia HN API
 | 2 | What Happened to Silicon Valley? | https://www.oreilly.com/radar/what-happened-to-silicon-valley/ |
 | 3 | Perplexity and Intelligence | https://openai.com/index/perplexity-and-intelligence/ |
 | 4 | Free alternative TV network built from the Internet Ar
+
+## 2026-11-24 13:34 — issue #?
+**INCOMPLETE** Hacker News pe aaj ke top 10 posts ka title aur link nikaalo. CSV file banao.
+## ❌ Agent fail ho gaya
+
+```
+meta/llama-3.3-70b-instruct 410: {"type":"about:blank","title":"Gone","status":410,"detail":"The model 'meta/llama-3.3-70b-instruct' has reached its end of life on 2026-08-26T09:00:00Z and is no longer available."}
+
+```
