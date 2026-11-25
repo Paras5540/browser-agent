@@ -1,4 +1,4 @@
-# Task result — INCOMPLETE
+# Task result — SUCCESS
 
 **Goal:** Hacker News pe aaj ke top 10 posts ka title aur link nikaalo. CSV file banao.
 
@@ -51,32 +51,42 @@ Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur l
 |------|-------|------|
 | 1 | Binance-hacker-1029 –
 
-**Time:** 8m 20s · **Steps:** 5
+**Time:** 1m 13s · **Steps:** 9 · **Phases:** 1
 
 ---
 
 **Captures** (Files tab me download):
-- [final-task-672796.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/404cf4644bd5e64fdf27cf90e2af296453c2d45f/outputs/final-task-672796.jpg)
-- [final-task-714907.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/404cf4644bd5e64fdf27cf90e2af296453c2d45f/outputs/final-task-714907.jpg)
-- [final-task-799681.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/404cf4644bd5e64fdf27cf90e2af296453c2d45f/outputs/final-task-799681.jpg)
-- [final-task-924660.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/404cf4644bd5e64fdf27cf90e2af296453c2d45f/outputs/final-task-924660.jpg)
-- [final-task-952556.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/404cf4644bd5e64fdf27cf90e2af296453c2d45f/outputs/final-task-952556.jpg)
-- [final-task-953089.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/404cf4644bd5e64fdf27cf90e2af296453c2d45f/outputs/final-task-953089.jpg)
-- [final-task-955033.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/404cf4644bd5e64fdf27cf90e2af296453c2d45f/outputs/final-task-955033.jpg)
-- [hn_top10_posts.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/404cf4644bd5e64fdf27cf90e2af296453c2d45f/outputs/hn_top10_posts.jpg)
+- [final-task-672796.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/54162b28733920220fc146edf5b851aa8bb33322/outputs/final-task-672796.jpg)
+- [final-task-714907.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/54162b28733920220fc146edf5b851aa8bb33322/outputs/final-task-714907.jpg)
+- [final-task-799681.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/54162b28733920220fc146edf5b851aa8bb33322/outputs/final-task-799681.jpg)
+- [final-task-924660.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/54162b28733920220fc146edf5b851aa8bb33322/outputs/final-task-924660.jpg)
+- [final-task-952556.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/54162b28733920220fc146edf5b851aa8bb33322/outputs/final-task-952556.jpg)
+- [final-task-953089.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/54162b28733920220fc146edf5b851aa8bb33322/outputs/final-task-953089.jpg)
+- [final-task-955033.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/54162b28733920220fc146edf5b851aa8bb33322/outputs/final-task-955033.jpg)
+- [hn_top10_posts.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/54162b28733920220fc146edf5b851aa8bb33322/outputs/hn_top10_posts.jpg)
 
-## ❌ Agent fail ho gaya
+Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur link extract kar liya.
 
-```
-meta/llama-3.3-70b-instruct 410: {"type":"about:blank","title":"Gone","status":410,"detail":"The model 'meta/llama-3.3-70b-instruct' has reached its end of life on 2026-08-26T09:00:00Z and is no longer available."}
+**CSV file:** `outputs/hn_top10_posts.csv`
 
-```
+| Rank | Title | Link |
+|------|-------|------|
+| 1 | Windows Loudness Equalization, reverse-engineered and ported to PipeWire | https://github.com/xoxorwr/pw-loudness-eq |
+| 2 | Matrix Multiplication is Θ(n^2.25) [pdf] | https://github.com/openai/math/blob/main/preprints/The-matrix-multiplication-exponent-is-nine-fourths-November-24-2026/paper.pdf |
+| 3 | Button Sounds – collection of professionally-recorded button clicks and presses | https://buttons.joshwcomeau.com/ |
+| 4 | Models Can Communicate via Inference Servers Despite Being Sandboxed | https://www.lesswrong.com/posts/7wzWuLP3HhyBLmKfo/models-can-communicate-via-inference-servers-despite-being |
+| 5 | Show HN: Old Nvidia and ATI tech demos, running again in the browser | https://gpu-demo-gallery.pages.dev/ |
+| 6 | Getting old Java phones online again | https://antcating.github.io/2026/11/23/getting-old-java-phones-online-again.html |
+| 7 | Hazel (YC W24) Is Hiring a Product Designer | https://news.ycombinator.com/jobs |
+| 8 | Bypassing iOS Safari's 60 FPS Limit to Build Web Applications That Feel Native | https://rida.dev |
+| 9 | Ternary Bonsai 2.5 27B | https://prismml.com |
+| 10 | Taking over US Treasury subdomains for $3 each | https://intruder.io |
 
 ```json
 {
-  "status": "incomplete",
+  "status": "success",
   "goal": "Hacker News pe aaj ke top 10 posts ka title aur link nikaalo. CSV file banao.",
-  "answer": "## ❌ Agent fail ho gaya\n\n```\nmeta/llama-3.3-70b-instruct 410: {\"type\":\"about:blank\",\"title\":\"Gone\",\"status\":410,\"detail\":\"The model 'meta/llama-3.3-70b-instruct' has reached its end of life on 2026-08-26T09:00:00Z and is no longer available.\"}\n\n```",
+  "answer": "Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur link extract kar liya.\n\n**CSV file:** `outputs/hn_top10_posts.csv`\n\n| Rank | Title | Link |\n|------|-------|------|\n| 1 | Windows Loudness Equalization, reverse-engineered and ported to PipeWire | https://github.com/xoxorwr/pw-loudness-eq |\n| 2 | Matrix Multiplication is Θ(n^2.25) [pdf] | https://github.com/openai/math/blob/main/preprints/The-matrix-multiplication-exponent-is-nine-fourths-November-24-2026/paper.pdf |\n| 3 | Button Sounds – collection of professionally-recorded button clicks and presses | https://buttons.joshwcomeau.com/ |\n| 4 | Models Can Communicate via Inference Servers Despite Being Sandboxed | https://www.lesswrong.com/posts/7wzWuLP3HhyBLmKfo/models-can-communicate-via-inference-servers-despite-being |\n| 5 | Show HN: Old Nvidia and ATI tech demos, running again in the browser | https://gpu-demo-gallery.pages.dev/ |\n| 6 | Getting old Java phones online again | https://antcating.github.io/2026/11/23/getting-old-java-phones-online-again.html |\n| 7 | Hazel (YC W24) Is Hiring a Product Designer | https://news.ycombinator.com/jobs |\n| 8 | Bypassing iOS Safari's 60 FPS Limit to Build Web Applications That Feel Native | https://rida.dev |\n| 9 | Ternary Bonsai 2.5 27B | https://prismml.com |\n| 10 | Taking over US Treasury subdomains for $3 each | https://intruder.io |",
   "data": {},
   "captures": [
     "final-task-924660.jpg",
@@ -86,30 +96,33 @@ meta/llama-3.3-70b-instruct 410: {"type":"about:blank","title":"Gone","status":4
     "hn_top10_posts.jpg"
   ],
   "files": [
-    "result-1795345128915.md",
     "result-1795437260476.md",
+    "result-1795527295834.md",
     "result-e899545c.md",
     "sites.csv",
     "user_email_setup.md"
   ],
-  "steps": 5,
+  "steps": 9,
   "score": null,
-  "phases": null
+  "phases": 1
 }
 ```
 
-<details><summary>Work report (5 entries)</summary>
+<details><summary>Work report (10 entries)</summary>
 
-- 13:30:38  Plan:
-1. Open https://news.ycombinator.com/ in a browser.  
-2. Locate the first 10 `<tr class="athing">` rows and extract each post’s title text and the `<a>` href link.  
-3. Store each pair as a dictionary with keys `Rank`, `Title`, `Link`.  
-4. Create a CSV writer and write header `Rank,Title,Link`.  
-5. Iterate over the 10 dictionaries, writing each row to the CSV.  
-6. Save the file as `outputs/hn_top10_posts.csv`.
-- 13:31:27  khol raha hoon — news.ycombinator.com/
-- 13:32:55  khol raha hoon — hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=10
-- 13:34:28  page ka content padh raha hoon
-- 13:34:28  --- dahl limit — 70s baad wapas, ab agla model
+- 12:23:43  Plan:
+1. Open https://news.ycombinator.com in browser
+2. Extract top 10 post titles and URLs from the front page
+3. Create CSV file with columns: Rank, Title, Link
+4. Save as `outputs/hn_top10_posts.csv`
+- 12:23:45  khol raha hoon — news.ycombinator.com
+- 12:23:48  extract_json
+- 12:23:48  FAIL extract_json — ERROR: page.evaluate: SyntaxError: Failed to execute 'querySelectorAll' on 'Docu
+- 12:23:51  extract_links
+- 12:23:54  page ka content padh raha hoon
+- 12:24:00  extract_links
+- 12:24:06  file bana raha hoon — hn_top10_posts.csv
+- 12:24:11  kaam khatam kar raha hoon
+- 12:24:11  VERIFY Verify: undefined% ✓ poora
 
 </details>

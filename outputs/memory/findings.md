@@ -414,3 +414,15 @@ Hacker News ke aaj ke top 10 posts ka data extract kar liya using Algolia HN API
 meta/llama-3.3-70b-instruct 410: {"type":"about:blank","title":"Gone","status":410,"detail":"The model 'meta/llama-3.3-70b-instruct' has reached its end of life on 2026-08-26T09:00:00Z and is no longer available."}
 
 ```
+
+## 2026-11-25 12:24 — issue #?
+**DONE** Hacker News pe aaj ke top 10 posts ka title aur link nikaalo. CSV file banao.
+Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur link extract kar liya.
+
+**CSV file:** `outputs/hn_top10_posts.csv`
+
+| Rank | Title | Link |
+|------|-------|------|
+| 1 | Windows Loudness Equalization, reverse-engineered and ported to PipeWire | https://github.com/xoxorwr/pw-loudness-eq |
+| 2 | Matrix Multiplication is Θ(n^2.25) [pdf] | https://github.com/openai/math/blob/main/preprints/The-matrix-multiplication-exponent-is-nine-fourths-November-24-2026/paper.pdf |
+| 3 | Button Sounds – collection of professionally-recorded button clicks and presses | https://butt

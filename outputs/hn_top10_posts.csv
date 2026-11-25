@@ -1,11 +1,11 @@
 Rank,Title,Link
-1,"Toyota, Nissan, and Honda to standardize parts to lower costs","https://www.caranddriver.com/news/a74490092/toyota-nissan-honda-standardize-parts-lower-costs/"
-2,"What Happened to Silicon Valley?","https://www.oreilly.com/radar/what-happened-to-silicon-valley/"
-3,"Perplexity and Intelligence","https://openai.com/index/perplexity-and-intelligence/"
-4,"Free alternative TV network built from the Internet Archive's forgotten videos","https://spelunkr.tv"
-5,"A Beginner's Guide to Local AI with Inkling, Qwen, and Unsloth","https://www.gpupartner.com/blog/beginners-guide-local-ai-inkling-qwen-unsloth"
-6,"The Birds of GTA 6: A Field Guide to Vice City and Leonida's Wildlife","https://www.audubon.org/magazine/birds-of-gta-6-field-guide-vice-city-wildlife"
-7,"XNU Linux: Full OS X GUI Userspace on Linux","https://github.com/AFK-surf/xnulinux"
-8,"Show HN: I built a game where you are an LLM's subagent","https://github.com/gulivan/worker755"
-9,"A miniature San Francisco with live buses, planes and boats","https://smallsf.com/"
-10,"Show HN: I made a terminal-based AI coding assistant that lives in your shell","https://github.com/cirowrc/shell-gpt"
+1,Windows Loudness Equalization, reverse-engineered and ported to PipeWire,https://github.com/xoxorwr/pw-loudness-eq
+2,Matrix Multiplication is Θ(n^2.25) [pdf],https://github.com/openai/math/blob/main/preprints/The-matrix-multiplication-exponent-is-nine-fourths-November-24-2026/paper.pdf
+3,Button Sounds – collection of professionally-recorded button clicks and presses,https://buttons.joshwcomeau.com/
+4,Models Can Communicate via Inference Servers Despite Being Sandboxed,https://www.lesswrong.com/posts/7wzWuLP3HhyBLmKfo/models-can-communicate-via-inference-servers-despite-being
+5,Show HN: Old Nvidia and ATI tech demos, running again in the browser,https://gpu-demo-gallery.pages.dev/
+6,Getting old Java phones online again,https://antcating.github.io/2026/11/23/getting-old-java-phones-online-again.html
+7,Hazel (YC W24) Is Hiring a Product Designer,https://news.ycombinator.com/jobs
+8,Bypassing iOS Safari's 60 FPS Limit to Build Web Applications That Feel Native,https://rida.dev
+9,Ternary Bonsai 2.5 27B,https://prismml.com
+10,Taking over US Treasury subdomains for $3 each,https://intruder.io
