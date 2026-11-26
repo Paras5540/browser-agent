@@ -426,3 +426,16 @@ Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur l
 | 1 | Windows Loudness Equalization, reverse-engineered and ported to PipeWire | https://github.com/xoxorwr/pw-loudness-eq |
 | 2 | Matrix Multiplication is Θ(n^2.25) [pdf] | https://github.com/openai/math/blob/main/preprints/The-matrix-multiplication-exponent-is-nine-fourths-November-24-2026/paper.pdf |
 | 3 | Button Sounds – collection of professionally-recorded button clicks and presses | https://butt
+
+## 2026-11-26 12:30 — issue #?
+**DONE** Hacker News pe aaj ke top 10 posts ka title aur link nikaalo. CSV file banao.
+Hacker News ke aaj ke top 10 posts ka title aur link extract kar liya aur CSV file bana di.
+
+**CSV file:** `outputs/hn_top10_posts.csv`
+
+| Rank | Title | Link |
+|------|-------|------|
+| 1 | Intel One Mono font | https://github.com/intel/intel-one-mono |
+| 2 | Holy shit holy shit holy shit holy shit: The magnitude of what's now happening | https://scottaaronson.blog/?p=10379 |
+| 3 | 1Password Security Incident | https://1password.com/blog/update-on-nov-2026-security-incident |
+| 4 | Lions' Commentary on Unix: Why It Was Secretly Copied for 20 Years | https://fosscomics.com/posts/17.%20Lions%27
