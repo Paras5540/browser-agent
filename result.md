@@ -1,4 +1,4 @@
-# Task result — SUCCESS
+# Task result — INCOMPLETE
 
 **Goal:** Hacker News pe aaj ke top 10 posts ka title aur link nikaalo. CSV file banao.
 
@@ -51,47 +51,33 @@ Hacker News (https://news.ycombinator.com) se aaj ke top 10 posts ka title aur l
 |------|-------|------|
 | 1 | Binance-hacker-1029 –
 
-**Time:** 25m 17s · **Steps:** 21 · **Phases:** 1
+**Time:** 4m 47s · **Steps:** 3
 
 ---
 
 **Captures** (Files tab me download):
-- [final-task-672796.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/81e795d2ed1986c93e903ec0b8456e2a2eba6262/outputs/final-task-672796.jpg)
-- [final-task-714907.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/81e795d2ed1986c93e903ec0b8456e2a2eba6262/outputs/final-task-714907.jpg)
-- [final-task-799681.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/81e795d2ed1986c93e903ec0b8456e2a2eba6262/outputs/final-task-799681.jpg)
-- [final-task-924660.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/81e795d2ed1986c93e903ec0b8456e2a2eba6262/outputs/final-task-924660.jpg)
-- [final-task-952556.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/81e795d2ed1986c93e903ec0b8456e2a2eba6262/outputs/final-task-952556.jpg)
-- [final-task-953089.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/81e795d2ed1986c93e903ec0b8456e2a2eba6262/outputs/final-task-953089.jpg)
-- [final-task-955033.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/81e795d2ed1986c93e903ec0b8456e2a2eba6262/outputs/final-task-955033.jpg)
-- [hn_top10_posts.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/81e795d2ed1986c93e903ec0b8456e2a2eba6262/outputs/hn_top10_posts.jpg)
+- [final-task-714907.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/b119041971819f73a3d72222bb8d580b4193e08d/outputs/final-task-714907.jpg)
+- [final-task-787796.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/b119041971819f73a3d72222bb8d580b4193e08d/outputs/final-task-787796.jpg)
+- [final-task-799681.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/b119041971819f73a3d72222bb8d580b4193e08d/outputs/final-task-799681.jpg)
+- [final-task-924660.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/b119041971819f73a3d72222bb8d580b4193e08d/outputs/final-task-924660.jpg)
+- [final-task-952556.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/b119041971819f73a3d72222bb8d580b4193e08d/outputs/final-task-952556.jpg)
+- [final-task-953089.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/b119041971819f73a3d72222bb8d580b4193e08d/outputs/final-task-953089.jpg)
+- [final-task-955033.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/b119041971819f73a3d72222bb8d580b4193e08d/outputs/final-task-955033.jpg)
+- [hn_top10_posts.jpg](https://raw.githubusercontent.com/Paras5540/browser-agent/b119041971819f73a3d72222bb8d580b4193e08d/outputs/hn_top10_posts.jpg)
 
-Hacker News ke aaj ke top 10 posts ka title aur link extract kar liya aur CSV file bana di.
+## ❌ Agent fail ho gaya
 
-**CSV file:** `outputs/hn_top10_posts.csv`
+```
+meta/llama-3.3-70b-instruct 410: {"type":"about:blank","title":"Gone","status":410,"detail":"The model 'meta/llama-3.3-70b-instruct' has reached its end of life on 2026-08-26T09:00:00Z and is no longer available."}
 
-| Rank | Title | Link |
-|------|-------|------|
-| 1 | Intel One Mono font | https://github.com/intel/intel-one-mono |
-| 2 | Holy shit holy shit holy shit holy shit: The magnitude of what's now happening | https://scottaaronson.blog/?p=10379 |
-| 3 | 1Password Security Incident | https://1password.com/blog/update-on-nov-2026-security-incident |
-| 4 | Lions' Commentary on Unix: Why It Was Secretly Copied for 20 Years | https://fosscomics.com/posts/17.%20Lions%27%20Commentary%20on%20Unix/ |
-| 5 | The New York Times warns photographers not to update Photoshop over AI features | https://www.theverge.com/ai-artificial-intelligence/1041227/the-new-york-times-warns-photographers-not-to-update-photoshop-over-ai-features |
-| 6 | Head of Software Engineering – NOX Metals | https://news.ycombinator.com/item?id=50654353 |
-| 7 | Much shorter version of GRH Lean verification from Anthropic | https://github.com/lsernau/grh-lean |
-| 8 | Moat: Your OpenRouter Replacement | https://commandcode.ai/moat |
-| 9 | Google Will Make AI Agents Use Its MCP Servers. The Gmail One Can't Send Email | https://techstackups.com/articles/google-workspace-ai-agents-mcp/ |
-| 10 | Collection of preserved UI style guides | https://aresluna.org/ui-style-guides/ |
-
-Source: https://news.ycombinator.com
+```
 
 ```json
 {
-  "status": "success",
+  "status": "incomplete",
   "goal": "Hacker News pe aaj ke top 10 posts ka title aur link nikaalo. CSV file banao.",
-  "answer": "Hacker News ke aaj ke top 10 posts ka title aur link extract kar liya aur CSV file bana di.\n\n**CSV file:** `outputs/hn_top10_posts.csv`\n\n| Rank | Title | Link |\n|------|-------|------|\n| 1 | Intel One Mono font | https://github.com/intel/intel-one-mono |\n| 2 | Holy shit holy shit holy shit holy shit: The magnitude of what's now happening | https://scottaaronson.blog/?p=10379 |\n| 3 | 1Password Security Incident | https://1password.com/blog/update-on-nov-2026-security-incident |\n| 4 | Lions' Commentary on Unix: Why It Was Secretly Copied for 20 Years | https://fosscomics.com/posts/17.%20Lions%27%20Commentary%20on%20Unix/ |\n| 5 | The New York Times warns photographers not to update Photoshop over AI features | https://www.theverge.com/ai-artificial-intelligence/1041227/the-new-york-times-warns-photographers-not-to-update-photoshop-over-ai-features |\n| 6 | Head of Software Engineering – NOX Metals | https://news.ycombinator.com/item?id=50654353 |\n| 7 | Much shorter version of GRH Lean verification from Anthropic | https://github.com/lsernau/grh-lean |\n| 8 | Moat: Your OpenRouter Replacement | https://commandcode.ai/moat |\n| 9 | Google Will Make AI Agents Use Its MCP Servers. The Gmail One Can't Send Email | https://techstackups.com/articles/google-workspace-ai-agents-mcp/ |\n| 10 | Collection of preserved UI style guides | https://aresluna.org/ui-style-guides/ |\n\nSource: https://news.ycombinator.com",
-  "data": {
-    "hn_top10_titles": "1. Intel One Mono font, 2. Holy shit holy shit holy shit holy shit: The magnitude of what's now happening, 3. 1Password Security Incident, 4. Lions' Commentary on Unix: Why It Was Secretly Copied for 20 Years, 5. The New York Times warns photographers not to update Photoshop over AI features, 6. Head of Software Engineering – NOX Metals, 7. Much shorter version of GRH Lean verification from Anthropic, 8. Moat: Your OpenRouter Replacement, 9. Google Will Make AI Agents Use Its MCP Servers. The Gmail One Can't Send Email, 10. Collection of preserved UI style guides"
-  },
+  "answer": "## ❌ Agent fail ho gaya\n\n```\nmeta/llama-3.3-70b-instruct 410: {\"type\":\"about:blank\",\"title\":\"Gone\",\"status\":410,\"detail\":\"The model 'meta/llama-3.3-70b-instruct' has reached its end of life on 2026-08-26T09:00:00Z and is no longer available.\"}\n\n```",
+  "data": {},
   "captures": [
     "final-task-924660.jpg",
     "final-task-952556.jpg",
@@ -100,52 +86,27 @@ Source: https://news.ycombinator.com
     "hn_top10_posts.jpg"
   ],
   "files": [
-    "result-1795527295834.md",
     "result-1795609456567.md",
+    "result-1795696208861.md",
     "result-e899545c.md",
     "sites.csv",
     "user_email_setup.md"
   ],
-  "steps": 21,
+  "steps": 3,
   "score": null,
-  "phases": 1
+  "phases": null
 }
 ```
 
-<details><summary>Data board (saved fields)</summary>
+<details><summary>Work report (3 entries)</summary>
 
-- hn_top10_titles = 1. Intel One Mono font, 2. Holy shit holy shit holy shit holy shit: The magnitude of what's now happening, 3. 1Password Security Incident, 4. Lions' Commentary on Unix: Why It Was Secretly Copied for 
-
-</details>
-
-<details><summary>Work report (21 entries)</summary>
-
-- 12:04:58  Plan:
-1. Open Hacker News homepage (news.ycombinator.com)
-2. Identify the top 10 post titles and their URLs
-3. Create a CSV file with columns: Rank, Title, Link
-4. Populate the CSV with the extracted data
-5. Save the file as `outputs/hn_top10_posts.csv`
-6. Verify the CSV file was created successfully
-- 12:05:02  khol raha hoon — news.ycombinator.com
-- 12:05:04  khol raha hoon — hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=10
-- 12:05:23  page ka content padh raha hoon
-- 12:05:29  khol raha hoon — hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=10&
-- 12:05:34  extract_json
-- 12:09:11  data nikaal raha hoon — body
-- 12:13:20  page ka content padh raha hoon
-- 12:13:22  page ka content padh raha hoon
-- 12:13:32  scroll kar raha hoon neeche
-- 12:13:43  file bana raha hoon — hn_top10_posts.csv
-- 12:13:46  khol raha hoon — hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=10&
-- 12:13:50  khol raha hoon — hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=10&
-- 12:13:56  scroll kar raha hoon neeche
-- 12:16:01  khol raha hoon — hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=10
-- 12:16:06  khol raha hoon — news.ycombinator.com
-- 12:27:07  extract_links
-- 12:28:11  file bana raha hoon — hn_top10_posts.csv
-- 12:29:21  save_field
-- 12:30:08  kaam khatam kar raha hoon
-- 12:30:08  VERIFY Verify: undefined% ✓ poora
+- 11:55:30  Plan:
+1. Open https://news.ycombinator.com in browser
+2. Identify top 10 post titles and their URLs
+3. Create CSV file with columns: Rank, Title, Link
+4. Save file as `outputs/hn_top10_posts.csv`
+5. Verify CSV content is correct
+- 11:59:33  web pe dhoondh raha hoon — "Hacker News front page 2026-11-27 top 10 posts"
+- 11:59:34  --- groq limit — 70s baad wapas, ab agla model
 
 </details>

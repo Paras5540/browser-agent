@@ -439,3 +439,12 @@ Hacker News ke aaj ke top 10 posts ka title aur link extract kar liya aur CSV fi
 | 2 | Holy shit holy shit holy shit holy shit: The magnitude of what's now happening | https://scottaaronson.blog/?p=10379 |
 | 3 | 1Password Security Incident | https://1password.com/blog/update-on-nov-2026-security-incident |
 | 4 | Lions' Commentary on Unix: Why It Was Secretly Copied for 20 Years | https://fosscomics.com/posts/17.%20Lions%27
+
+## 2026-11-27 11:59 — issue #?
+**INCOMPLETE** Hacker News pe aaj ke top 10 posts ka title aur link nikaalo. CSV file banao.
+## ❌ Agent fail ho gaya
+
+```
+meta/llama-3.3-70b-instruct 410: {"type":"about:blank","title":"Gone","status":410,"detail":"The model 'meta/llama-3.3-70b-instruct' has reached its end of life on 2026-08-26T09:00:00Z and is no longer available."}
+
+```
