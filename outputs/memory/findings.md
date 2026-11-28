@@ -448,3 +448,17 @@ Hacker News ke aaj ke top 10 posts ka title aur link extract kar liya aur CSV fi
 meta/llama-3.3-70b-instruct 410: {"type":"about:blank","title":"Gone","status":410,"detail":"The model 'meta/llama-3.3-70b-instruct' has reached its end of life on 2026-08-26T09:00:00Z and is no longer available."}
 
 ```
+
+## 2026-11-28 11:44 — issue #?
+**DONE** Hacker News pe aaj ke top 10 posts ka title aur link nikaalo. CSV file banao.
+Hacker News (news.ycombinator.com) se aaj ke top 10 posts ka title aur link extract kar liya.
+
+**CSV file:** `outputs/hn_top10_posts.csv`
+
+| Rank | Title | Link |
+|------|-------|------|
+| 1 | Unkernel: Real Linux kernel, compiled to WebAssembly | https://unkernel.dev |
+| 2 | Loom seamlessly combines weaving, knitting and braiding | https://cornell.edu |
+| 3 | Google's DeepCrossAttention achieves comparable model quality up to 3x faster | https://research.google/blog/supercharging-transformer-residual-connections/ |
+| 4 | Knuth: Moratorium on Error Reports | https://stanford.edu |
+| 5 | No per
